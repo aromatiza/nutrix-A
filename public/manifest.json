@@ -1,0 +1,20 @@
+{
+  "name": "Nutrix Pro — Nutrition intelligente",
+  "short_name": "Nutrix Pro",
+  "description": "Scanner, comparer et comprendre les produits alimentaires",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7FAF8",
+  "theme_color": "#26876C",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "/",
+  "lang": "fr"
+}

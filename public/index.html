@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nutrix Pro — Eat well, feel good</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f7faf8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nutrix">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="nutrix.css">
+</head>
+<body class="pulse-shell">
+<!-- PulseFit-inspired actual application navigation; each tab delegates to Nutrix showTab -->
+<header class="pulse-navbar" id="pulse-navbar"><div class="pulse-nav-inner">
+<button class="pulse-logo tab" data-tab="home" type="button" aria-label="Nutrix Accueil" title="Nutrix"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 12h3l2-5 4 14 3-9 2 3h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="pulse-logo-name">Nutri<span class="pulse-logo-accent">X</span></span></button>
+<nav class="pulse-nav-links" id="pulse-nav-links" aria-label="Navigation Nutrix">
+<button class="tab active" data-tab="home" type="button" aria-label="Accueil" title="Accueil"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span class="pulse-nav-label">Accueil</span></button>
+<button class="tab" data-tab="health" type="button" aria-label="Santé" title="Santé"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="pulse-nav-label">Santé</span></button>
+<button class="tab" data-tab="nutri" type="button" aria-label="Scanner" title="Scanner"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3m8 0h3a1 1 0 0 1 1 1v3M4 16v3a1 1 0 0 0 1 1h3m8 0h3a1 1 0 0 0 1-1v-3M4 12h16"/></svg><span class="pulse-nav-label">Scanner</span></button>
+<button class="tab" data-tab="journal" type="button" aria-label="Journal & Labo" title="Journal & Labo"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span class="pulse-nav-label">Journal & Labo</span></button>
+<button class="tab" data-tab="ai" type="button" aria-label="Space AI" title="Space AI"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2zM19 18l.7 1.3L21 20l-1.3.7L19 22l-.7-1.3L17 20l1.3-.7z"/></svg><span class="pulse-nav-label">Space AI</span></button>
+<button class="tab" data-tab="studio" type="button" aria-label="Nutrix Studio" title="Nutrix Studio"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><path d="M13 17h8m-4-4v8"/></svg><span class="pulse-nav-label">Studio</span></button>
+<button class="tab nx-nav-hidden" data-tab="maroc" type="button" aria-label="Cuisine marocaine" title="Cuisine marocaine"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16M6 18c0-5 3-8 6-11 3 3 6 6 6 11"/><circle cx="12" cy="5" r="1.2"/></svg></button>
+<button class="tab" data-tab="faq" type="button" aria-label="Projet" title="Projet"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 4M12 17h.01"/></svg><span class="pulse-nav-label">Projet</span></button>
+</nav></div></header>
+
+
+<div class="bg-art" id="bg-art"></div>
+<div class="bg-img" id="bg-img"></div>
+
+<aside class="sidebar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style="stop-color:var(--accent)"/>
+          <stop offset="1" style="stop-color:#22c55e"/>
+        </linearGradient>
+      </defs>
+      <rect width="48" height="48" rx="14" fill="url(#lg)"/>
+      <path d="M15 33c0-10 7-18 19-19-1 12-8 19-19 19z" fill="#fff"/>
+      <path d="M15 33l10-9" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <div class="brand-name">Nutrix</div>
+      <div class="brand-sub">Eat well • Feel good</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="tab active" data-tab="home"><svg class="i" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9H3z"/><path d="M9 20v-7h6v7"/></svg><span>Accueil</span></button>
+    <button class="tab" data-tab="health">
+      <svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+      <span>Santé</span>
+    </button>
+    <button class="tab" data-tab="nutri">
+      <svg class="i" viewBox="0 0 24 24"><path d="M12 3c4.4 0 8 3.2 8 7.1 0 6.1-8 10.8-8 10.8S4 16.2 4 10.1C4 6.2 7.6 3 12 3z"/><path d="M9.4 10.5h5.2M12 7.9v5.2"/></svg>
+      <span>Scanner</span>
+    </button>
+    <button class="tab" data-tab="journal">
+      <svg class="i" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M8 8h6"/></svg>
+      <span>Labo</span>
+    </button>
+    <button class="tab" data-tab="ai">
+      <svg class="i" viewBox="0 0 24 24"><path d="m12 2 2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1z"/><path d="m19 18 .7 1.3L21 20l-1.3.7L19 22l-.7-1.3L17 20l1.3-.7z"/></svg>
+      <span>Coach</span>
+    </button>
+    <button class="tab" data-tab="faq">
+      <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7v.5"/><circle cx="12" cy="17" r=".8" fill="currentColor" stroke="none"/></svg>
+      <span>Projet</span>
+    </button>
+  </nav>
+</aside>
+
+<main class="main">
+  <header class="top">
+    <div>
+      <h1 id="page-title">Mon espace bien-être</h1>
+      <div class="sub" id="page-sub">Votre espace nutritionnel, en un coup d’œil</div>
+    </div>
+    <div class="actions">
+      <div class="nx-language-switch" role="group" aria-label="Langue de l’interface">
+        <button type="button" class="nx-lang-choice" data-nx-lang="fr" aria-pressed="true"><span class="nx-flag" aria-hidden="true">🇫🇷</span><span>FR</span></button>
+        <button type="button" class="nx-lang-choice" data-nx-lang="ary" aria-pressed="false"><span class="nx-flag" aria-hidden="true">🇲🇦</span><span>دارجة</span></button>
+        <label class="sr-only" for="v111-language">Langue</label><select id="v111-language" aria-label="Choisir la langue" class="nx-native-language"><option value="fr">FR</option><option value="ary">Darija</option></select>
+      </div>
+      <button class="circle" id="dark-btn" aria-label="Changer le thème : Automatique, Clair ou Sombre" title="Thème : Automatique">
+        <svg class="i" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+      <button class="circle" id="settings-btn" aria-label="Réglages">
+        <svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="date-nav" id="date-nav">
+    <button class="circle" data-shift="-1" aria-label="Jour précédent">
+      <svg class="i" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="date-label" id="date-label"></div>
+    <button class="circle" data-shift="1" aria-label="Jour suivant">
+      <svg class="i" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </nav>
+
+  <!-- ===== V11 DASHBOARD, original app navigation preserved ===== -->
+  <section class="page active" id="page-home" aria-label="Tableau de bord">
+<!-- PulseFit-inspired HOME, real Nutrix state mirrored from existing calculated nodes -->
+<div class="pulse-home" id="pulse-home">
+<section class="pulse-hero" aria-labelledby="pulse-hero-title"><div class="pulse-hero-overlay"></div><div class="pulse-hero-inner">
+<p class="pulse-eyebrow">NUTRIX · VOTRE COMPAGNON NUTRITION</p>
+<h2 id="pulse-hero-title">Ton espace nutritionnel,<br>simple et motivant.</h2>
+<p class="pulse-hero-sub">Suivez vos calories, comprenez vos macros et découvrez les aliments adaptés à vos objectifs. Vos données nutritionnelles, au même endroit.</p>
+<div class="pulse-hero-cta"><button type="button" class="pulse-btn pulse-btn-primary tab" data-tab="health">Vue rapide →</button><button type="button" class="pulse-btn pulse-btn-outline tab" data-tab="journal">Calories &amp; macros</button><button type="button" class="pulse-btn pulse-btn-outline tab" data-tab="explore">Découverte</button></div>
+</div></section>
+<section class="pulse-template-section pulse-metrics" id="pulse-metrics" aria-labelledby="pulse-metrics-heading"><div class="pulse-section-container">
+<header class="pulse-section-head"><p class="pulse-eyebrow pulse-eyebrow-blue">VUE RAPIDE · CALORIES &amp; MACROS</p><h2 id="pulse-metrics-heading">Tous vos indicateurs clés, au même endroit</h2><p>Vos résultats NUTRIX, actualisés à partir de votre journal et de vos objectifs.</p></header>
+<div class="pulse-template-grid pulse-ring-grid">
+<article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-score" style="--pct:0;--clr:#2563eb"><span class="pulse-ring-val" id="pulse-score">—</span></div><h3>Score motivation</h3><p class="pulse-metric-sub">Sur 100 points</p></article>
+<article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-cal" style="--pct:0;--clr:#f97316"><span class="pulse-ring-val" id="pulse-calories">—</span></div><h3>Calories du jour</h3><p class="pulse-metric-sub">Objectif : <span id="pulse-goal">—</span> kcal</p></article>
+<article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-pro" style="--pct:0;--clr:#22c55e"><span class="pulse-ring-val" id="pulse-protein">—</span></div><h3>Protéines</h3><p class="pulse-metric-sub">Objectif : <span id="pulse-protein-goal">—</span> g</p></article>
+</div><div class="pulse-template-grid pulse-bar-grid">
+<article class="pulse-metric-card pulse-bar-card"><h3>Glucides</h3><div class="pulse-progress-track"><span id="pulse-carb-bar" style="--clr:#38bdf8"></span></div><p class="pulse-metric-sub"><span id="pulse-carb">—</span> / <span id="pulse-carb-goal">—</span> g</p></article>
+<article class="pulse-metric-card pulse-bar-card"><h3>Lipides</h3><div class="pulse-progress-track"><span id="pulse-fat-bar" style="--clr:#a855f7"></span></div><p class="pulse-metric-sub"><span id="pulse-fat">—</span> / <span id="pulse-fat-goal">—</span> g</p></article>
+<article class="pulse-metric-card pulse-bar-card"><h3>Journal alimentaire</h3><p class="pulse-metric-sub">Consultez vos repas et vos progrès du jour.</p><button type="button" class="pulse-btn pulse-btn-primary tab" data-tab="journal">Voir mon journal →</button></article>
+</div></div></section>
+<section class="pulse-template-section pulse-dietary" id="pulse-dietary" aria-labelledby="pulse-dietary-heading"><div class="pulse-section-container"><header class="pulse-section-head"><p class="pulse-eyebrow pulse-eyebrow-blue">Programmes nutrition</p><h2 id="pulse-dietary-heading">Une nutrition qui accompagne vos objectifs</h2><p>Planification des repas et suivi personnalisés pour atteindre vos résultats.</p></header>
+<div class="pulse-template-grid pulse-diet-grid">
+<article class="pulse-diet-card"><img src="assets/sections/home-photo.webp" alt="Salade variée et alimentation équilibrée" loading="lazy"><div class="pulse-diet-body"><h3>Perte de poids</h3><ul><li>Suivi des calories</li><li>Idées de repas adaptées</li><li>Suivi de la progression</li></ul><button class="pulse-btn pulse-btn-primary tab" type="button" data-tab="health">Suivre mes objectifs</button></div></article>
+<article class="pulse-diet-card"><img src="assets/sections/journal-photo.webp" alt="Repas préparé riche en protéines" loading="lazy"><div class="pulse-diet-body"><h3>Prise de muscle</h3><ul><li>Repas riches en protéines</li><li>Suivi des macronutriments</li><li>Nutrition adaptée à l’effort</li></ul><button class="pulse-btn pulse-btn-primary tab" type="button" data-tab="journal">Suivre mes macros</button></div></article>
+<article class="pulse-diet-card"><img src="assets/sections/health-photo.webp" alt="Assiette saine composée de légumes" loading="lazy"><div class="pulse-diet-body"><h3>Mode de vie sain</h3><ul><li>Alimentation équilibrée</li><li>Conseils bien-être</li><li>Habitudes durables</li></ul><button class="pulse-btn pulse-btn-primary tab" type="button" data-tab="explore">Découvrir les aliments</button></div></article>
+</div></div></section>
+<section class="pulse-template-section pulse-articles" id="pulse-articles" aria-labelledby="pulse-articles-title">
+<div class="pulse-section-container"><header class="pulse-section-head"><p class="pulse-eyebrow pulse-eyebrow-blue">DÉCOUVERTE · NUTRIX</p><h2 id="pulse-articles-title">Les articles à découvrir</h2><p>Explore des produits alimentaires et leurs informations nutritionnelles issues d’Open Food Facts.</p></header>
+  <section class="nx-morocco" id="nx-morocco" aria-labelledby="nx-morocco-title"><div class="nx-morocco-heading"><div><span class="nx-kicker" data-nx115-fr="DÉCOUVERTE" data-nx115-ary="اكتشف">DÉCOUVERTE</span><h3 id="nx-morocco-title" data-nx115-fr="Produits à découvrir" data-nx115-ary="منتوجات تستاهل تكتشفها">Produits à découvrir</h3><p data-nx115-fr="Une sélection quotidienne enrichie : ingrédients et informations nutritionnelles de source Open Food Facts." data-nx115-ary="اختيارات كتتبدل كل نهار من قاعدة Open Food Facts.">Une sélection quotidienne enrichie : ingrédients et informations nutritionnelles de source Open Food Facts.</p></div><span class="nx-today-label" id="nx-today-label"></span></div><div id="nx-morocco-items" class="nx-morocco-items" aria-live="polite"><p>Chargement des données…</p></div><small data-nx115-fr="Sélection renouvelée chaque jour ; ce ne sont pas des actualités ni des publicités payantes. Notes officielles uniquement si disponibles." data-nx115-ary="الاختيارات كتتبدل نهار بنهار؛ ماشي أخبار جديدة ولا إشهارات مؤدى عليها. كنبيّنو غير النقط اللي متوفرة فعلاً.">Sélection renouvelée chaque jour ; ce ne sont pas des actualités ni des publicités payantes. Notes officielles uniquement si disponibles.</small></section></div></section>
+</div>
+
+    <div class="v10-intro"><div><span class="v10-eyebrow">NUTRIX</span><h2>Bonjour <span class="v10-greet-dot">●</span></h2><p>Mangez mieux, vivez pleinement.</p></div><span class="v10-date" id="v10-date">Aujourd’hui</span></div>
+    <div class="nx-fitness-summary" aria-label="Score de motivation et calories du jour">
+      <div class="nx-fit-stat nx-fit-score"><span class="nx-fit-symbol">🔥</span><span class="nx-fit-label">MON SCORE MOTIVATION</span><div class="nx-score-main"><div class="nx-premium-score-ring" id="nx-premium-score-ring"><strong id="nx-fit-score">0<small>/100</small></strong></div><div class="nx-premium-score-meta"><span class="nx-premium-level" id="nx-premium-level">Départ</span><span class="nx-target-chip">Objectif : <b id="nx-score-target">85</b></span><span id="nx-premium-next">Prochain palier : Régulier</span></div></div><div class="nx-fit-line"><i id="nx-fit-score-line"></i></div><span class="nx-fit-foot" id="nx-fit-score-foot">Chaque pas compte !</span><span class="nx-fit-foot" id="nx-score-best">Record personnel : —</span><div class="nx-premium-challenges"><span id="nx-premium-streak">0 jour de suite</span><span id="nx-premium-challenge">Défi : enregistrer un repas</span></div></div>
+      <div class="nx-fit-stat nx-fit-cal"><span class="nx-fit-symbol">◉</span><span class="nx-fit-label">CALORIES DU JOUR</span><div class="nx-home-cal-visual"><div class="nx-home-cal-ring" id="nx-home-cal-ring" aria-hidden="true"></div><div class="nx-home-cal-center"><div class="nx-home-cal-number" id="nx-fit-cal">0</div><div class="nx-home-cal-goal" id="nx-fit-cal-goal">sur 2000 kcal</div></div></div><span class="nx-fit-foot" id="nx-cal-remaining">Il reste 2000 kcal</span><div class="nx-home-macros" aria-label="Macros du jour"><div class="nx-home-macro"><span>Prot</span><b id="nx-home-pro">0g</b><small id="nx-home-pro-goal">/100g</small><i id="nx-home-pro-line"></i></div><div class="nx-home-macro"><span>Fat</span><b id="nx-home-fat">0g</b><small id="nx-home-fat-goal">/70g</small><i id="nx-home-fat-line"></i></div><div class="nx-home-macro"><span>Carbs</span><b id="nx-home-carb">0g</b><small id="nx-home-carb-goal">/250g</small><i id="nx-home-carb-line"></i></div></div></div>
+    </div>
+    <div class="nx-inline-ai"><button id="nx-inline-ai-button" class="nx-inline-ai-button" type="button" aria-expanded="false" aria-controls="nx-inline-ai-panel"><span>✨ Conseil IA — Comment améliorer ma journée ?</span><span aria-hidden="true" class="nx-inline-chevron">⌄</span></button><div id="nx-inline-ai-panel" class="nx-inline-ai-panel" hidden><div id="nx-inline-ai-message" role="status" aria-live="polite"></div><button type="button" id="nx-inline-ai-close" class="nx-inline-ai-close">Fermer</button></div></div>
+    <div class="v10-dashboard">
+      <div class="v10-panel v10-scan-panel">
+        <div class="v10-panel-top"><div><span class="v10-kicker">ANALYSE ALIMENTAIRE</span><h3>Analyser un produit</h3></div></div>
+        
+        <div class="v10-scan-choices">
+          <button type="button" data-v9-action="scan" class="v10-scan-choice"><span class="v10-choice-icon"><svg viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3m8 0h3a1 1 0 0 1 1 1v3M4 16v3a1 1 0 0 0 1 1h3m8 0h3a1 1 0 0 0 1-1v-3M7 12h10M9 9v6m3-7v8m3-7v6"/></svg></span><span><strong>Caméra</strong></span><b>›</b></button>
+          <button type="button" data-v9-action="photo" class="v10-scan-choice"><span class="v10-choice-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="m4 18 5-5 3 3 3-4 5 6"/></svg></span><span><strong>Importer une photo</strong></span><b>›</b></button>
+          <button type="button" data-v9-action="search" class="v10-scan-choice"><span class="v10-choice-icon"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.5 4.5"/></svg></span><span><strong>Rechercher</strong></span><b>›</b></button>
+        </div>
+      </div>
+      <div class="v10-panel v10-trend-panel"><div class="v10-panel-top"><div><span class="v10-kicker">STATISTIQUES</span><h3>Évolution sur 7 jours</h3></div><span class="v10-pill">Cette semaine</span></div><div class="v10-chart" id="v10-week-chart" aria-label="Apports énergétiques quotidiens sur sept jours"><div class="v10-empty">Ajoutez des repas pour voir votre évolution.</div></div><div class="v10-chart-foot">Apports énergétiques enregistrés · kcal / jour</div></div>
+      <div class="v10-panel v10-recent-panel"><div class="v10-panel-top"><div><span class="v10-kicker">ANALYSES</span><h3>Derniers produits</h3></div><button type="button" data-v9-action="search" class="v10-link-inline">Explorer ↗</button></div><div class="v10-empty-recent" id="v10-recent"><div class="v10-archive-icon">▤</div><strong>Votre historique, à portée de main</strong><span>Vos dernières recherches apparaîtront dans Nutrix.</span><button class="v10-outline" data-v9-action="search" type="button">Rechercher un produit</button></div></div>
+      <div class="v11-shortcuts"><button type="button" data-v11-action="compare"><span>⇄</span> Comparer</button><button type="button" data-v11-action="lab"><span>⌁</span> Labo</button><button type="button" data-v11-action="health"><span>♡</span> Santé</button></div>
+    </div>
+    <p class="v10-footnote">Données personnelles stockées localement sur cet appareil · Analyses et scores à visée informative, non médicale.</p>
+
+  </section>
+  <!-- ===================== SANTÉ ===================== -->
+  <section class="page" id="page-health">
+
+    <div class="block s12">
+      <div class="card hero">
+        <div>
+          <div class="hero-greet" id="hero-greet"></div>
+          <div class="hero-text" id="hero-text"></div>
+        </div>
+        <div class="streak" id="streak"></div>
+      </div>
+    </div>
+
+    <div class="block s12 health-intro"><div class="health-guide"><strong>Ton espace personnel</strong><span>Les informations essentielles restent visibles. Ouvre uniquement les modules secondaires quand tu en as besoin.</span></div></div><div id="health-launchers" class="health-launchers"></div>
+
+    <div class="block s12 nx-health-macro-block">
+      <div class="nx-premium-macro-card"><header class="nx-premium-macro-head"><h2>Macronutriments · Santé</h2><span>Aujourd’hui</span></header>
+      <div class="nx-premium-rings">
+        <div class="nx-premium-macro" data-macro="pro"><strong>Protéines</strong><div class="nx-premium-macro-ring"><span><b id="nx-fit-pro">0</b><small>g</small></span></div><small id="nx-fit-pro-goal">/ 100 g</small><span class="nx-premium-pct" id="nx-premium-pro-pct">0 %</span></div>
+        <div class="nx-premium-macro" data-macro="carb"><strong>Glucides</strong><div class="nx-premium-macro-ring"><span><b id="nx-fit-carb">0</b><small>g</small></span></div><small id="nx-fit-carb-goal">/ 250 g</small><span class="nx-premium-pct" id="nx-premium-carb-pct">0 %</span></div>
+        <div class="nx-premium-macro" data-macro="fat"><strong>Lipides</strong><div class="nx-premium-macro-ring"><span><b id="nx-fit-fat">0</b><small>g</small></span></div><small id="nx-fit-fat-goal">/ 70 g</small><span class="nx-premium-pct" id="nx-premium-fat-pct">0 %</span></div>
+      </div>
+      <div class="nx-premium-macro-bars">
+        <div class="nx-premium-bar" data-macro="pro"><div><span>Protéines</span><output id="nx-premium-pro-sum">0 / 100 g</output></div><div class="nx-premium-track"><i id="nx-fit-pro-line"></i></div></div>
+        <div class="nx-premium-bar" data-macro="carb"><div><span>Glucides</span><output id="nx-premium-carb-sum">0 / 250 g</output></div><div class="nx-premium-track"><i id="nx-fit-carb-line"></i></div></div>
+        <div class="nx-premium-bar" data-macro="fat"><div><span>Lipides</span><output id="nx-premium-fat-sum">0 / 70 g</output></div><div class="nx-premium-track"><i id="nx-fit-fat-line"></i></div></div>
+      </div></div>
+    </div>
+
+    <div class="block s4 nx-legacy-health-calories" hidden aria-hidden="true">
+      <div class="section-title">Calories du jour</div>
+      <div class="card">
+        <div class="ring-wrap">
+          <div id="ring-main"></div>
+          <div class="ring-center">
+            <b id="sum-kcal">0</b>
+            <span>sur <span id="sum-target">2000</span> kcal</span>
+          </div>
+        </div>
+        <div class="minis" id="minis"></div>
+        <div class="sum-check" id="sum-check"></div>
+      </div>
+    </div>
+
+    <div class="block s4">
+      <div class="section-title">Humeur et énergie</div>
+      <div class="card">
+        <div class="scale-label">Humeur</div>
+        <div class="faces" id="mood"></div>
+        <div class="scale-label">Énergie</div>
+        <div class="faces" id="energy"></div>
+      </div>
+    </div>
+
+    <div class="block s4">
+      <div class="section-title">Poids</div>
+      <div class="card">
+        <label class="field" style="margin-bottom:12px">Poids du jour (kg)<input inputmode="decimal" data-field="weight" placeholder="0"></label>
+        <div id="weight-chart"><div class="muted">Saisis ton poids sur au moins 2 jours pour voir la courbe.</div></div>
+      </div>
+    </div>
+
+    <div class="block s4 nx-fast-area">
+      <div class="section-title">Nutrition · actions rapides</div>
+      <div class="nx-fast-card card">
+        <div class="nx-fast-heading"><span class="nx-fast-kicker">NUTRIX SMART SCAN</span><span class="nx-fast-live"><i></i> Prêt</span></div>
+        <div class="nx-fast-actions">
+          <button type="button" id="nx-fast-scan" class="nx-fast-action"><span class="nx-fast-action-icon"><svg viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4m6 0h4a1 1 0 0 1 1 1v4M4 15v4a1 1 0 0 0 1 1h4m6 0h4a1 1 0 0 0 1-1v-4M4 12h16M8 9v6m3-6v6m3-6v6m3-6v6"/></svg></span><strong>Scan produit</strong><small>Code-barres</small></button>
+          <button type="button" id="nx-fast-photo" class="nx-fast-action"><span class="nx-fast-action-icon nx-photo-icon"><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h3l2-2h4l2 2h3a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2Z"/><circle cx="12" cy="12.5" r="3.2"/></svg></span><strong>Photo repas</strong><small>Analyse IA</small></button>
+        </div>
+        <input type="file" id="nx-fast-image" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+        <div class="nx-fast-workspace" id="nx-fast-workspace" hidden>
+          <div class="nx-fast-camera" id="nx-fast-camera" hidden><video id="nx-fast-video" autoplay playsinline muted></video><div class="nx-camera-line"></div><button type="button" id="nx-fast-stop" class="nx-inline-btn">Fermer la caméra</button></div>
+          <div class="nx-fast-search"><input id="nx-fast-code" type="text" inputmode="numeric" placeholder="Code-barres (8 à 14 chiffres)" aria-label="Code-barres"><button type="button" id="nx-fast-lookup" class="nx-inline-btn">Analyser</button></div>
+          <p class="nx-fast-message" id="nx-fast-message" role="status" aria-live="polite"></p>
+          <div class="nx-fast-result" id="nx-fast-result" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block s7">
+      <div class="section-title">Ajouter un aliment</div>
+      <div class="card">
+        <div class="form-row">
+          <span>Rechercher par nom</span>
+          <div class="inline">
+            <input id="food-q" placeholder="ex. poulet grillé, lben, pain">
+            <button class="btn small" id="food-search-btn">Chercher</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <span>Code-barres</span>
+          <div class="inline">
+            <input id="barcode-q" inputmode="numeric" placeholder="ex. 3017620422003">
+            <button class="btn small ghost" id="scan-btn">Scanner</button>
+            <button class="btn small" id="barcode-btn">Chercher</button>
+          </div>
+        </div>
+        <div class="scan-box" id="scan-box" hidden>
+          <video id="scan-video" playsinline muted></video>
+          <button class="btn" id="scan-stop">Arrêter le scan</button>
+        </div>
+        <div class="ai-nutrition-panel pro-ai-panel">
+          <div class="ai-nutrition-heading"><span class="pro-ai-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.3 4.7L19 10l-4.7 2.3L12 17l-2.3-4.7L5 10l4.7-2.3L12 3Z"></path><path d="M19 3v4"></path><path d="M21 5h-4"></path><path d="M4 16v3"></path><path d="M5.5 17.5h-3"></path></svg></span><div><strong>Analyse photo du produit</strong><small>Assistant intelligent de lecture produit</small></div></div>
+          <p class="muted">Importe une photo d’un emballage pour obtenir une proposition d’identification. Vérifie toujours les valeurs nutritionnelles avec l’étiquette du produit ou la fiche Open Food Facts.</p>
+          <div class="ai-nutrition-controls">
+            <label class="file-btn ai-photo-label"><span class="ai-label-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h3l1.4 1.6H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M9 13l2 2 4-4"></path></svg></span>Photo du produit <input id="ai-product-photo" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"></label>
+            <button class="btn small" id="ai-photo-run" type="button" disabled>Analyser la photo</button>
+          </div>
+          <img id="ai-photo-preview" class="ai-photo-preview" alt="Aperçu du produit sélectionné" hidden>
+          <div id="ai-nutrition-result" class="ai-nutrition-result" role="status" aria-live="polite" hidden></div>
+          <div id="v5-label-verify" class="v5-verify" hidden><h4>Vérification des valeurs lues</h4><p class="muted">Confirme les valeurs sur l’étiquette avant de les utiliser. Laisse vide toute donnée illisible.</p><div class="v5-verify-fields" id="v5-label-fields"></div><button type="button" class="btn small" id="v5-label-save">Copier dans « Mon aliment »</button><p id="v5-label-msg" class="muted"></p></div>
+          <p class="muted ai-privacy-note">La photo est envoyée au module d’analyse uniquement quand tu cliques sur « Analyser la photo ». Elle n’est pas enregistrée par Nutrix.</p>
+        </div>
+        <div class="inline" style="margin-top:8px">
+          <label>Quantité (g)<input id="food-grams" inputmode="decimal" value="100"></label>
+          <label>Repas
+            <select id="food-meal">
+              <option value="b">Petit-déjeuner</option>
+              <option value="l">Déjeuner</option>
+              <option value="d">Dîner</option>
+            </select>
+          </label>
+        </div>
+        <div class="muted" id="food-msg" style="margin-top:10px"></div>
+        <div class="food-list" id="food-results"></div>
+      </div>
+    </div>
+
+    <div class="block s5">
+      <div class="section-title">Fréquents</div>
+      <div class="card">
+        <div class="muted">Tes aliments les plus ajoutés. Utilise la quantité et le repas choisis à gauche.</div>
+        <div class="food-list" id="frequent-list"></div>
+      </div>
+    </div>
+
+    <div class="block s12">
+      <div class="section-title">Mon aliment (valeurs personnalisées)</div>
+      <div class="card">
+        <div class="form-row"><span>Nom de l'aliment</span><input id="custom-name" placeholder="ex. Harira maison"></div>
+        <div class="muted" style="margin-bottom:10px">Valeurs pour 100 g</div>
+        <div class="fields">
+          <label>Calories (kcal)<input id="custom-kcal" inputmode="decimal" placeholder="0"></label>
+          <label>Protéines (g)<input id="custom-p" inputmode="decimal" placeholder="0"></label>
+          <label>Glucides (g)<input id="custom-c" inputmode="decimal" placeholder="0"></label>
+          <label>Lipides (g)<input id="custom-f" inputmode="decimal" placeholder="0"></label>
+        </div>
+        <button class="btn" id="custom-save">Enregistrer l'aliment</button>
+        <div class="muted" id="custom-msg" style="margin-top:8px"></div>
+        <div class="food-list" id="custom-list"></div>
+      </div>
+    </div>
+
+    <div class="block s12">
+      <div class="section-title">Recettes</div>
+      <div class="card">
+        <div class="inline" style="margin-bottom:12px">
+          <label>Nom de la recette<input id="rec-name" placeholder="ex. Harira"></label>
+          <label>Nombre de portions<input id="rec-serv" inputmode="numeric" value="4"></label>
+        </div>
+        <div class="muted" style="margin-bottom:8px">Ingrédients : nom, grammes, puis valeurs pour 100 g.</div>
+        <div id="rec-rows" style="display:grid;gap:8px"></div>
+        <div class="inline" style="margin-top:12px">
+          <button class="btn small ghost" id="rec-addrow">+ Ingrédient</button>
+          <button class="btn small" id="rec-save">Enregistrer la recette</button>
+        </div>
+        <div class="muted" id="rec-msg" style="margin-top:8px"></div>
+        <div class="food-list" id="rec-list"></div>
+      </div>
+    </div>
+
+    <div class="block s12">
+      <div class="section-title">Repas</div>
+      <div id="meals"></div>
+    </div>
+
+    <div class="block s8">
+      <div class="section-title">Analyse</div>
+      <div class="card" id="insights"></div>
+    </div>
+
+    <div class="block s4 nx-legacy-score" hidden aria-hidden="true"><div class="card" id="score"></div></div>
+
+    <div class="block s12">
+      <div class="section-title">Évolution sur 30 jours</div>
+      <div class="card chart" id="chart"></div>
+    </div>
+
+      <div class="block s12 advanced-section">
+      <details class="health-details">
+        <summary>📊 Statistiques avancées · Budget de la semaine <span>Cliquer pour afficher</span></summary>
+      <div class="card">
+        <div class="budget-top">
+          <div>
+            <b id="wk-used">0</b>
+            <span> / <span id="wk-budget">0</span> kcal</span>
+            <div class="muted" id="wk-range" style="margin-top:4px"></div>
+          </div>
+          <div class="muted" id="wk-state"></div>
+        </div>
+        <div class="progress"><div id="wk-bar"></div></div>
+        <div class="budget-stats">
+          <div class="stat"><b id="wk-left">0</b><span>kcal restantes</span></div>
+          <div class="stat"><b id="wk-perday">—</b><span>à manger par jour</span></div>
+          <div class="stat"><b id="wk-days">0/7</b><span>jours enregistrés</span></div>
+        </div>
+        <div class="week" id="week"></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--blue-status)"></i>En dessous</span>
+          <span><i class="dot" style="background:var(--green)"></i>Dans l'objectif (±10 %)</span>
+          <span><i class="dot" style="background:var(--orange)"></i>Au-dessus</span>
+        </div>
+      </div>
+    </div>
+
+
+
+  </section>
+
+  <!-- ===================== EXPLORE NUTRIX ===================== -->
+  <section class="page" id="page-journal">
+    <div class="explore-hero card">
+      <span class="explore-kicker">NUTRIX · DISCOVERY</span>
+      <h2>Explore ce que tu consommes<span class="explore-spark">✦</span></h2>
+      <p>Retrouve un produit, consulte ses informations disponibles et garde tes découvertes au même endroit.</p>
+      <form id="explore-form" class="explore-search">
+        <label class="sr-only" for="explore-query">Ex. Nutella, Danone, 3017620422003</label>
+        <input id="explore-query" placeholder="Ex. Nutella, Danone, 3017620422003…" autocomplete="off" required maxlength="110">
+        <button class="btn" type="submit">Rechercher →</button>
+      </form>
+      <div class="explore-actions"><button type="button" class="chip-btn" id="explore-scan">▦ Scanner un code-barres</button><button type="button" class="chip-btn" id="explore-sante">◈ Nutrition personnelle</button></div>
+    </div>
+    <div class="explore-panels">
+      <div class="card explore-panel"><div class="explore-icon">▦</div><h3>Scanner</h3><p>Scanner un produit avec la caméra ou saisir son code.</p><button type="button" class="chip-btn" data-explore-go="scan">Ouvrir le scanner →</button></div>
+      <div class="card explore-panel"><div class="explore-icon">⌕</div><h3>Rechercher un produit</h3><p>Consulter les informations de la base Open Food Facts.</p><button type="button" class="chip-btn" id="explore-focus">Chercher un produit →</button></div>
+      <div class="card explore-panel"><div class="explore-icon">✦</div><h3>Space AI</h3><p>Comprendre les étiquettes et poser des questions générales.</p><button type="button" class="chip-btn" data-explore-go="ai">Ouvrir Space AI →</button></div>
+    </div>
+    <div class="card explore-results-card" id="explore-results-card" hidden><div class="explore-section-head"><h3>Résultats de recherche</h3><span class="muted">Source : Open Food Facts</span></div><div id="explore-status" role="status" aria-live="polite"></div><div id="explore-results"></div></div>
+    <div class="explore-lower"><div class="card"><div class="explore-section-head"><h3>Consultés récemment</h3><button class="chip-btn" id="explore-clear-recent" type="button">Effacer</button></div><div id="explore-recent" class="explore-saved"></div></div><div class="card"><div class="explore-section-head"><h3>Mes favoris</h3></div><div id="explore-favorites" class="explore-saved"></div></div></div>
+    <section class="card v5-lab" id="v5-laboratoire"><div class="v5-kicker">LABORATOIRE · SCIENCES ALIMENTAIRES</div><h3>Laboratoire nutritionnel</h3><p class="muted">Comprendre les indicateurs utilisés dans l’analyse des produits. Sources officielles et limites de chaque méthode.</p><div class="v5-lab-grid"><article><h4>Nutri-Score</h4><p>Système d’étiquetage nutritionnel synthétique classé de A à E. Il ne mesure pas à lui seul la qualité globale d’une alimentation.</p><a href="https://www.santepubliquefrance.fr/determinants-de-sante/nutrition-et-activite-physique/articles/nutri-score" target="_blank" rel="noopener noreferrer">Santé publique France ↗</a></article><article><h4>NOVA</h4><p>Classification des aliments selon leur degré de transformation (groupes 1 à 4). Ne doit pas être confondue avec Nutri-Score.</p><a href="https://world.openfoodfacts.org/nova" target="_blank" rel="noopener noreferrer">Open Food Facts — NOVA ↗</a></article><article><h4>Additifs et E-numbers</h4><p>Le nombre d’additifs n’est pas une mesure du danger. La sécurité dépend des substances, doses et évaluations disponibles.</p><a href="https://www.efsa.europa.eu/en/topics/topic/food-additives" target="_blank" rel="noopener noreferrer">EFSA — Food additives ↗</a></article><article><h4>Données et méthode</h4><p>Les données des étiquettes viennent de contributeurs Open Food Facts. Le score Nutrix /100 est indicatif et non validé cliniquement.</p><a href="https://world.openfoodfacts.org/" target="_blank" rel="noopener noreferrer">Open Food Facts ↗</a></article></div></section>
+    <div class="card space-module" id="space-modules">
+<h3>Explorer les outils Nutrix</h3><p class="muted">Chaque outil indique ses sources et ses limites. Tes préférences restent dans ce navigateur.</p>
+<div class="space-tool-nav" role="group" aria-label="Outils Explorer">
+<button type="button" data-tool="compare" class="selected">⚖️ Comparateur</button><button type="button" data-tool="alternatives">↗ Alternatives</button><button type="button" data-tool="ingredients">◈ Ingrédients</button><button type="button" data-tool="science">⚗ Laboratoire</button><button type="button" data-tool="library">▤ Bibliothèque</button><button type="button" data-tool="beauty">✧ Cosmétiques</button><button type="button" data-tool="profile">◉ Mon profil</button><button type="button" data-tool="alerts">⚑ Alertes</button>
+</div>
+<div id="space-tool-content" aria-live="polite"></div>
+</div>
+  </section>
+  <!-- Old journal kept outside visible pages, for backwards compatibility with saved data. -->
+  <!-- ===================== JOURNAL ===================== -->
+  <div id="legacy-journal" hidden>
+
+    <div class="block s7">
+      <div class="card">
+        <div class="section-title" style="margin-bottom:8px">Question du jour</div>
+        <div class="prompt" id="prompt"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom:12px">3 belles choses de la journée</div>
+        <div class="good-grid">
+          <input data-good="0" placeholder="1. Une chose positive…">
+          <input data-good="1" placeholder="2. Un moment qui m'a fait du bien…">
+          <input data-good="2" placeholder="3. Une petite victoire…">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="j-toolbar">
+          <span><span id="word-count">0</span> mots · <span id="save-state">Sauvegarde automatique</span></span>
+          <button class="chip-btn" id="serif-btn">Style lettre</button>
+        </div>
+        <textarea class="writing" id="journal-text" data-field="journal" placeholder="Écris librement ce qui s'est passé aujourd'hui…"></textarea>
+      </div>
+    </div>
+
+    <div class="block s5">
+      <div class="card">
+        <div class="section-title" style="margin-bottom:10px">Tags</div>
+        <input data-field="tags" placeholder="ex. travail, famille, sport">
+        <div class="muted" style="margin-top:6px">Sépare les tags par des virgules.</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom:10px">Idées et notes</div>
+        <textarea data-field="ideas" placeholder="Idées, rappels, choses à retenir…" style="min-height:120px"></textarea>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom:10px">Mes notes</div>
+        <input id="note-search" placeholder="Rechercher dans mes notes ou par tag">
+        <div class="note-list" id="notes-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== SPACE NUTRI ===================== -->
+
+<section class="page" id="page-nutri">
+    <div class="nutri-shell">
+      <section class="nutri-hero card">
+        <div>
+          <div class="nutri-kicker">SPACE NUTRI</div>
+          <h2>Nutrix</h2>
+          <p>Scannez. Comprenez. Choisissez.</p>
+        </div>
+        <div class="nutri-quick-stats">
+          <div class="nutri-mini-stat"><b>/100</b><span>Score santé</span></div>
+          <div class="nutri-mini-stat"><b>2×</b><span>Comparaison</span></div>
+          <div class="nutri-mini-stat"><b>OFF</b><span>Source fiable</span></div>
+        </div>
+      </section>
+
+      <section class="nutri-top-grid">
+        <div class="card nutri-search-card">
+          <div class="nutri-card-head">
+            <h3>Rechercher un produit</h3>
+            <span class="nutri-chip neutral">● Open Food Facts</span>
+          </div>
+          <form id="nutri-search-form" class="nutri-search-form">
+            <input id="nutri-query" placeholder="Ex. Nutella, Danone, 3017620422003" autocomplete="off" maxlength="110" required>
+            <button class="btn" type="submit">Rechercher</button>
+          </form>
+          <div class="nutri-inline-actions">
+            <button class="chip-btn" type="button" id="nutri-open-scan">Scanner</button>
+            <button class="chip-btn" type="button" id="nutri-focus-compare">Comparer</button>
+          </div>
+          <div id="nutri-status" class="muted" role="status" aria-live="polite"></div><p class="nutri-data-credit">Données communautaires © Open Food Facts · ODbL. Le score /100 est une estimation Nutrix, pas un score officiel.</p>
+        </div>
+
+        <div class="card nutri-scan-card">
+          <div class="nutri-card-head">
+            <h3>Scanner un code-barres</h3>
+            <span class="nutri-chip">Caméra</span>
+          </div>
+          <div class="nutri-scan-row">
+            <input id="nutri-barcode" inputmode="numeric" placeholder="Code-barres">
+            <button class="btn small" type="button" id="nutri-barcode-btn">Chercher</button>
+          </div>
+          <div class="nutri-scan-row">
+            <button class="btn small ghost" type="button" id="nutri-scan-btn">Scanner avec la caméra</button>
+            <button class="btn small" type="button" id="nutri-scan-stop" hidden>Stop</button>
+          </div>
+          <div class="nutri-scan-box" id="nutri-scan-box" hidden>
+            <div class="v111-scanner-title">Scanner un code-barres</div><video id="nutri-scan-video" playsinline muted></video><div class="v111-scan-frame" aria-hidden="true"><svg viewBox="0 0 120 76"><rect x="2" y="2" width="116" height="72" rx="12" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="10 6"/><path d="M30 23v30m7-34v38m6-34v30m6-29v28m10-32v36m7-34v31m8-34v37m8-30v26m8-32v38" stroke="currentColor" stroke-width="2.4"/></svg></div><p class="v111-scan-hint">Centrez le code-barres dans le cadre</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card nutri-results-card" id="nutri-results-card" hidden>
+        <div class="nutri-card-head">
+          <h3>Résultats</h3>
+          <span class="muted">Choisis un produit pour voir le détail</span>
+        </div>
+        <div id="nutri-results" class="nutri-results"></div>
+      </section>
+
+      <section class="nutri-detail-grid">
+        <div class="card" id="nutri-feature-card">
+          <div class="nutri-card-head">
+            <h3>Fiche produit</h3>
+            <span id="nutri-feature-source" class="muted">Choisis un produit</span>
+          </div>
+          <div id="nutri-feature" class="nutri-empty-state">Aucun produit sélectionné.</div><div class="v5-ai-actions"><button type="button" class="btn small" id="v5-ai-product" disabled>Analyse intelligente du produit</button><span class="muted">Analyse basée uniquement sur les données disponibles.</span></div><div id="v5-ai-product-result" class="v5-ai-output" hidden></div>
+        </div>
+
+        <div class="card" id="nutri-compare-card">
+          <div class="nutri-card-head">
+            <h3>Comparer deux produits</h3>
+            <span class="nutri-chip neutral">Face à face</span>
+          </div>
+          <div class="nutri-compare-pickers" id="nutri-compare-pickers">
+            <label>Produit A<select id="nutri-compare-a"></select></label>
+            <label>Produit B<select id="nutri-compare-b"></select></label>
+          </div>
+          <div id="nutri-compare" class="nutri-empty-state">Ajoute deux produits à comparer.</div><div class="v5-ai-actions"><button type="button" class="btn small" id="v5-ai-compare" disabled>Comparer avec Space Intelligence</button></div><div id="v5-ai-compare-result" class="v5-ai-output" hidden></div>
+        </div>
+      </section>
+
+      <section class="nutri-bottom-grid">
+        <div class="card">
+          <div class="nutri-card-head">
+            <h3>Récents</h3>
+            <button class="chip-btn" id="nutri-clear-recent" type="button">Effacer</button>
+          </div>
+          <div id="nutri-recent" class="nutri-saved-list"></div>
+        </div>
+        <div class="card">
+          <div class="nutri-card-head">
+            <h3>Favoris</h3>
+            <span class="muted">Mes produits</span>
+          </div>
+          <div id="nutri-favorites" class="nutri-saved-list"></div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="page" id="page-ai">
+    <div class="ai-shell">
+      <div class="ai-heading">
+        <div class="ai-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="5"/><path d="M9 9v6m6-6v6M9 12h6"/><path d="M12 2v2m0 16v2"/></svg></div>
+        <div><div class="ai-eyebrow">NUTRIX · NUTRITION INTELLIGENCE</div><h2>Nutrix <span>Intelligence</span></h2><p>Assistant nutritionnel, analyse produit et synthèse de tes données enregistrées.</p></div>
+      </div>
+      <div class="ai-disclaimer">🔒 Mode local par défaut. Avec le serveur IA activé, tes messages et données de suivi utiles sont envoyés au fournisseur IA pour générer une réponse. Ne partage pas de données sensibles. Conseils non médicaux.</div>
+      <div class="ai-overview" id="ai-overview" aria-live="polite"></div>
+      <h3 class="ai-label">Demande-moi quelque chose</h3>
+      <div class="ai-suggestions">
+        <button class="ai-chip" data-ai-prompt="Fais un bilan nutritionnel de mes repas enregistrés aujourd’hui (kcal, protéines, glucides, lipides, données manquantes) et donne des observations prudentes.">Bilan nutritionnel</button>
+        <button class="ai-chip" data-ai-prompt="Comment améliorer mon sommeil ?">Sommeil</button>
+        <button class="ai-chip" data-ai-prompt="Analyse mon activité physique">Activité</button>
+        <button class="ai-chip" data-ai-prompt="Analyse ma semaine">Ma semaine</button>
+        <button class="ai-chip" data-ai-prompt="Explique-moi le Nutri-Score et ses limites">Nutri-Score</button>
+      </div>
+      <div class="ai-chat" id="ai-chat" role="log" aria-live="polite" aria-label="Conversation Space AI"></div>
+      <form class="ai-compose" id="ai-form"><label class="sr-only" for="ai-input">Votre message</label><input id="ai-input" maxlength="400" autocomplete="off" placeholder="Pose ta question à Space AI…" required><button type="submit" aria-label="Envoyer">➤</button></form>
+      <div class="ai-bottom"><span>✦ Réponses selon les données enregistrées dans Nutrix</span><button id="ai-clear" type="button">Effacer le chat</button></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-studio" aria-label="Nutrix Studio">
+    <div class="ns-head"><div><span class="ns-eyebrow">NUTRIX STUDIO · VOS OUTILS</span><h2>Votre nutrition, en action</h2><p>Une photo suffit. L’IA fait le reste.</p></div><div class="ns-head-symbol" aria-hidden="true">✳</div></div>
+    <nav class="ns-tabs" id="ns-tabs" aria-label="Outils Nutrix Studio">
+      <button type="button" data-tool="plate" class="on"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg></i> <span>Assiette</span></button>
+      <button type="button" data-tool="fridge"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M6 10h12M9 6v2M9 13v3"/></svg></i> <span>Frigo</span></button>
+      <button type="button" data-tool="swap"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><path d="M5 8h13l-3-3M19 16H6l3 3"/></svg></i> <span>Comparer</span></button>
+      <button type="button" data-tool="intelligence"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></i> <span>Analyser</span></button>
+      <button type="button" data-tool="restaurant"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v6M9 3v6M17 21V3c-2.5 1.5-3.5 4-3.5 8h3.5"/></svg></i> <span>Restaurant</span></button>
+    </nav>
+    <div class="ns-workspace" id="ns-workspace" aria-live="polite"></div>
+    <p class="ns-footnote">Estimations générées par IA, à titre indicatif. Pas un avis médical.</p>
+  </section>
+
+  <section class="page" id="page-maroc" aria-label="Cuisine marocaine"><div id="mr-root"></div></section>
+
+  <section class="page" id="page-faq">
+    <div class="v111-about">
+      <span class="v111-eyebrow">PROJET UNIVERSITAIRE · NUTRITION & TECHNOLOGIES</span>
+      <h2>Nutrix</h2>
+      <p class="v111-lead">Un compagnon pour analyser, comparer et mieux comprendre les produits alimentaires.</p>
+      <div class="v111-about-grid">
+        <article><span>01</span><strong>Scanner</strong><p>Code-barres, recherche et analyse photo.</p></article>
+        <article><span>02</span><strong>Comprendre</strong><p>Nutri-Score officiel lorsqu'il est disponible, NOVA et indicateurs nutritionnels.</p></article>
+        <article><span>03</span><strong>Comparer</strong><p>Observer les différences nutritionnelles entre produits.</p></article>
+        <article><span>04</span><strong>Suivre</strong><p>Repas et apports nutritionnels enregistrés sur cet appareil.</p></article>
+      </div>
+      <div class="v111-about-bottom"><h3>Technologies & sources</h3><div class="v111-pills"><span>Open Food Facts</span><span>Gemini API</span><span>JavaScript</span><span>Vercel</span></div><p>Le score Nutrix /100 est indicatif, non officiel et ne constitue pas un diagnostic médical. Les données disponibles peuvent être incomplètes.</p></div>
+    </div>
+  </section>
+<footer class="premium-footer"><span><b>Nutrix</b> · Votre bien-être au quotidien</span><span>Vos données restent dans votre navigateur · Édition Studio</span></footer>
+</main>
+<button id="v11-ai-launch" type="button" aria-label="Ouvrir l’assistant" aria-controls="v11-ai-drawer" aria-expanded="false" title="Assistant Nutrix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 6.1L20 11l-6.1 1.9L12 19l-1.9-6.1L4 11l6.1-1.9z"/><path d="m19 17 .8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8z"/></svg></button>
+<div id="v11-ai-backdrop" hidden></div><aside id="v11-ai-drawer" role="dialog" aria-modal="true" aria-label="Assistant Nutrix" aria-hidden="true"><div class="v11-ai-top"><div><strong>Nutrix Intelligence</strong></div><button id="v11-ai-close" type="button" aria-label="Fermer">✕</button></div><div id="v11-ai-body"></div></aside>
+
+<div id="nx-postscan" class="nx-postscan" hidden role="dialog" aria-modal="true" aria-labelledby="nx-postscan-title"><div class="nx-postscan-card"><h2 id="nx-postscan-title">Analyse terminée</h2><p id="nx-postscan-info">Où souhaitez-vous aller ?</p><div class="nx-postscan-actions"><button type="button" id="nx-to-score">📊 Score du produit</button><button type="button" id="nx-to-health">♡ Ajouter à Santé</button></div><button type="button" class="nx-postscan-close" id="nx-postscan-close">Fermer</button></div></div>
+<!-- ===================== RÉGLAGES ===================== -->
+<div class="sheet-bg" id="sheet">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2>Réglages</h2>
+      <button class="circle" id="close-sheet" aria-label="Fermer">
+        <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="section-title" style="margin-top:0">Couleur</div>
+    <div class="card"><div class="themes" id="themes"></div></div>
+
+    <div class="section-title">Fond</div>
+    <div class="card">
+      <div class="muted" style="margin-bottom:6px">Par défaut, un fond en dégradé. Tu peux mettre ta propre photo (max 1,5 Mo).</div>
+      <label class="file-btn">Choisir une photo<input type="file" id="bg-file" accept="image/*"></label>
+      <button class="btn ghost" id="bg-clear">Revenir au fond par défaut</button>
+      <div class="muted" id="bg-msg" style="margin-top:8px"></div>
+    </div>
+
+    <div class="section-title">Modes et objectif</div>
+    <div class="card">
+      <button class="btn ghost" id="ramadan-btn">Activer le mode Ramadan</button>
+      <div class="form-row" style="margin-top:12px">
+        <span>Heure du ftour (Maghrib)</span>
+        <input type="time" data-setting="maghrib">
+      </div>
+      <button class="btn ghost" id="autodark-btn">Thème sombre automatique</button>
+      <div class="form-row" style="margin-top:12px">
+        <span>Mon objectif</span>
+        <select data-setting="goal">
+          <option value="maintain">Maintenir mon poids</option>
+          <option value="lose">Perdre du poids (−500 kcal)</option>
+          <option value="gain">Prendre du muscle (+300 kcal)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">Rappels</div>
+    <div class="card">
+      <div class="muted" id="reminder-state" style="margin-bottom:10px"></div>
+      <button class="btn ghost" id="reminder-btn">Activer les rappels</button>
+    </div>
+
+    <div class="section-title">Objectifs</div>
+    <div class="form-row">
+      <span>Objectif calorique quotidien (kcal)</span>
+      <input id="s-target" inputmode="numeric" placeholder="2000">
+    </div>
+    <div class="form-row">
+      <span>Objectif hebdomadaire (kcal, vide = objectif × 7)</span>
+      <input id="s-week" inputmode="numeric" placeholder="automatique">
+    </div>
+
+    <div class="section-title">Calcul de l'objectif</div>
+    <div class="form-row"><span>Poids (kg)</span><input data-setting="weight" inputmode="decimal"></div>
+    <div class="form-row"><span>Taille (cm)</span><input data-setting="height" inputmode="decimal"></div>
+    <div class="form-row"><span>Âge</span><input data-setting="age" inputmode="numeric"></div>
+    <div class="form-row">
+      <span>Sexe</span>
+      <select data-setting="sex">
+        <option value="h">Homme</option>
+        <option value="f">Femme</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <span>Niveau d'activité</span>
+      <select data-setting="activity">
+        <option value="1.2">Sédentaire (peu ou pas de sport)</option>
+        <option value="1.375">Léger (1 à 3 séances par semaine)</option>
+        <option value="1.55">Modéré (3 à 5 séances par semaine)</option>
+        <option value="1.725">Intense (6 à 7 séances par semaine)</option>
+      </select>
+    </div>
+    <button class="btn ghost" id="calc-btn">Calculer</button>
+    <div class="result" id="calc-result"></div>
+    <button class="btn" id="use-calc" hidden>Utiliser comme objectif</button>
+  </div>
+</div>
+
+<script src="nutrix-core.js" defer></script>
+<script src="nutrix-layers.js" defer></script>
+<script src="nutrix-app.js" defer></script>
+</body>
+</html>

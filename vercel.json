@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "outputDirectory": "public",
+  "regions": ["cdg1"],
+  "functions": {
+    "api/health.js": { "maxDuration": 40 },
+    "api/off/*.js": { "maxDuration": 20 },
+    "api/off/product/*.js": { "maxDuration": 20 },
+    "api/ai/chat.js": { "maxDuration": 60 },
+    "api/ai/photo.js": { "maxDuration": 60 },
+    "api/ai/transcribe.js": { "maxDuration": 45 },
+    "api/ai/dishphoto.js": { "maxDuration": 60 },
+    "api/ai/vision.js": { "maxDuration": 60 },
+    "api/ai/image.js": { "maxDuration": 60 }
+  }
+}
