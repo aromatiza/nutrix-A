@@ -914,7 +914,7 @@ try{
 (()=>{'use strict';
  const FLAG='nutrix-onboarded-v1',PREFS='nutrix-prefs';
  const done=()=>{try{return !!localStorage.getItem(FLAG)}catch{return true}};
- const GOALS=[['lose','🔥','Perdre du poids','Léger déficit calorique'],['maintain','⚖️','Garder mon poids','Équilibre au quotidien'],['gain','💪','Prendre du muscle','Plus de calories et de protéines']];
+ const GOALS=[['lose','<svg class="ob-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m22 17-8.5-8.5-5 5L2 7M16 17h6v-6"/></svg>','Perdre du poids','Léger déficit calorique'],['maintain','<svg class="ob-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v17M7 20h10M5 7h14M7 7l-3 7a3 3 0 0 0 6 0zM17 7l-3 7a3 3 0 0 0 6 0z"/></svg>','Garder mon poids','Équilibre au quotidien'],['gain','<svg class="ob-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg>','Prendre du muscle','Plus de calories et de protéines']];
  const ACT=[['1.2','Sédentaire'],['1.375','Léger'],['1.55','Actif'],['1.725','Très actif']];
  const PREF=[['Végétarien','🥗'],['Halal','🕌'],['Sans gluten','🌾'],['Sans lactose','🥛'],['Sans sucre ajouté','🍬'],['Riche en protéines','🥚'],['Sans arachides','🥜'],['Sans œufs','🍳'],['Sans fruits à coque','🌰'],['Sans poisson','🐟'],['Diabète','🩸'],['Hypertension','🧂']];
  const D={goal:'maintain',sex:'h',age:'',height:'',weight:'',activity:'1.55',prefs:[]};
