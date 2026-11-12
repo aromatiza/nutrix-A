@@ -5039,3 +5039,6 @@ html body #page-maroc .mr-search input{background:none!important;border:0!import
 
 /* ===== robot léger (téléphones faibles / 3D indisponible) ===== */
 .nx-copilot-stage svg.nx-copilot-lite{width:100%;height:100%;max-height:150px;display:block;margin:auto;overflow:visible}
+
+/* ===== Scanner : titres de cartes (Récents…) dans la police des autres titres ===== */
+#page-nutri .nutri-card-head h3{font-family:Poppins,Inter,sans-serif!important;font-weight:700!important;letter-spacing:-.02em}
