@@ -1,0 +1,191 @@
+/* =====================================================================
+   NutriX — thème 60/30/10 (nov. 2026)
+   60 % Forest green · 30 % Sand beige · 10 % Electric purple
+   Fichier chargé APRÈS nutrix.css : ne modifie rien d'ancien, il surcharge.
+   Pour revenir en arrière : retirer la ligne <link> de nutrix-theme.css.
+   ===================================================================== */
+:root{
+  --nx-forest:#1E4D3A;      /* 60 % */
+  --nx-forest-deep:#143528;
+  --nx-forest-2:#2B6A4F;
+  --nx-forest-3:#3E8462;
+  --nx-sand:#EADFC8;        /* 30 % */
+  --nx-sand-card:#F6EFE1;
+  --nx-sand-line:#D9C9A8;
+  --nx-sand-ink:#1C2B23;
+  --nx-sand-mut:#6B6450;
+  --nx-purple:#8B3DFF;      /* 10 % */
+  --nx-purple-2:#A874FF;
+  --nx-purple-glow:rgba(139,61,255,.35);
+}
+
+/* ---------- 60 % : fond général forest ---------- */
+html,html body.pulse-shell{background:var(--nx-forest)!important}
+html body.pulse-shell{background:
+  radial-gradient(1200px 600px at 85% -10%,rgba(139,61,255,.10),transparent 60%),
+  radial-gradient(900px 500px at -10% 30%,rgba(62,132,98,.35),transparent 60%),
+  linear-gradient(180deg,var(--nx-forest) 0%,var(--nx-forest-deep) 100%) fixed!important;
+  color:var(--nx-sand)}
+html body.pulse-shell .main{background:transparent!important}
+
+/* ---------- textes posés directement sur le fond forest ---------- */
+html body.pulse-shell:not(.dark) .main>header.top #page-title{color:var(--nx-sand-card)!important}
+html body.pulse-shell:not(.dark) .main>header.top #page-sub{color:rgba(234,223,200,.72)!important}
+html body.pulse-shell:not(#nx-none) #date-nav{background:rgba(234,223,200,.10)!important;border:1px solid rgba(234,223,200,.18)!important}
+html body.pulse-shell:not(#nx-none) #date-nav,html body.pulse-shell:not(#nx-none) #date-nav *{color:var(--nx-sand)!important}
+html body.pulse-shell:not(#nx-none) #date-nav button{background:rgba(234,223,200,.12)!important}
+
+/* ---------- 30 % : cartes & surfaces sable ---------- */
+html body.pulse-shell:not(.dark) .main .card:not(.pulse-hero):not(.nutri-top-grid),
+html body.pulse-shell:not(.dark) .main .nt-card,
+html body.pulse-shell:not(.dark) #page-nutri .nutri-top-grid{
+  background-color:var(--nx-sand-card)!important;
+  background-image:none!important;
+  border-color:var(--nx-sand-line)!important;
+  box-shadow:0 24px 48px -30px rgba(0,0,0,.55)!important}
+html body.pulse-shell:not(.dark) #page-nutri .nutri-top-grid{
+  background:linear-gradient(var(--nx-sand-card),var(--nx-sand-card)) padding-box,
+             linear-gradient(135deg,var(--nx-sand-line),var(--nx-purple-2) 50%,var(--nx-sand-line)) border-box!important;
+  border:1.5px solid transparent!important}
+html body.pulse-shell:not(.dark) .main input:not([type=checkbox]):not([type=radio]):not([type=range]),
+html body.pulse-shell:not(.dark) .main textarea,
+html body.pulse-shell:not(.dark) .main select{background:#FFFBF3!important;border-color:var(--nx-sand-line)!important}
+
+/* segmented control (Récents / Favoris / Comparer…) */
+html body.pulse-shell:not(.dark) .nt-seg{background:rgba(234,223,200,.14)!important;border:1px solid rgba(234,223,200,.2)!important}
+html body.pulse-shell:not(.dark) .nt-seg>button{color:rgba(234,223,200,.82)!important}
+html body.pulse-shell:not(.dark) .nt-seg>button:is(.on,.active,[aria-selected=true]){background:var(--nx-sand-card)!important;color:var(--nx-forest)!important}
+
+/* accueil : fondu du hero et tour vers le forest */
+html body.pulse-shell .pulse-hero::after{background:linear-gradient(180deg,transparent 55%,var(--nx-forest) 100%)!important}
+html body.pulse-shell:not(.dark) .nt-tour{background:linear-gradient(180deg,var(--nx-forest) 0%,var(--nx-forest-deep) 100%)!important;--scr:var(--nx-sand-card);--scr-ink:var(--nx-sand-ink);--scr-mut:var(--nx-sand-mut);--scr-card:var(--nx-sand-card);--scr-line:var(--nx-sand-line)}
+
+/* ---------- barre de navigation : forest profond ---------- */
+html body.pulse-shell .pulse-navbar{background:rgba(16,42,31,.92)!important;border-color:rgba(234,223,200,.12)!important;backdrop-filter:blur(16px) saturate(1.3)!important;-webkit-backdrop-filter:blur(16px) saturate(1.3)!important}
+html body.pulse-shell .pulse-nav-links .tab{color:rgba(234,223,200,.7)!important}
+html body.pulse-shell .pulse-nav-links .tab:is(:hover,.active){background:rgba(139,61,255,.18)!important;color:#fff!important}
+html body.pulse-shell .pulse-nav-links .tab.active svg{color:var(--nx-purple-2)!important}
+html body.pulse-shell .pulse-logo{color:var(--nx-sand)!important}
+html body.pulse-shell .pulse-logo-accent{color:var(--nx-purple-2)!important}
+
+/* ---------- boutons : primaire forest, secondaire sable ---------- */
+html body.pulse-shell .btn:not(.ghost):not(.small.ghost),
+html body.pulse-shell #nutri-scan-btn{background:linear-gradient(135deg,var(--nx-forest-2),var(--nx-forest))!important;color:#fff!important;border-color:transparent!important}
+html body.pulse-shell .btn:not(.ghost):hover{box-shadow:0 10px 26px -10px var(--nx-purple-glow)!important}
+
+/* ---------- 10 % : touches electric purple ---------- */
+html body.pulse-shell ::selection{background:var(--nx-purple);color:#fff}
+html body.pulse-shell :focus-visible{outline:2px solid var(--nx-purple)!important;outline-offset:2px}
+html body.pulse-shell .pulse-hero-eyebrow,
+html body.pulse-shell .eyebrow,
+html body.pulse-shell [class*="kicker"]{color:var(--nx-purple-2)!important}
+html body.pulse-shell .main .card [class*="eyebrow"],
+html body.pulse-shell .main .card [class*="kicker"]{color:var(--nx-purple)!important}
+html body.pulse-shell input[type=range]{accent-color:var(--nx-purple)}
+html body.pulse-shell progress{accent-color:var(--nx-purple)}
+
+/* ---------- mode sombre : forest nuit + sable foncé ---------- */
+html body.pulse-shell.dark{background:
+  radial-gradient(1000px 520px at 85% -10%,rgba(139,61,255,.14),transparent 60%),
+  linear-gradient(180deg,#10291F 0%,#0A1C15 100%) fixed!important}
+html body.pulse-shell.dark .pulse-nav-links .tab:is(:hover,.active){background:rgba(139,61,255,.22)!important;color:#fff!important}
+
+/* ---------- réglages complémentaires ---------- */
+/* boutons langue / thème / réglages du haut */
+html body.pulse-shell:not(#nx-none) .main>header.top .nx-language-switch{background:rgba(16,42,31,.75)!important;border:1px solid rgba(234,223,200,.2)!important}
+html body.pulse-shell:not(#nx-none) .main>header.top .nx-lang-choice{color:rgba(234,223,200,.8)!important}
+html body.pulse-shell:not(#nx-none) .main>header.top .nx-lang-choice:is(.active,[aria-pressed=true],.on){background:var(--nx-sand)!important;color:var(--nx-forest)!important}
+html body.pulse-shell:not(#nx-none) .main>header.top .actions .circle{background:rgba(16,42,31,.75)!important;border:1px solid rgba(234,223,200,.2)!important;color:var(--nx-sand)!important}
+/* sur-titres (eyebrows) : la touche purple */
+html body.pulse-shell .pulse-eyebrow,
+html body.pulse-shell .nx-banner>span,html body.pulse-shell .nx-banner span:first-child{color:#C9A8FF!important}
+/* grands boutons de l'accueil */
+html body.pulse-shell .nx-big.nx-big-primary{background:linear-gradient(120deg,var(--nx-forest-2) 0%,var(--nx-forest) 100%)!important;border:1px solid rgba(234,223,200,.25)!important;box-shadow:0 14px 30px -14px rgba(0,0,0,.6),0 0 0 0 var(--nx-purple-glow)!important}
+html body.pulse-shell .nx-big.nx-big-primary:hover{box-shadow:0 14px 34px -12px var(--nx-purple-glow)!important}
+html body.pulse-shell .nx-big.nx-big-secondary,
+html body.pulse-shell:not(#nx-none) #nh-existing.nx-add-meal>summary{background:linear-gradient(120deg,#F6EFE1 0%,#E6D7B8 100%)!important;color:var(--nx-forest)!important;border:1px solid rgba(255,255,255,.4)!important}
+html body.pulse-shell .nx-big.nx-big-secondary *,
+html body.pulse-shell:not(#nx-none) #nh-existing.nx-add-meal>summary *{color:var(--nx-forest)!important}
+html body.pulse-shell .nx-big.nx-big-secondary small,
+html body.pulse-shell:not(#nx-none) #nh-existing.nx-add-meal>summary small{color:var(--nx-sand-mut)!important}
+/* cartes du tableau Santé */
+html body.pulse-shell:not(.dark) .nh-dashboard{background:transparent!important}
+html body.pulse-shell:not(.dark) .nh-card{background:var(--nx-sand-card)!important;border-color:var(--nx-sand-line)!important}
+html body.pulse-shell:not(#nx-none) #nh-existing.nx-add-meal>summary .nx-ico{background:var(--nx-forest)!important}
+html body.pulse-shell .nx-big.nx-big-secondary{box-shadow:0 14px 30px -16px rgba(0,0,0,.55)!important}
+html body.pulse-shell .nx-big.nx-big-secondary .nx-big-ico,html body.pulse-shell .nx-big.nx-big-secondary [class*="ico"]{background:var(--nx-forest)!important;color:#fff!important}
+html body.pulse-shell .nx-big.nx-big-secondary [class*="ico"] *{color:#fff!important;stroke:#fff!important}
+html body.pulse-shell:not(#nx-none) #nh-existing.nx-add-meal>summary *,html body.pulse-shell .nx-big.nx-big-secondary *{text-shadow:none!important}
+
+/* =====================================================================
+   Motion (nutrix-motion.js) : Scanner plein écran, Spotlight, ShinyText
+   ===================================================================== */
+/* ---------- Scanner plein écran ---------- */
+html body #nutri-scan-box.nx-scan-full:not([hidden]){
+  position:fixed!important;inset:0!important;z-index:2147483000!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;max-width:none!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  background:#06130D!important;display:block!important;overflow:hidden!important}
+html body #nutri-scan-box.nx-scan-full #nutri-scan-video{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;
+  object-fit:cover!important;border-radius:0!important;margin:0!important}
+html body #nutri-scan-box.nx-scan-full::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 46% 26% at 50% 50%,transparent 0 98%,rgba(6,19,13,.62) 100%),
+             linear-gradient(180deg,rgba(6,19,13,.75),transparent 22%,transparent 78%,rgba(6,19,13,.8))}
+html body #nutri-scan-box.nx-scan-full .v111-scanner-title{position:absolute!important;top:max(22px,env(safe-area-inset-top));left:0;right:0;z-index:3;
+  text-align:center;color:var(--nx-sand)!important;font:700 1.05rem Poppins,Inter,sans-serif!important;letter-spacing:.01em;margin:0!important}
+html body #nutri-scan-box.nx-scan-full .v111-scan-hint{position:absolute!important;bottom:max(34px,calc(env(safe-area-inset-bottom) + 24px));left:16px;right:16px;z-index:3;
+  text-align:center;color:var(--nx-sand)!important;margin:0!important;font-weight:600}
+html body #nutri-scan-box.nx-scan-full .v111-scan-frame{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;
+  width:min(78vw,520px)!important;z-index:2;color:rgba(234,223,200,.35)!important;opacity:.5;margin:0!important}
+.nx-scan-corners{display:none}
+#nutri-scan-box.nx-scan-full .nx-scan-corners{display:block;position:absolute;left:50%;top:50%;z-index:3;pointer-events:none;
+  width:min(80vw,540px);aspect-ratio:120/76;transform:translate(-50%,-50%)}
+.nx-scan-corners i{position:absolute;width:34px;height:34px;border:3.5px solid var(--nx-purple-2);filter:drop-shadow(0 0 8px var(--nx-purple))}
+.nx-scan-corners i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:14px}
+.nx-scan-corners i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:14px}
+.nx-scan-corners i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:14px}
+.nx-scan-corners i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:14px}
+.nx-scan-laser{display:none}
+#nutri-scan-box.nx-scan-full .nx-scan-laser{display:block;position:absolute;left:50%;z-index:3;pointer-events:none;
+  width:min(76vw,510px);height:3px;transform:translateX(-50%);border-radius:3px;
+  background:linear-gradient(90deg,transparent,var(--nx-purple-2) 18%,#fff 50%,var(--nx-purple-2) 82%,transparent);
+  box-shadow:0 0 18px 4px var(--nx-purple-glow),0 0 60px 10px rgba(139,61,255,.22);
+  animation:nxLaser 2.1s cubic-bezier(.45,0,.55,1) infinite alternate}
+@keyframes nxLaser{from{top:calc(50% - min(24vw,170px))}to{top:calc(50% + min(24vw,170px))}}
+.nx-scan-blast{display:none}
+#nutri-scan-box.nx-scan-full .nx-scan-blast{display:block;position:absolute;left:50%;top:50%;z-index:2;pointer-events:none;
+  width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;opacity:0;
+  box-shadow:0 0 0 2px var(--nx-purple-2),0 0 40px 12px var(--nx-purple-glow)}
+#nutri-scan-box.nx-scan-full .nx-scan-blast.go{animation:nxBlast .9s cubic-bezier(.15,.7,.2,1) forwards}
+@keyframes nxBlast{0%{opacity:.95;transform:scale(.2)}70%{opacity:.35}100%{opacity:0;transform:scale(42)}}
+.nx-scan-close{display:none}
+#nutri-scan-box.nx-scan-full .nx-scan-close{display:grid;place-items:center;position:absolute;z-index:4;
+  top:max(14px,env(safe-area-inset-top));right:14px;width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:rgba(6,19,13,.55);color:var(--nx-sand);border:1px solid rgba(234,223,200,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#nutri-scan-box.nx-scan-full .nx-scan-close:hover{background:var(--nx-purple);border-color:transparent}
+html.nx-scan-open,html.nx-scan-open body{overflow:hidden!important}
+html.nx-scan-open .pulse-navbar,html.nx-scan-open #nx-copilot,html.nx-scan-open [class*="copilot"]{visibility:hidden!important}
+@media(prefers-reduced-motion:reduce){#nutri-scan-box.nx-scan-full .nx-scan-laser{animation:none;top:50%}#nutri-scan-box.nx-scan-full .nx-scan-blast.go{animation:none}}
+
+/* ---------- SpotlightCard ---------- */
+html body.pulse-shell .main .nx-spot{--nx-spot:rgba(139,61,255,.10)}
+html body.pulse-shell:not(#nx-none) .main .nx-spot:not(.nutri-top-grid):hover{background-image:radial-gradient(420px circle at var(--nx-mx,50%) var(--nx-my,50%),var(--nx-spot),transparent 60%)!important}
+html body.pulse-shell.dark .main .nx-spot{--nx-spot:rgba(168,116,255,.14)}
+
+/* ---------- ShinyText sur les sur-titres ---------- */
+html.nx-motion body.pulse-shell .pulse-eyebrow{
+  background:linear-gradient(110deg,#C9A8FF 40%,#fff 50%,#C9A8FF 60%) 0 0/250% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:nxShine 3.6s linear infinite}
+@keyframes nxShine{from{background-position:100% 0}to{background-position:-150% 0}}
+@media(prefers-reduced-motion:reduce){html.nx-motion body.pulse-shell .pulse-eyebrow{animation:none}}
+
+/* ---------- ClickSpark ---------- */
+.nx-spark-canvas{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2147483600}
+
+/* ---------- Lenis ---------- */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:clip}
