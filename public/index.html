@@ -11,9 +11,10 @@
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="nutrix.css">
 <link rel="stylesheet" href="nutrix-v16.css">
+<link rel="stylesheet" href="nutrix-plate.css">
 </head>
 <body class="pulse-shell">
 <!-- PulseFit-inspired actual application navigation; each tab delegates to Nutrix showTab -->
@@ -123,10 +124,10 @@
 <div class="pulse-template-grid pulse-ring-grid">
 <article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-score" style="--pct:0;--clr:#2563eb"><span class="pulse-ring-val" id="pulse-score">—</span></div><h3>Score motivation</h3><p class="pulse-metric-sub">Sur 100 points</p></article>
 <article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-cal" style="--pct:0;--clr:#f97316"><span class="pulse-ring-val" id="pulse-calories">—</span></div><h3>Calories du jour</h3><p class="pulse-metric-sub">Objectif : <span id="pulse-goal">—</span> kcal</p></article>
-<article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-pro" style="--pct:0;--clr:#22c55e"><span class="pulse-ring-val" id="pulse-protein">—</span></div><h3>Protéines</h3><p class="pulse-metric-sub">Objectif : <span id="pulse-protein-goal">—</span> g</p></article>
+<article class="pulse-metric-card"><div class="pulse-ring" id="pulse-ring-pro" style="--pct:0;--clr:var(--mac-p)"><span class="pulse-ring-val" id="pulse-protein">—</span></div><h3>Protéines</h3><p class="pulse-metric-sub">Objectif : <span id="pulse-protein-goal">—</span> g</p></article>
 </div><div class="pulse-template-grid pulse-bar-grid">
-<article class="pulse-metric-card pulse-bar-card"><h3>Glucides</h3><div class="pulse-progress-track"><span id="pulse-carb-bar" style="--clr:#38bdf8"></span></div><p class="pulse-metric-sub"><span id="pulse-carb">—</span> / <span id="pulse-carb-goal">—</span> g</p></article>
-<article class="pulse-metric-card pulse-bar-card"><h3>Lipides</h3><div class="pulse-progress-track"><span id="pulse-fat-bar" style="--clr:#a855f7"></span></div><p class="pulse-metric-sub"><span id="pulse-fat">—</span> / <span id="pulse-fat-goal">—</span> g</p></article>
+<article class="pulse-metric-card pulse-bar-card"><h3>Glucides</h3><div class="pulse-progress-track"><span id="pulse-carb-bar" style="--clr:var(--mac-c)"></span></div><p class="pulse-metric-sub"><span id="pulse-carb">—</span> / <span id="pulse-carb-goal">—</span> g</p></article>
+<article class="pulse-metric-card pulse-bar-card"><h3>Lipides</h3><div class="pulse-progress-track"><span id="pulse-fat-bar" style="--clr:var(--mac-f)"></span></div><p class="pulse-metric-sub"><span id="pulse-fat">—</span> / <span id="pulse-fat-goal">—</span> g</p></article>
 <article class="pulse-metric-card pulse-bar-card"><h3>Journal alimentaire</h3><p class="pulse-metric-sub">Consultez vos repas et vos progrès du jour.</p><button type="button" class="pulse-btn pulse-btn-primary tab" data-tab="journal">Voir mon journal →</button></article>
 </div></div></section>
 <section class="pulse-template-section pulse-dietary" id="pulse-dietary" aria-labelledby="pulse-dietary-heading"><div class="pulse-section-container"><header class="pulse-section-head"><p class="pulse-eyebrow pulse-eyebrow-blue">Programmes nutrition</p><h2 id="pulse-dietary-heading">Une nutrition qui accompagne vos objectifs</h2><p>Planification des repas et suivi personnalisés pour atteindre vos résultats.</p></header>
@@ -704,6 +705,8 @@
 
 <script src="nutrix-core.js" defer></script>
 <script src="nutrix-layers.js" defer></script>
+<script src="nutrix-food-icons.js" defer></script>
+<script src="nutrix-plate.js" defer></script>
 <script src="nutrix-app.js" defer></script>
 <script src="nutrix-v16.js" defer></script>
 </body>
