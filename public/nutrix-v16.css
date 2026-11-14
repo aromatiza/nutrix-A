@@ -8,15 +8,30 @@
 :root{
   --f-950:#0b2018; --f-900:#0f2a1f; --f-800:#143628; --f-700:#1b4533; --f-600:#245a43; --f-500:#2f7355; --f-300:#7fb39a;
   --s-50:#fbf7ef; --s-100:#f4ecdd; --s-200:#e9dcc2; --s-300:#d8c6a2; --s-500:#a8936c; --s-700:#6e5d40;
-  --p-500:#7c4dff; --p-400:#9b7bff; --p-300:#c3b0ff; --p-glow:rgba(124,77,255,.45);
-  --v16-bg:var(--s-100); --v16-surface:var(--s-50); --v16-card:#fffdf8; --v16-ink:#13261d; --v16-mute:#5d6b5f;
-  --v16-line:rgba(20,54,40,.12); --v16-brand:var(--f-800); --v16-on-brand:var(--s-100);
+  --p-500:#7c5cff; --p-400:#9d86ff; --p-300:#c9bcff; --p-glow:rgba(124,92,255,.42);
+  /* violet = effet doux (dégradé + halo), jamais un aplat dur */
+  --p-grad:linear-gradient(135deg,#a993ff 0%,#8466ff 48%,#6c4cf2 100%);
+  --p-shadow:0 14px 32px -16px rgba(124,92,255,.65),0 2px 6px -2px rgba(108,76,242,.35),inset 0 1px 0 rgba(255,255,255,.28);
+  --p-halo:radial-gradient(60% 80% at 50% 0%,rgba(157,134,255,.22),transparent 70%);
+  /* vert clair et reposant (mode clair) */
+  --g-100:#e6f0e8; --g-200:#d3e6d8; --g-300:#b5d4bf; --g-400:#8dbfa0; --g-500:#6aa785; --g-600:#4f8c6c; --g-800:#2c5541; --g-900:#203f31;
+  /* macros : 3 couleurs douces, les mêmes partout */
+  --mac-p:#5fb592; --mac-c:#7fa6e3; --mac-f:#e39bb0;
+  /* échelle du score nutritionnel */
+  --sc-a:#3a9d6e; --sc-b:#86b649; --sc-c:#e0a73c; --sc-d:#d9655a;
+  /* mode clair : beige + vert clair */
+  --v16-bg:#f5efe3; --v16-surface:#fbf7ef; --v16-card:#fffcf6; --v16-ink:#1f3a2d; --v16-mute:#6b776c;
+  --v16-line:rgba(44,85,65,.12); --v16-brand:var(--g-500); --v16-on-brand:#fff;
+  --v16-brand-soft:var(--g-100); --v16-brand-ink:var(--g-600);
+  --v16-glass:rgba(251,247,239,.82); --v16-seg:rgba(44,85,65,.08); --v16-seg-on:#fffcf6;
   --v16-radius:20px; --v16-gap:14px;
-  --v16-head:Poppins,'Noto Kufi Arabic',Tahoma,system-ui,sans-serif; --v16-body:Inter,Tahoma,system-ui,sans-serif;
+  --v16-head:Poppins,'IBM Plex Sans Arabic','Noto Kufi Arabic',Tahoma,system-ui,sans-serif; --v16-body:Inter,'IBM Plex Sans Arabic',Tahoma,system-ui,sans-serif;
 }
 body.dark{
   --v16-bg:var(--f-950); --v16-surface:var(--f-900); --v16-card:var(--f-800); --v16-ink:#f1e8d6; --v16-mute:#b9b29e;
   --v16-line:rgba(233,220,194,.12); --v16-brand:var(--f-700); --v16-on-brand:var(--s-100);
+  --v16-brand-soft:rgba(127,179,154,.14); --v16-brand-ink:#a9d3bc;
+  --v16-glass:rgba(16,38,29,.8); --v16-seg:rgba(233,220,194,.08); --v16-seg-on:var(--f-700);
 }
 /* les anciennes variables pointent vers la nouvelle palette */
 html:not(#_v):not(#_w) body{--accent:var(--p-500);--ac:var(--f-600);--nx-brand:var(--f-700);--text:var(--v16-ink);--muted:var(--v16-mute);--bg:var(--v16-bg)}
@@ -29,10 +44,15 @@ html:not(#_v):not(#_w) body :focus-visible{outline:2px solid var(--p-500)!import
 
 /* ---------- barre de navigation (bas) ---------- */
 html:not(#_v):not(#_w) body #pulse-navbar.pulse-navbar,html:not(#_v):not(#_w) body #pulse-navbar .pulse-nav-inner{background:var(--f-900)!important;border-color:rgba(233,220,194,.08)!important}
-html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar.pulse-navbar,html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar .pulse-nav-inner{background:var(--f-800)!important}
+html:not(#_v):not(#_w) body #pulse-navbar.pulse-navbar{-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5)}
+html:not(#_v):not(#_w) body.dark #pulse-navbar.pulse-navbar,html:not(#_v):not(#_w) body.dark #pulse-navbar .pulse-nav-inner{background:rgba(15,42,31,.86)!important}
+html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar.pulse-navbar,html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar .pulse-nav-inner{background:rgba(232,241,234,.88)!important;border-color:rgba(44,85,65,.1)!important}
 html:not(#_v):not(#_w) body #pulse-navbar .tab,html:not(#_v):not(#_w) body #pulse-navbar .nx-more-btn{color:rgba(244,236,221,.62)!important}
-html:not(#_v):not(#_w) body #pulse-navbar .tab.active{background:rgba(124,77,255,.16)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(155,123,255,.35)!important}
-html:not(#_v):not(#_w) body #pulse-navbar .tab.active svg{color:var(--p-300)!important;stroke:currentColor}
+html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar .tab,html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar .nx-more-btn{color:#6b8576!important}
+/* onglet actif : halo violet doux, sans cadre dur */
+html:not(#_v):not(#_w) body #pulse-navbar .tab.active{background:radial-gradient(70% 90% at 50% 40%,rgba(157,134,255,.28),rgba(157,134,255,.06) 70%,transparent)!important;color:#fff!important;box-shadow:none!important}
+html:not(#_v):not(#_w) body:not(.dark) #pulse-navbar .tab.active{color:var(--g-900)!important;background:radial-gradient(70% 90% at 50% 40%,rgba(124,92,255,.18),rgba(124,92,255,.04) 70%,transparent)!important}
+html:not(#_v):not(#_w) body #pulse-navbar .tab.active svg{color:var(--p-400)!important;stroke:currentColor;filter:drop-shadow(0 0 6px rgba(157,134,255,.55))}
 
 /* ---------- en-tête (langue, thème, réglages) ---------- */
 html:not(#_v):not(#_w) body:has(#page-home.active) header.top{position:absolute!important;top:max(12px,env(safe-area-inset-top))!important;right:12px!important;left:auto!important;margin:0!important;padding:0!important;z-index:40!important;background:none!important}
@@ -53,7 +73,17 @@ html:not(#_v):not(#_w) body #pulse-home .pulse-hero-cta{gap:10px!important;margi
 html:not(#_v):not(#_w) body .nx-big{border-radius:18px!important;min-height:64px!important;padding:12px 14px!important;border:0!important;transition:transform .2s ease,box-shadow .2s ease}
 html:not(#_v):not(#_w) body .nx-big .nx-ico{width:42px!important;height:42px!important;border-radius:13px!important;display:grid!important;place-items:center!important}
 html:not(#_v):not(#_w) body .nx-big .nx-ico svg{width:24px!important;height:24px!important;stroke-width:1.8!important}
-html:not(#_v):not(#_w) body .nx-big-primary{background:linear-gradient(135deg,var(--p-500),#6a35f0)!important;color:#fff!important;box-shadow:0 14px 30px -14px var(--p-glow)!important}
+html:not(#_v):not(#_w) body .nx-big-primary{position:relative;overflow:hidden;background:var(--p-grad)!important;color:#fff!important;box-shadow:var(--p-shadow)!important}
+html:not(#_v):not(#_w) body .nx-big-primary::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.26) 50%,transparent 70%);transform:translateX(-120%);animation:v16sheen 4.2s ease-in-out 2s infinite}
+@keyframes v16sheen{0%,72%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@media(prefers-reduced-motion:reduce){html:not(#_v):not(#_w) body .nx-big-primary::after{animation:none;display:none}}
+/* mode clair : hero vert clair et reposant, secondaire beige */
+html:not(#_v):not(#_w) body:not(.dark) #pulse-home .pulse-hero{background-color:var(--g-800)!important}
+html:not(#_v):not(#_w) body:not(.dark) #pulse-home .pulse-hero-overlay{background:radial-gradient(120% 70% at 85% 0%,rgba(157,134,255,.22),transparent 55%),linear-gradient(180deg,rgba(62,112,88,.55),rgba(52,98,76,.86) 72%,rgba(46,88,68,.95))!important}
+html:not(#_v):not(#_w) body:not(.dark) .nx-big-secondary{background:#efe6d4!important}
+html:not(#_v):not(#_w) body:not(.dark) .nx-big-secondary .nx-ico{background:var(--g-500)!important;color:#fff!important}
+html:not(#_v):not(#_w) body:not(.dark) .btn:not(.ghost){background:var(--g-500)!important}
+html:not(#_v):not(#_w) body:not(.dark) .mr-promo{background:linear-gradient(135deg,var(--g-500),var(--g-800))!important}
 html:not(#_v):not(#_w) body .nx-big-primary .nx-ico{background:rgba(255,255,255,.16)!important;color:#fff!important}
 html:not(#_v):not(#_w) body .nx-big-secondary{background:var(--s-200)!important;color:var(--f-900)!important;box-shadow:0 10px 24px -16px rgba(0,0,0,.5)!important}
 html:not(#_v):not(#_w) body .nx-big-secondary .nx-ico{background:var(--f-800)!important;color:var(--s-100)!important}
@@ -115,7 +145,7 @@ html:not(#_v):not(#_w) body #page-nutri .nutri-scan-card{order:1}
 html:not(#_v):not(#_w) body #page-nutri .nutri-search-card{order:2}
 html:not(#_v):not(#_w) body #page-nutri .nutri-scan-card .nutri-card-head,html:not(#_v):not(#_w) body #page-nutri .nutri-scan-card .nutri-scan-row:has(#nutri-barcode){display:none!important}
 html:not(#_v):not(#_w) body #page-nutri .nutri-scan-row{margin:0!important}
-html:not(#_v):not(#_w) body #page-nutri #nutri-scan-btn{width:100%!important;min-height:64px!important;border-radius:18px!important;border:0!important;background:linear-gradient(135deg,var(--p-500),#6a35f0)!important;color:#fff!important;font:700 1.05rem var(--v16-head)!important;box-shadow:0 14px 30px -14px var(--p-glow)!important}
+html:not(#_v):not(#_w) body #page-nutri #nutri-scan-btn{width:100%!important;min-height:64px!important;border-radius:18px!important;border:0!important;background:var(--p-grad)!important;color:#fff!important;font:700 1.05rem var(--v16-head)!important;box-shadow:var(--p-shadow)!important}
 html:not(#_v):not(#_w) body #page-nutri #nutri-scan-btn *{color:#fff!important}
 html:not(#_v):not(#_w) body #page-nutri .nutri-search-form{gap:8px!important;margin:0!important}
 html:not(#_v):not(#_w) body #page-nutri .nutri-search-form .btn{background:var(--f-700)!important}
@@ -200,3 +230,11 @@ html:not(#_v):not(#_w) body #nx-morocco-items>.nx-morocco-card :is(a,button):not
 html:not(#_v):not(#_w) body .nx-big-secondary b{color:var(--f-900)!important}
 html:not(#_v):not(#_w) body #pulse-home .pulse-hero::after{display:none!important}
 html:not(#_v):not(#_w) body #pulse-home .pulse-template-section,html:not(#_v):not(#_w) body #pulse-articles{background:transparent!important}
+/* mode clair : boutons de l'en-tête clairs (hors hero) */
+html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top :is(.circle,.nx-language-switch){background:var(--v16-surface)!important;color:var(--v16-ink)!important;border-color:var(--v16-line)!important}
+html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top .nx-lang-choice{color:var(--v16-mute)!important}
+html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top .nx-lang-choice:is([aria-pressed="true"],.active,.on){background:var(--g-500)!important;color:#fff!important}
+/* Studio : un seul accent pour tous les outils = violet doux (plus d'orange) */
+html:not(#_v):not(#_w) body #page-studio,html:not(#_v):not(#_w) body #page-studio [data-tool]{--tc:#8466ff!important;--tc2:#6c4cf2!important;--tci:#4a33b8!important;--tcs:#efeaff!important}
+html:not(#_v):not(#_w) body #page-studio .nv-go:not(:disabled){background:var(--p-grad)!important;box-shadow:var(--p-shadow)!important;color:#fff!important}
+html:not(#_v):not(#_w) body.dark #page-studio,html:not(#_v):not(#_w) body.dark #page-studio [data-tool]{--tci:#c9bcff!important;--tcs:rgba(157,134,255,.14)!important}

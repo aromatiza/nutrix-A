@@ -1,6 +1,6 @@
 /* V13: network first and immutable offline shell fallback, no API caching. */
-const CACHE='nutrix-pro-v16-design-20261114';
-const SHELL=['/','/index.html','/nutrix.css','/nutrix-core.js','/nutrix-layers.js','/nutrix-app.js','/nutrix-v16.css','/nutrix-v16.js','/nutrix-darija.js','/manifest.json','/icon.svg'];
+const CACHE='nutrix-pro-v16-plate-20261114';
+const SHELL=['/','/index.html','/nutrix.css','/nutrix-core.js','/nutrix-layers.js','/nutrix-app.js','/nutrix-v16.css','/nutrix-v16.js','/nutrix-plate.css','/nutrix-plate.js','/nutrix-food-icons.js','/nutrix-darija.js','/manifest.json','/icon.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{const req=e.request,url=new URL(req.url);if(req.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/'))return;

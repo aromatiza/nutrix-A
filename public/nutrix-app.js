@@ -581,7 +581,7 @@ const chip=(t,e='',cls='')=>`<span class="nv-chip ${cls}">${e?`<em>${esc(e)}</em
 const R={
  plate(d){const kcal=n(d.kcal),p=n(d.p),c=n(d.c),f=n(d.f),s=clamp(d.score,0,100),items=Array.isArray(d.items)?d.items.slice(0,10):[];
   return `<div class="nv-res-top">${ring(kcal,900,r0(kcal),'kcal',scoreColor(s))}<div class="nv-res-head"><h3>${esc(short(d.dish,48))}</h3><span class="nv-badge" style="--b:${scoreColor(s)}">${s}/100 · ${esc(short(d.verdict,24))}</span></div></div>
-  <div class="nv-bars">${bar('Protéines',p,60,'g','#14a37a')}${bar('Glucides',c,120,'g','#4f8df7')}${bar('Lipides',f,50,'g','#e8a317')}</div>
+  <div class="nv-bars">${bar('Protéines',p,60,'g','var(--mac-p)')}${bar('Glucides',c,120,'g','var(--mac-c)')}${bar('Lipides',f,50,'g','var(--mac-f)')}</div>
   <div class="nv-chips">${items.map(i=>chip(`${short(i.name,22)}${n(i.grams)>0?' · '+r0(i.grams)+' g':''}`,i.emoji)).join('')}</div>
   ${d.tip?`<p class="nv-tip">${ico('spark')}${esc(short(d.tip,90))}</p>`:''}${d.src?`<p class="nv-foot">${esc(d.src)}</p>`:''}`},
  fridge(d){const items=Array.isArray(d.items)?d.items.slice(0,16):[],rec=Array.isArray(d.recipes)?d.recipes.slice(0,3):[];
@@ -605,7 +605,7 @@ const R={
   const list=(a,cls,ic)=>(Array.isArray(a)?a.slice(0,3):[]).map(t=>`<li class="${cls}">${ico(ic)}${esc(short(t,34))}</li>`).join('');
   return `<div class="nv-res-top">${ring(s,100,s,'/100',scoreColor(s))}<div class="nv-res-head"><h3>${esc(d.emoji||'')} ${esc(short(d.name,40))}</h3><div class="nv-grades">${['A','B','C','D','E'].map(x=>`<i class="${x===g?'on':''}" style="--g:${{A:'#1a9b58',B:'#7bbf2a',C:'#e8c21a',D:'#ef8a1c',E:'#e0533d'}[x]}">${x}</i>`).join('')}</div></div></div>
   <ul class="nv-points">${list(d.good,'ok','check')}${list(d.watch,'warn','warn')}</ul>
-  <div class="nv-bars">${bar('Énergie',n(per.kcal),600,' kcal','#e8a317')}${bar('Protéines',n(per.p),40,'g','#14a37a')}${bar('Sucres',n(per.sugar),50,'g','#e0533d')}${bar('Sel',n(per.salt),3,'g','#4f8df7')}</div><p class="nv-foot">pour 100 g · estimation</p>`},
+  <div class="nv-bars">${bar('Énergie',n(per.kcal),600,' kcal','#e8a317')}${bar('Protéines',n(per.p),40,'g','var(--mac-p)')}${bar('Sucres',n(per.sugar),50,'g','#e0533d')}${bar('Sel',n(per.salt),3,'g','#4f8df7')}</div><p class="nv-foot">pour 100 g · estimation</p>`},
  restaurant(d){const picks=Array.isArray(d.picks)?d.picks.slice(0,3):[];const lv={leger:'Léger',moyen:'Moyen',riche:'Riche'};
   return `<div class="nv-picks">${picks.map((x,i)=>`<div class="nv-pick ${i===0?'best':''}"><span class="nv-rank">${i+1}</span><b class="nv-emoji">${esc(x.emoji||'🍽️')}</b><div><strong>${esc(short(x.name,40))}</strong><small>${esc(short(x.why,50))}</small></div><div class="nv-pick-end"><em class="lv ${esc(x.level)}">${esc(lv[x.level]||'')}</em><span style="--b:${scoreColor(n(x.score))}">${r0(x.score)}</span></div></div>`).join('')}</div>`}
 };
@@ -615,7 +615,7 @@ const GEN={plate:{k:'better_prompt',label:'Voir l’image plus saine'},fridge:{k
 function slotHtml(tool,i,name){const img=state[tool].imgs[i];return `<div class="nv-slot ${img?'has':''}" data-slot="${i}" tabindex="0" role="button" aria-label="${esc(name)}">
  ${img?`<img src="${img}" alt="${esc(name)}"><span class="nv-scan"></span><button type="button" class="nv-x" data-clear="${i}" aria-label="Retirer">${I.close}</button>`:`<div class="nv-slot-empty">${ico('camera')}<strong>${esc(name)}</strong><small>Prendre ou déposer une photo</small></div>`}
  <input type="file" accept="image/jpeg,image/png,image/webp" ${'capture' in document.createElement('input')?'':''} hidden></div>`}
-function view(tool){const c=CFG[tool],S=state[tool];if(tool==='swap')return viewSwap(c,S);if(tool==='fridge')return viewFridge(c,S);const ready=S.imgs.filter(Boolean).length>=c.slots.length||!!(S.text&&S.text.trim());
+function view(tool){const c=CFG[tool],S=state[tool];if(tool==='plate'&&window.NxPlate)return window.NxPlate.view(S,histHtml('plate'));if(tool==='swap')return viewSwap(c,S);if(tool==='fridge')return viewFridge(c,S);const ready=S.imgs.filter(Boolean).length>=c.slots.length||!!(S.text&&S.text.trim());
  return `<section class="nv" data-tool="${tool}">
   <div class="nv-in"><header><h3>${esc(c.title)}</h3><p>${esc(c.sub)}</p></header>
    <div class="nv-slots n${c.slots.length}">${c.slots.map((nm,i)=>slotHtml(tool,i,nm)).join('')}</div>
@@ -634,6 +634,7 @@ function viewSwap(c,S){const ready=S.imgs.filter(Boolean).length>=2;
   ${S.busy?'<div class="nv-out on"><div class="nv-skel"><i></i><i></i><i></i></div></div>':S.result?`<div class="nv-out on nv-out-wide">${R.swap(S.result)}<button type="button" class="nv-reset">${ico('refresh')}Nouvelle comparaison</button></div>`:''}
  </section>`}
 function render(tool){if(!CFG[tool])return false;state[tool]=state[tool]||{imgs:[]};root.innerHTML=view(tool);bind(tool);return true}
+window.__nxStudio={state,render};   // utilisé par nutrix-plate.js (UI de l’écran Assiette)
 function bind(tool){const S=state[tool],el=root.querySelector('.nv');
  el.querySelectorAll('.nv-slot').forEach(slot=>{const i=Number(slot.dataset.slot),inp=slot.querySelector('input');
   const pick=()=>{if(!S.imgs[i])inp.click()};
@@ -663,6 +664,7 @@ function bind(tool){const S=state[tool],el=root.querySelector('.nv');
  el.querySelector('.nv-journal')?.addEventListener('click',()=>{const r=addToJournal(S.result);S.added=r.ok?'Ajouté · '+r.meal:'';if(!r.ok)S.err='Ajout impossible.';render(tool)});
  el.querySelector('.nv-reset')?.addEventListener('click',()=>{state[tool]={imgs:[]};render(tool)});
  if(tool==='fridge')bindFridge(S,el);
+ if(tool==='plate'&&window.NxPlate)window.NxPlate.bind(el,S);
 }
 
 /* =====================  Chef Studio : frigo → recettes complètes pas à pas  ===================== */
@@ -1106,7 +1108,7 @@ const TOUR=[
  {k:'cmp',go:'nutri',fr:['Compare','Deux produits face à face : on te dit lequel choisir.'],ar:['قارن','جوج منتوجات مقابل بعضهم، وكنقولو ليك شكون الأحسن.'],
   scr:'<div class="nt-s-h">Comparer</div><div class="nt-s-vs"><div class="win"><em>🏆</em><b>78</b><small>Produit A</small></div><span>VS</span><div><b>41</b><small>Produit B</small></div></div><div class="nt-s-bar"><i style="width:78%"></i></div><div class="nt-s-bar b"><i style="width:41%"></i></div><div class="nt-s-sub">Moins de sucre · moins d’additifs</div>'},
  {k:'log',go:'health',fr:['Suis tes repas','Calories, protéines, glucides et lipides de ta journée, en un coup d’œil.'],ar:['تبع الماكلة','السعرات والماكرو ديال نهارك، فنظرة وحدة.'],
-  scr:'<div class="nt-s-h big">Aujourd’hui</div><div class="nt-s-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="bg"/><circle cx="50" cy="50" r="40" class="fg"/></svg><div><b>845</b><small>Restantes</small></div></div><div class="nt-s-mac"><span>Protéines<i style="--w:62%;--c:#4f8cff"></i></span><span>Glucides<i style="--w:45%;--c:#f0a030"></i></span><span>Lipides<i style="--w:30%;--c:#a06cf0"></i></span></div>'},
+  scr:'<div class="nt-s-h big">Aujourd’hui</div><div class="nt-s-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="bg"/><circle cx="50" cy="50" r="40" class="fg"/></svg><div><b>845</b><small>Restantes</small></div></div><div class="nt-s-mac"><span>Protéines<i style="--w:62%;--c:var(--mac-p)"></i></span><span>Glucides<i style="--w:45%;--c:var(--mac-c)"></i></span><span>Lipides<i style="--w:30%;--c:var(--mac-f)"></i></span></div>'},
  {k:'ai',go:'ai',fr:['Demande au coach','Pose tes questions, le coach répond avec tes données.'],ar:['سول الكوتش','سول، والكوتش كيجاوبك على حساب المعطيات ديالك.'],
   scr:'<div class="nt-s-h">Coach</div><div class="nt-s-msg me">Je veux perdre 2 kg 💪</div><div class="nt-s-msg bot">Bon objectif ! Commence par un petit-déjeuner riche en protéines 🍳</div><div class="nt-s-msg me">Et le soir ?</div><div class="nt-s-typing"><i></i><i></i><i></i></div>'}
 ];
