@@ -209,9 +209,6 @@ html:not(#_v):not(#_w) body .ob-dots i.on{background:var(--p-500)!important}
 .v16-spot{position:relative;isolation:isolate}
 .v16-spot::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(124,77,255,.18),transparent 60%)}
 .v16-spot:hover::before{opacity:1}
-html.lenis,html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto!important}
-.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
 @media(prefers-reduced-motion:reduce){.v16-shiny{animation:none;-webkit-text-fill-color:currentColor;background:none}}
 
 /* ---------- desktop ---------- */
@@ -258,3 +255,11 @@ html:not(#_v):not(#_w) body.dark #page-studio,html:not(#_v):not(#_w) body.dark #
 @keyframes v16spin{to{transform:rotate(360deg)}}
 @keyframes v16fade{from{opacity:0}}
 @media(prefers-reduced-motion:reduce){.v16-find-beam,.v16-find-steps li.on::before{animation:none}}
+/* défilement : jamais animé par défaut (window.scrollTo à chaque changement de page
+   s'animait et se battait avec la molette → sauts). Les appels qui veulent du doux le demandent. */
+html:not(#_v){scroll-behavior:auto!important}
+/* pendant le défilement, les animations décoratives en boucle (laser, halo, brillance…)
+   se mettent en pause : elles repeignaient l'écran à chaque image et faisaient saccader */
+.v16-still,.v16-still *,.v16-still *::before,.v16-still *::after{animation-play-state:paused!important}
+.nt-fig:not(.on) *{animation-play-state:paused!important}
+.v16-shiny{animation-iteration-count:3!important}
