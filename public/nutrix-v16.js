@@ -156,3 +156,27 @@ function init(){
 }
 if(document.readyState==='complete')init();else window.addEventListener('load',init,{once:true});
 })();
+
+/* ==========================================================================
+   Recherche d'un produit après un scan : écran d'attente animé
+   (code-barres qui se « lit », étapes des sources). Branché sur fetch :
+   toute demande /api/off/product/<code> l'affiche jusqu'à la réponse.
+   ========================================================================== */
+(()=>{'use strict';
+const ARY=(()=>{try{return localStorage.getItem('sd-v111-language')==='ary'}catch{return false}})();
+const L=(fr,ar)=>ARY?ar:fr;
+let box=null,t2=null,shownAt=0;
+function bars(code){let h='',x=0;const s=String(code);for(let i=0;i<46;i++){const w=1+((s.charCodeAt(i%s.length)+i*7)%3);if(i%2===0)h+=`<rect x="${x}" y="0" width="${w}" height="60"/>`;x+=w+1}return `<svg viewBox="0 0 ${x} 60" preserveAspectRatio="none" aria-hidden="true">${h}</svg>`}
+function show(code){
+  if(!box){box=document.createElement('div');box.className='v16-find';box.setAttribute('role','status');box.setAttribute('aria-live','polite');document.body.append(box)}
+  box.innerHTML=`<div class="v16-find-card"><div class="v16-find-code">${bars(code)}<i class="v16-find-beam"></i></div>
+   <strong>${L('Je cherche le produit…','كنقلب على المنتوج…')}</strong><small dir="ltr">${code}</small>
+   <ol class="v16-find-steps"><li class="on">${L('Open Food Facts','Open Food Facts')}</li><li>${L('Autres bases de codes-barres','قواعد أخرى ديال الكود-بار')}</li><li>${L('Valeurs nutritionnelles','القيم الغذائية')}</li></ol></div>`;
+  box.hidden=false;document.documentElement.classList.add('v16-finding');shownAt=Date.now();
+  clearTimeout(t2);t2=setTimeout(()=>{const li=box.querySelectorAll('.v16-find-steps li');li[0]?.classList.replace('on','done');li[1]?.classList.add('on');t2=setTimeout(()=>{li[1]?.classList.replace('on','done');li[2]?.classList.add('on')},2600)},2200);
+}
+function hide(){if(!box)return;const wait=Math.max(0,700-(Date.now()-shownAt));setTimeout(()=>{clearTimeout(t2);box.hidden=true;document.documentElement.classList.remove('v16-finding')},wait)}
+const of=window.fetch.bind(window);
+window.fetch=function(input,init){const u=typeof input==='string'?input:(input&&input.url)||'';const m=u.match(/\/api\/off\/product\/(\d{8,14})/);
+  if(!m)return of(input,init);show(m[1]);const p=of(input,init);p.then(hide,hide);return p};
+})();

@@ -238,3 +238,23 @@ html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top .
 html:not(#_v):not(#_w) body #page-studio,html:not(#_v):not(#_w) body #page-studio [data-tool]{--tc:#8466ff!important;--tc2:#6c4cf2!important;--tci:#4a33b8!important;--tcs:#efeaff!important}
 html:not(#_v):not(#_w) body #page-studio .nv-go:not(:disabled){background:var(--p-grad)!important;box-shadow:var(--p-shadow)!important;color:#fff!important}
 html:not(#_v):not(#_w) body.dark #page-studio,html:not(#_v):not(#_w) body.dark #page-studio [data-tool]{--tci:#c9bcff!important;--tcs:rgba(157,134,255,.14)!important}
+/* ---------- recherche d'un produit (après scan) ---------- */
+.v16-find{position:fixed;inset:0;z-index:9100;display:grid;place-items:center;padding:24px;background:rgba(8,24,18,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:v16fade .2s ease}
+.v16-find[hidden]{display:none}
+.v16-find-card{width:min(340px,100%);display:grid;justify-items:center;gap:6px;padding:26px 22px 20px;border-radius:24px;background:var(--v16-card);color:var(--v16-ink);text-align:center;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.v16-find-code{position:relative;width:180px;height:70px;padding:5px 8px;margin-bottom:12px;border-radius:12px;background:#fff;overflow:hidden}
+.v16-find-code svg{width:100%;height:100%;fill:#1b1b1b}
+.v16-find-beam{position:absolute;inset-block:0;width:36%;left:-40%;background:linear-gradient(90deg,transparent,rgba(124,92,255,.35),transparent);animation:v16beam 1.3s ease-in-out infinite}
+@keyframes v16beam{to{left:104%}}
+.v16-find-card strong{font:700 1.08rem var(--v16-head)}
+.v16-find-card small{color:var(--v16-mute);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.v16-find-steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;width:100%;text-align:start}
+.v16-find-steps li{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--v16-mute)}
+.v16-find-steps li::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--v16-line)}
+.v16-find-steps li.on{color:var(--v16-ink);font-weight:600}
+.v16-find-steps li.on::before{border-color:var(--p-400);border-top-color:transparent;animation:v16spin .8s linear infinite}
+.v16-find-steps li.done{color:var(--v16-ink)}
+.v16-find-steps li.done::before{border-color:var(--g-500,#6aa785);background:var(--g-500,#6aa785) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E") center/12px no-repeat}
+@keyframes v16spin{to{transform:rotate(360deg)}}
+@keyframes v16fade{from{opacity:0}}
+@media(prefers-reduced-motion:reduce){.v16-find-beam,.v16-find-steps li.on::before{animation:none}}
