@@ -335,3 +335,15 @@ html:not(#_v):not(#_w) body.dark .mr-promo>i{background:var(--d-green)!important
 html:not(#_v):not(#_w) body.dark #page-studio .nv-go:not(:disabled){background:var(--d-green)!important;color:#0d1a13!important;box-shadow:none!important}
 /* changement de thème : fondu court et léger (pas de flash) */
 html.theme-switching body,html.theme-switching body *{transition:background-color .28s ease,color .28s ease,border-color .28s ease!important}
+/* sombre — corrections de l'audit de contraste */
+html:not(#_v):not(#_w) body.dark #nh-existing>summary{background:var(--d-elev)!important;background-image:none!important;color:var(--d-ink)!important;border:1px solid var(--d-line)!important;box-shadow:none!important}
+html:not(#_v):not(#_w) body.dark #nh-existing>summary .nx-ico{background:var(--d-green)!important;color:#0d1a13!important}
+html:not(#_v):not(#_w) body.dark #nh-existing>summary :is(b,small,span){color:inherit!important}
+html:not(#_v):not(#_w) body.dark #nh-existing>summary small{color:var(--d-mute)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-primary :is(b,small,span){color:#fff!important}
+html:not(#_v):not(#_w) body.dark .nx-big-primary small{opacity:.85}
+html:not(#_v):not(#_w) body.dark #page-nutri .nutri-search-form .btn{background:var(--d-green)!important;color:#0d1a13!important}
+html:not(#_v):not(#_w) body.dark :is(.nt-s-cap,.nt-s-ns) i{color:#151515!important;text-shadow:none!important}
+html:not(#_v):not(#_w) body.dark .nt-s-vs span{color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark [class*="greenscore"] span,html:not(#_v):not(#_w) body.dark .greenscore span{color:#151515!important}
+html:not(#_v):not(#_w) body.dark #nx-morocco-items>.nx-morocco-card :is(a,button):not([class*=fav]){color:var(--d-green-ink)!important}
