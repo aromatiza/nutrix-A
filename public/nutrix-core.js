@@ -1683,7 +1683,8 @@ try{
       nova: num(p.nova_group),
       allergens: Array.isArray(p.allergens_tags) ? p.allergens_tags : [],
       labels: Array.isArray(p.labels_tags) ? p.labels_tags : [],
-      source: 'Open Food Facts'
+      source: p._source || 'Open Food Facts',
+      estimated: !!p._estimated
     };
   }
 
@@ -1907,7 +1908,7 @@ try{
       </details>
       <a class="nutri-off-link" target="_blank" rel="noopener noreferrer" href="https://world.openfoodfacts.org/product/${encodeURIComponent(p.code)}">Voir la fiche Open Food Facts ↗</a>
     `;
-    src.textContent = 'Source : Open Food Facts';
+    src.textContent = 'Source : ' + (p.source || 'Open Food Facts');
   }
 
   function optionList(products, selected) {

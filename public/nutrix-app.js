@@ -225,7 +225,7 @@ try{
   $('#ai-clear')?.addEventListener('click',()=>{if(overview)overview.hidden=true;setState('idle')});
   const observer=new MutationObserver(()=>{chat.querySelectorAll('.ai-message.assistant .ai-bubble').forEach(b=>{if(b.querySelector('.nx-ai-copy'))return;const btn=document.createElement('button');btn.type='button';btn.className='nx-ai-copy';btn.textContent='Copier';btn.addEventListener('click',()=>{navigator.clipboard?.writeText(b.innerText||b.textContent||'').catch(()=>{})});b.append(btn)});});observer.observe(chat,{childList:true,subtree:false});
   // Le robot 3D (three.js + modèle) n'est chargé qu'à la première ouverture du chat, et jamais sur un téléphone faible.
-  const weak=(()=>{try{const n=navigator,c=n.connection||{};return (n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||c.saveData||/(^|-)2g$/.test(c.effectiveType||'')||matchMedia('(prefers-reduced-motion: reduce)').matches}catch{return false}})();
+  const weak=(()=>{try{const n=navigator,c=n.connection||{};return matchMedia('(pointer: coarse)').matches||innerWidth<700||(n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||c.saveData||/(^|-)2g$/.test(c.effectiveType||'')||matchMedia('(prefers-reduced-motion: reduce)').matches}catch{return false}})();
   const lite=()=>{avatar.dataset.webgl='lite';const st=avatar.querySelector('#nx-robot-stage'),fab=document.querySelector('#v11-ai-launch svg');if(st&&fab&&!st.querySelector('svg')){st.replaceChildren(fab.cloneNode(true));st.querySelector('svg').classList.add('nx-copilot-lite')}};
   let started=false;const go=()=>{if(started||!drawer.classList.contains('open'))return;started=true;weak?lite():setup3D(drawer,avatar,setState,lite)};
   new MutationObserver(go).observe(drawer,{attributes:true,attributeFilter:['class']});go();
@@ -1078,9 +1078,10 @@ function setupCarousel(){
   const build=()=>{const n=cards().length;dots.hidden=n<2;dots.innerHTML='';
     for(let i=0;i<n;i++){const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Article '+(i+1));d.addEventListener('click',()=>{const c=cards()[i];c&&box.scrollTo({left:c.offsetLeft-box.offsetLeft-12,behavior:'smooth'});});dots.appendChild(d);}
     mark();};
-  const mark=()=>{const cs=cards();if(!cs.length)return;let best=0,bd=1e9;cs.forEach((c,i)=>{const d=Math.abs(c.offsetLeft-box.offsetLeft-box.scrollLeft-12);if(d<bd){bd=d;best=i;}});[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===best));};
-  box.addEventListener('scroll',()=>requestAnimationFrame(mark),{passive:true});
-  new MutationObserver(()=>build()).observe(box,{childList:true});
+  // une seule lecture de mise en page par image (avant : offsetLeft de chaque carte à chaque événement)
+  let on=-1,pend=0;const mark=()=>{pend=0;const c0=box.querySelector('.nx-morocco-card');if(!c0)return;const step=c0.offsetWidth+(parseFloat(getComputedStyle(box).columnGap)||12);const best=Math.max(0,Math.min(dots.children.length-1,Math.round(Math.abs(box.scrollLeft)/step)));if(best===on)return;on=best;[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===best));};
+  box.addEventListener('scroll',()=>{if(!pend)pend=requestAnimationFrame(mark)},{passive:true});
+  let bt=0;new MutationObserver(()=>{clearTimeout(bt);bt=setTimeout(()=>{on=-1;build()},120)}).observe(box,{childList:true});
   build();
 }
 
