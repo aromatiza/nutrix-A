@@ -100,10 +100,13 @@ async function motion(){
     await load('https://unpkg.com/lenis@1.1.13/dist/lenis.min.js');
     if(window.Lenis&&matchMedia('(pointer:fine)').matches){
       $$('#v11-ai-drawer,.ob,.nt-phones,[class*="drawer"],[class*="modal"],[class*="sheet"]').forEach(el=>el.setAttribute('data-lenis-prevent',''));
-      const lenis=new window.Lenis({duration:1.05,smoothWheel:true,syncTouch:false});
+      const lenis=new window.Lenis({duration:1.05,smoothWheel:true,syncTouch:false,autoResize:false}); // pas d'observateur de taille : il recalculait à chaque changement de page
       window.__v16lenis=lenis;
       if(window.ScrollTrigger)lenis.on('scroll',window.ScrollTrigger.update);
-      gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
+      const loop=t=>{lenis.raf(t);requestAnimationFrame(loop)};requestAnimationFrame(loop);
+      let rz=0;const resize=()=>{clearTimeout(rz);rz=setTimeout(()=>lenis.resize(),250)};window.addEventListener('resize',resize,{passive:true});window.__v16resize=resize;
+      // la page grandit (images, listes) : on met à jour la limite au premier coup de molette, sans observer en continu
+      let lastH=0;window.addEventListener('wheel',()=>{const h=document.documentElement.scrollHeight;if(h!==lastH){lastH=h;lenis.resize()}},{passive:true,capture:true});
     }
   }catch{}
   // Hero : titre mot par mot (SplitText), puis texte et boutons
@@ -128,7 +131,7 @@ async function motion(){
     const items=$('#nx-morocco-items');
     if(items){const run=()=>{const kids=[...items.children].filter(k=>!k.dataset.v16in);if(!kids.length)return;kids.forEach(k=>k.dataset.v16in='1');gsap.from(kids,{y:24,opacity:0,duration:.6,stagger:.07,ease:'power2.out',clearProps:'transform,opacity',scrollTrigger:{trigger:items,start:'top 90%',once:true}})};run();new MutationObserver(run).observe(items,{childList:true})}
     // les pages changent de hauteur quand on change d'onglet
-    document.addEventListener('click',e=>{if(e.target.closest('.tab,[data-tab]'))setTimeout(()=>window.ScrollTrigger.refresh(),350)});
+    
   }
   // Magnet : le bouton principal suit légèrement le pointeur (souris seulement)
   if(matchMedia('(pointer:fine)').matches){
@@ -139,6 +142,11 @@ async function motion(){
   }
 }
 
+/* changement de page : calculs regroupés (sinon chaque clic rapide relançait tout) */
+let navT=0;
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('.tab[data-tab],[data-tab]');if(!t)return;
+  if(t.dataset.tab!=='ai'){const d=document.getElementById('v11-ai-drawer');if(d&&d.classList.contains('open'))document.getElementById('v11-ai-close')?.click()}
+  clearTimeout(navT);navT=setTimeout(()=>{window.__v16resize&&window.__v16resize();const ST=window.ScrollTrigger;if(ST&&ST.getAll().length)ST.refresh()},450)},true);
 function init(){
   setupScanner('nutri-scan-box','nutri-scan-stop','nutri-query');
   setupScanner('scan-box','scan-stop','barcode-q');
