@@ -125,6 +125,8 @@ document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest
 /* classe .v16-still sur les blocs animés pendant le défilement (met en pause les animations décoratives) */
 {let st=0,boxes=[];const SEL='.nt-tour,.nt-scanhero,.mr-promo,.pulse-hero,#v11-ai-launch';const set=on=>{if(on)boxes=[...document.querySelectorAll(SEL)];boxes.forEach(b=>b.classList.toggle('v16-still',on))};
  addEventListener('scroll',()=>{if(!st)set(true);clearTimeout(st);st=setTimeout(()=>{st=0;set(false)},180)},{passive:true})} // classe posée sur 5 blocs seulement : recalcul de style limité
+/* changement de thème : fondu court (classe posée 350 ms seulement) */
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#dark-btn,[data-switch="autodark"]')){const r=document.documentElement;r.classList.add('theme-switching');setTimeout(()=>r.classList.remove('theme-switching'),350)}},true);
 function init(){
   setupScanner('nutri-scan-box','nutri-scan-stop','nutri-query');
   setupScanner('scan-box','scan-stop','barcode-q');

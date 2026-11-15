@@ -27,11 +27,22 @@
   --v16-radius:20px; --v16-gap:14px;
   --v16-head:Poppins,'IBM Plex Sans Arabic','Noto Kufi Arabic',Tahoma,system-ui,sans-serif; --v16-body:Inter,'IBM Plex Sans Arabic',Tahoma,system-ui,sans-serif;
 }
+/* MODE SOMBRE : anthracite / graphite, un seul accent vert (pas de néon, pas de halo, pas de dégradé).
+   Niveaux : fond 0f1113 → surface 15181b → carte 1a1e22 → élevé 22272c ; bordures blanches 7 %. */
 body.dark{
-  --v16-bg:var(--f-950); --v16-surface:var(--f-900); --v16-card:var(--f-800); --v16-ink:#f1e8d6; --v16-mute:#b9b29e;
-  --v16-line:rgba(233,220,194,.12); --v16-brand:var(--f-700); --v16-on-brand:var(--s-100);
-  --v16-brand-soft:rgba(127,179,154,.14); --v16-brand-ink:#a9d3bc;
-  --v16-glass:rgba(16,38,29,.8); --v16-seg:rgba(233,220,194,.08); --v16-seg-on:var(--f-700);
+  --d-bg:#0f1113; --d-surface:#15181b; --d-card:#1a1e22; --d-elev:#22272c; --d-line:rgba(255,255,255,.07); --d-line2:rgba(255,255,255,.12);
+  --d-ink:#eceff0; --d-mute:#a2aaa7; --d-faint:#7b8480; --d-green:#46b381; --d-green-ink:#86d3ad; --d-green-soft:rgba(70,179,129,.14);
+  --d-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 12px 28px -18px rgba(0,0,0,.75);
+  --v16-bg:var(--d-bg); --v16-surface:var(--d-surface); --v16-card:var(--d-card); --v16-ink:var(--d-ink); --v16-mute:var(--d-mute);
+  --v16-line:var(--d-line); --v16-brand:var(--d-green); --v16-on-brand:#fff;
+  --v16-brand-soft:var(--d-green-soft); --v16-brand-ink:var(--d-green-ink);
+  --v16-glass:rgba(21,24,27,.9); --v16-seg:rgba(255,255,255,.06); --v16-seg-on:#2b3136;
+  /* les « surfaces forêt » de la v16 deviennent graphite ; le vert reste pour les actions */
+  --f-950:#0f1113; --f-900:#15181b; --f-800:#1a1e22; --f-700:#22272c; --f-600:#2f9e6a; --f-500:#46b381;
+  /* action principale en sombre : vert plein, sans halo */
+  --p-grad:#2f9e6a; --p-shadow:none; --p-500:#46b381; --p-400:#5cc193; --p-300:#8fd6b3; --p-glow:transparent;
+  --mac-p:#5cc193; --mac-c:#7fa6e3; --mac-f:#e3a0b3;
+  color-scheme:dark;
 }
 /* les anciennes variables pointent vers la nouvelle palette */
 html:not(#_v):not(#_w) body{--accent:var(--p-500);--ac:var(--f-600);--nx-brand:var(--f-700);--text:var(--v16-ink);--muted:var(--v16-mute);--bg:var(--v16-bg)}
@@ -263,3 +274,64 @@ html:not(#_v){scroll-behavior:auto!important}
 .v16-still,.v16-still *,.v16-still *::before,.v16-still *::after{animation-play-state:paused!important}
 .nt-fig:not(.on) *{animation-play-state:paused!important}
 .v16-shiny{animation-iteration-count:3!important}
+
+/* ==========================================================================
+   MODE SOMBRE — composants (anthracite, hiérarchie par niveaux de gris,
+   bordures fines, ombres neutres ; plus de halos colorés ni de dégradés olive)
+   ========================================================================== */
+html:not(#_v):not(#_w) body.dark,html:not(#_v):not(#_w) body.dark.pulse-shell{background:var(--d-bg)!important;color:var(--d-ink)!important}
+/* barre de navigation + en-tête */
+html:not(#_v):not(#_w) body.dark #pulse-navbar.pulse-navbar,html:not(#_v):not(#_w) body.dark #pulse-navbar .pulse-nav-inner{background:rgba(18,21,24,.92)!important;border-color:var(--d-line)!important;box-shadow:none!important}
+html:not(#_v):not(#_w) body.dark #pulse-navbar .tab,html:not(#_v):not(#_w) body.dark #pulse-navbar .nx-more-btn{color:var(--d-faint)!important}
+html:not(#_v):not(#_w) body.dark #pulse-navbar .tab.active{background:var(--d-green-soft)!important;color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark #pulse-navbar .tab.active svg{color:var(--d-green)!important;filter:none!important}
+html:not(#_v):not(#_w) body.dark header.top :is(.circle,.nx-language-switch){background:rgba(26,30,34,.82)!important;border-color:var(--d-line2)!important;color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark header.top .nx-lang-choice{color:var(--d-mute)!important}
+html:not(#_v):not(#_w) body.dark header.top .nx-lang-choice:is([aria-pressed="true"],.active,.on){background:var(--d-ink)!important;color:#121417!important}
+/* hero : photo assombrie en neutre (plus de voile vert ni violet) */
+html:not(#_v):not(#_w) body.dark #pulse-home .pulse-hero{background-color:#0c0e10!important}
+html:not(#_v):not(#_w) body.dark #pulse-home .pulse-hero-overlay{background:linear-gradient(180deg,rgba(12,14,16,.66),rgba(12,14,16,.9) 70%,#0f1113)!important}
+html:not(#_v):not(#_w) body.dark #pulse-home .pulse-eyebrow{color:var(--d-green-ink)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-secondary{background:var(--d-elev)!important;color:var(--d-ink)!important;box-shadow:inset 0 0 0 1px var(--d-line)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-secondary b{color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-secondary small{color:var(--d-mute)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-secondary .nx-ico{background:var(--d-green-soft)!important;color:var(--d-green-ink)!important}
+html:not(#_v):not(#_w) body.dark .nx-big-primary{box-shadow:none!important}
+html:not(#_v):not(#_w) body.dark .nx-big-primary::after{display:none!important}
+/* cartes : un niveau au-dessus du fond, ombre neutre — plus de lueurs colorées sous les cartes */
+html:not(#_v):not(#_w) body.dark :is(.card,.block,.nh-card,.pulse-metric-card,.pulse-diet-card,.nx-morocco-card,.mr-card,.nutri-search-card,.nutri-scan-card,.nh-food-day,.explore-hero,[class*="-card"]):not(.nv-card):not(.nxp-card){background:var(--d-card)!important;background-image:none!important;border-color:var(--d-line)!important;box-shadow:var(--d-shadow)!important}
+html:not(#_v):not(#_w) body.dark #nx-morocco-items>.nx-morocco-card{background:var(--d-card)!important}
+html:not(#_v):not(#_w) body.dark .nx-morocco-image{background:#f3f4f3!important}
+/* bandeau « Ajouter un repas » (dégradé olive) → surface élevée + accent vert */
+html:not(#_v):not(#_w) body.dark :is(.health-launcher,.nh-launcher,[class*="launcher"]){background:var(--d-elev)!important;background-image:none!important;color:var(--d-ink)!important;border:1px solid var(--d-line)!important;box-shadow:none!important}
+/* textes */
+html:not(#_v):not(#_w) body.dark :is(h1,h2,h3,h4,strong,b){color:inherit}
+html:not(#_v):not(#_w) body.dark :is(.muted,small){color:var(--d-mute)}
+/* champs, menus, tableaux */
+html:not(#_v):not(#_w) body.dark :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){background:var(--d-surface)!important;color:var(--d-ink)!important;border-color:var(--d-line2)!important}
+html:not(#_v):not(#_w) body.dark :is(input,textarea)::placeholder{color:var(--d-faint)!important}
+html:not(#_v):not(#_w) body.dark select option{background:var(--d-card);color:var(--d-ink)}
+html:not(#_v):not(#_w) body.dark :is(table,th,td){border-color:var(--d-line)!important}
+html:not(#_v):not(#_w) body.dark th{background:var(--d-surface)!important;color:var(--d-mute)!important}
+html:not(#_v):not(#_w) body.dark .btn:not(.ghost){background:var(--d-green)!important;color:#0d1a13!important;box-shadow:none!important}
+html:not(#_v):not(#_w) body.dark .btn.ghost,html:not(#_v):not(#_w) body.dark .chip-btn{background:transparent!important;color:var(--d-ink)!important;border:1px solid var(--d-line2)!important}
+html:not(#_v):not(#_w) body.dark :focus-visible{outline-color:var(--d-green)!important}
+/* bulles, puces et petits éléments trop clairs relevés par l'audit */
+html:not(#_v):not(#_w) body.dark .nt-bubble,html:not(#_v):not(#_w) body.dark .nt-bubble::after{background:var(--d-elev)!important;color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark .nt-bubble b{color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark .nt-bubble span{color:var(--d-mute)!important}
+html:not(#_v):not(#_w) body.dark :is(.nt-s-chip,.mr-say,.nx-duel-photo){background:var(--d-elev)!important;color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark .nt-s-msg.me{color:#0d1a13!important;background:var(--d-green-ink)!important}
+html:not(#_v):not(#_w) body.dark :is(.nx-vs,.nt-s-vs>span){color:var(--d-ink)!important}
+html:not(#_v):not(#_w) body.dark .nt-s-cap i{color:#fff!important;text-shadow:0 1px 1px rgba(0,0,0,.45)}
+html:not(#_v):not(#_w) body.dark #page-faq :is(span,em){color:var(--d-mute)}
+/* graphiques : grilles et axes discrets, courbes lisibles */
+html:not(#_v):not(#_w) body.dark svg :is(line,path)[stroke="#e5e7eb"],html:not(#_v):not(#_w) body.dark svg [stroke="#eef2f0"]{stroke:rgba(255,255,255,.08)}
+html:not(#_v):not(#_w) body.dark svg text{fill:var(--d-mute)}
+/* cuisine marocaine + promo */
+html:not(#_v):not(#_w) body.dark .mr-promo{background:var(--d-elev)!important;border-color:var(--d-line)!important;box-shadow:none!important}
+html:not(#_v):not(#_w) body.dark .mr-promo>i{background:var(--d-green)!important;color:#0d1a13!important}
+/* Studio et réglages suivent les mêmes niveaux */
+html:not(#_v):not(#_w) body.dark #page-studio .nv-go:not(:disabled){background:var(--d-green)!important;color:#0d1a13!important;box-shadow:none!important}
+/* changement de thème : fondu court et léger (pas de flash) */
+html.theme-switching body,html.theme-switching body *{transition:background-color .28s ease,color .28s ease,border-color .28s ease!important}

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nutrix Pro — Eat well, feel good</title>
 <link rel="manifest" href="manifest.json">
+<meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f7faf8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Nutrix">
@@ -18,6 +19,7 @@
 <link rel="stylesheet" href="nutrix-settings.css">
 </head>
 <body class="pulse-shell">
+<script>/* thème appliqué avant le premier affichage : pas d'éclair blanc en mode sombre */try{var t=localStorage.getItem('space-v9-theme')||'auto',b=document.body,s=JSON.parse(localStorage.getItem('SD_V5')||'{}').settings||{};if(t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches))b.classList.add('dark');if(s.ramadan)b.classList.add('nx-ramadan');if(localStorage.getItem('sd-v111-language')==='ary')document.documentElement.lang='ary'}catch(e){}</script>
 <!-- PulseFit-inspired actual application navigation; each tab delegates to Nutrix showTab -->
 <header class="pulse-navbar" id="pulse-navbar"><div class="pulse-nav-inner">
 <button class="pulse-logo tab" data-tab="home" type="button" aria-label="Nutrix Accueil" title="Nutrix"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 12h3l2-5 4 14 3-9 2 3h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="pulse-logo-name">Nutri<span class="pulse-logo-accent">X</span></span></button>
