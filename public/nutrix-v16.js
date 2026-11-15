@@ -1,5 +1,5 @@
 /* NUTRIX v16 — scanner plein écran, icônes onboarding, robot unique,
-   animations (GSAP + ScrollTrigger + Lenis) et effets inspirés de React Bits
+   animations (GSAP) et effets inspirés de React Bits
    (SplitText, ShinyText, SpotlightCard, Magnet) réécrits en JS léger. */
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -84,31 +84,20 @@ function spotlight(){
 function shiny(){const e=$('#pulse-home .pulse-eyebrow');if(e)e.classList.add('v16-shiny')}
 
 /* ------------------------------------------------------------------
-   5. GSAP + ScrollTrigger + Lenis (chargés à la demande)
+   5. Animations : GSAP seul, chargé à la demande.
+   Le défilement reste celui du navigateur (fil du compositeur) : pas de Lenis ni de
+   ScrollTrigger, qui faisaient défiler et recalculer en JavaScript à chaque image et
+   provoquaient saccades / sauts sur ordinateur dès que la page était occupée.
+   Les apparitions au défilement passent par IntersectionObserver (aucun calcul au scroll).
    ------------------------------------------------------------------ */
 function load(src){return new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.async=true;s.crossOrigin='anonymous';s.onload=ok;s.onerror=ko;document.head.append(s)})}
+function revealOnView(els,gsap,o={}){if(!els.length)return;
+  const io=new IntersectionObserver(list=>list.forEach(en=>{if(!en.isIntersecting)return;io.unobserve(en.target);gsap.fromTo(en.target,{y:o.y||24,opacity:0},{y:0,opacity:1,duration:.6,ease:'power2.out',delay:(o.stagger||0)*(o.index?o.index(en.target):0),clearProps:'transform,opacity'})}),{rootMargin:'0px 0px -10% 0px'});
+  els.forEach(el=>{if(el.getBoundingClientRect().top<innerHeight*0.9)return;io.observe(el)});}
 async function motion(){
   if(REDUCED)return;
-  try{
-    await load('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-    await load('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
-  }catch{return}
+  try{await load('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js')}catch{return}
   const gsap=window.gsap;if(!gsap)return;
-  if(window.ScrollTrigger)gsap.registerPlugin(window.ScrollTrigger);
-  // Lenis : défilement doux à la molette (le tactile reste natif)
-  try{
-    await load('https://unpkg.com/lenis@1.1.13/dist/lenis.min.js');
-    if(window.Lenis&&matchMedia('(pointer:fine)').matches){
-      $$('#v11-ai-drawer,.ob,.nt-phones,[class*="drawer"],[class*="modal"],[class*="sheet"]').forEach(el=>el.setAttribute('data-lenis-prevent',''));
-      const lenis=new window.Lenis({duration:1.05,smoothWheel:true,syncTouch:false,autoResize:false}); // pas d'observateur de taille : il recalculait à chaque changement de page
-      window.__v16lenis=lenis;
-      if(window.ScrollTrigger)lenis.on('scroll',window.ScrollTrigger.update);
-      const loop=t=>{lenis.raf(t);requestAnimationFrame(loop)};requestAnimationFrame(loop);
-      let rz=0;const resize=()=>{clearTimeout(rz);rz=setTimeout(()=>lenis.resize(),250)};window.addEventListener('resize',resize,{passive:true});window.__v16resize=resize;
-      // la page grandit (images, listes) : on met à jour la limite au premier coup de molette, sans observer en continu
-      let lastH=0;window.addEventListener('wheel',()=>{const h=document.documentElement.scrollHeight;if(h!==lastH){lastH=h;lenis.resize()}},{passive:true,capture:true});
-    }
-  }catch{}
   // Hero : titre mot par mot (SplitText), puis texte et boutons
   const title=$('#pulse-hero-title');
   if(title&&$('#page-home.active')&&!ARY){
@@ -117,36 +106,27 @@ async function motion(){
     if(words.length)tl.from(words,{yPercent:110,duration:.8,stagger:.06});
     tl.from('#pulse-home .pulse-hero-sub',{y:16,opacity:0,duration:.6},'-=.45')
       .from('#pulse-home .pulse-hero-cta>*',{y:22,opacity:0,duration:.55,stagger:.09,clearProps:'transform,opacity'},'-=.35');
-    // sécurité : si l'onglet est en arrière-plan (animations gelées), tout s'affiche quand même
     setTimeout(()=>{if(tl.progress()<1)tl.progress(1)},2600);
   }
-  // Apparition au défilement (sections sans système de révélation existant)
-  if(window.ScrollTrigger){
-    const reveal=(sel,o={})=>$$(sel).forEach(el=>{const tw=gsap.from(el,Object.assign({y:28,opacity:0,duration:.7,ease:'power2.out',clearProps:'transform,opacity',scrollTrigger:{trigger:el,start:'top 88%',once:true}},o));
-      // sécurité : si le déclencheur ne part jamais, l'élément reste visible
-      setTimeout(()=>{if(tw.progress()===0&&el.getBoundingClientRect().top<innerHeight)tw.progress(1)},4000)});
-    reveal('#nt-tour .nt-tour-top');
-    reveal('#pulse-home .pulse-section-head');
-    reveal('.mr-promo',{y:36});
-    const items=$('#nx-morocco-items');
-    if(items){const run=()=>{const kids=[...items.children].filter(k=>!k.dataset.v16in);if(!kids.length)return;kids.forEach(k=>k.dataset.v16in='1');gsap.from(kids,{y:24,opacity:0,duration:.6,stagger:.07,ease:'power2.out',clearProps:'transform,opacity',scrollTrigger:{trigger:items,start:'top 90%',once:true}})};run();new MutationObserver(run).observe(items,{childList:true})}
-    // les pages changent de hauteur quand on change d'onglet
-    
-  }
+  // apparition des sections hors écran (seulement celles qui ne sont pas déjà visibles)
+  revealOnView($$('#nt-tour .nt-tour-top,#pulse-home .pulse-section-head,.mr-promo'),gsap);
   // Magnet : le bouton principal suit légèrement le pointeur (souris seulement)
   if(matchMedia('(pointer:fine)').matches){
     $$('.nx-big-primary,#nutri-scan-btn').forEach(b=>{
-      b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.12,y:(e.clientY-r.top-r.height/2)*.22,duration:.4,ease:'power3.out'})});
-      b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+      b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.12,y:(e.clientY-r.top-r.height/2)*.22,duration:.4,ease:'power3.out',overwrite:true})});
+      b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)',overwrite:true}));
     });
   }
 }
 
-/* changement de page : calculs regroupés (sinon chaque clic rapide relançait tout) */
-let navT=0;
+/* changement de page : on ferme le chat (son robot 3D cesse de tourner en arrière-plan) */
 document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('.tab[data-tab],[data-tab]');if(!t)return;
-  if(t.dataset.tab!=='ai'){const d=document.getElementById('v11-ai-drawer');if(d&&d.classList.contains('open'))document.getElementById('v11-ai-close')?.click()}
-  clearTimeout(navT);navT=setTimeout(()=>{window.__v16resize&&window.__v16resize();const ST=window.ScrollTrigger;if(ST&&ST.getAll().length)ST.refresh()},450)},true);
+  if(t.dataset.tab!=='ai'){const d=document.getElementById('v11-ai-drawer');if(d&&d.classList.contains('open'))document.getElementById('v11-ai-close')?.click()}},true);
+/* classe .v16-still sur les blocs animés pendant le défilement (met en pause les animations décoratives) */
+{let st=0,boxes=[];const SEL='.nt-tour,.nt-scanhero,.mr-promo,.pulse-hero,#v11-ai-launch';const set=on=>{if(on)boxes=[...document.querySelectorAll(SEL)];boxes.forEach(b=>b.classList.toggle('v16-still',on))};
+ addEventListener('scroll',()=>{if(!st)set(true);clearTimeout(st);st=setTimeout(()=>{st=0;set(false)},180)},{passive:true})} // classe posée sur 5 blocs seulement : recalcul de style limité
+/* changement de thème : fondu court (classe posée 350 ms seulement) */
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#dark-btn,[data-switch="autodark"]')){const r=document.documentElement;r.classList.add('theme-switching');setTimeout(()=>r.classList.remove('theme-switching'),350)}},true);
 function init(){
   setupScanner('nutri-scan-box','nutri-scan-stop','nutri-query');
   setupScanner('scan-box','scan-stop','barcode-q');

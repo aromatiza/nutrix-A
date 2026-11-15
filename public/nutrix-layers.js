@@ -211,7 +211,7 @@ dialog?.addEventListener('click',e=>{if(e.target===dialog)close()});
 document.getElementById('nx-to-score')?.addEventListener('click',()=>{close();document.querySelector('.tab[data-tab="nutri"]')?.click();document.getElementById('nutri-feature')?.scrollIntoView({block:'start',behavior:'smooth'});});
 document.getElementById('nx-to-health')?.addEventListener('click',()=>{close();document.querySelector('.tab[data-tab="health"]')?.click();document.getElementById('custom-name')?.scrollIntoView({block:'center',behavior:'smooth'});});
 // Open options after a product has actually been identified and rendered; never fabricate successful scans.
-const feature=document.getElementById('nutri-feature');if(feature){new MutationObserver(()=>{const text=feature.textContent||'';const img=feature.querySelector('img');const sig=(img?.src||'')+'|'+text.slice(0,120);if(sig&&sig!==last&&!/Aucun produit sélectionné|Choisis un produit/i.test(text)&&feature.querySelector('.nutri-product|.nutri-product-head|.v8-product-overview,.nutri-feature-header,img')){last=sig;update();dialog.hidden=false;}}).observe(feature,{childList:true,subtree:true});}
+const feature=document.getElementById('nutri-feature');if(feature){new MutationObserver(()=>{const text=feature.textContent||'';const img=feature.querySelector('img');const sig=(img?.src||'')+'|'+text.slice(0,120);if(sig&&sig!==last&&!/Aucun produit sélectionné|Choisis un produit/i.test(text)&&feature.querySelector('.nutri-product,.nutri-product-head,.v8-product-overview,.nutri-feature-header,img')){last=sig;update();dialog.hidden=false;}}).observe(feature,{childList:true,subtree:true});}
 })();
 }catch(e){console.error("[Nutrix] nutrix-v11-4.js",e)}
 
