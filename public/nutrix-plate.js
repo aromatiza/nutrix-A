@@ -79,30 +79,29 @@ function resultSheet(S){
   const tot=p*4+c*4+f*9||1;const items=Array.isArray(d.items)?d.items.slice(0,12):[];
   const gsum=items.reduce((a,i)=>a+num(i.grams),0);
   const rows=items.map(i=>{const gr=num(i.grams);let kc=num(i.kcal),approx=false;if(!kc&&gr&&gsum){kc=kcal*gr/gsum;approx=true}
-    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b>${approx?'≈ ':''}${r0(kc)}<small> kcal</small></b>`:''}</li>`}).join('');
+    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b><bdi dir="ltr">${approx?'≈ ':''}${r0(kc)}</bdi><small> kcal</small></b>`:''}</li>`}).join('');
   const alerts=(Array.isArray(d.alerts)?d.alerts:[]).filter(Boolean).slice(0,3);
+  const notes=alerts.map(a=>`<li><i class="nxp-ni warn">${I(ICO.warn,16)}</i><span class="nxp-fn">${esc(String(a).slice(0,40))}</span></li>`).join('')+(d.tip?`<li><i class="nxp-ni">${I(ICO.info,16)}</i><span class="nxp-fn">${esc(String(d.tip).slice(0,140))}</span></li>`:'');
   const GENK=d.better_prompt;
-  return `<div class="nxp-res" role="dialog" aria-label="${L('Résultat','النتيجة')}" data-lenis-prevent>
-   <i class="nxp-grab" aria-hidden="true"></i>
-   <div class="nxp-top">
-    <div class="nxp-kcal"><strong data-count="${r0(kcal)}">${RM?r0(kcal):0}</strong><span>kcal</span></div>
-    <div class="nxp-score sc-${g.toLowerCase()}" title="${s}/100"><b>${g}</b><small>${s}/100</small></div>
-   </div>
-   <h4 class="nxp-dish">${esc(String(d.dish||'').slice(0,48))}${d.verdict?`<span>${esc(String(d.verdict).slice(0,24))}</span>`:''}</h4>
-   <div class="nxp-rings">${ring(L('Protéines','بروتين'),p,p*4/tot*100,'mp')}${ring(L('Glucides','نشويات'),c,c*4/tot*100,'mc')}${ring(L('Lipides','دهون'),f,f*9/tot*100,'mf')}</div>
-   ${rows?`<h5 class="nxp-h">${L('Dans l’assiette','شنو كاين فالصحن')}</h5><ul class="nxp-list">${rows}</ul>`:''}
-   ${d.tip||alerts.length?`<div class="nxp-note">${alerts.length?`<p class="al">${I(ICO.warn,18)}<span>${alerts.map(esc).join(' · ')}</span></p>`:''}${d.tip?`<p>${I(ICO.info,18)}<span>${esc(String(d.tip).slice(0,120))}</span></p>`:''}</div>`:''}
+  return `<div class="nxp-results" aria-label="${L('Résultat','النتيجة')}">
+   <section class="nxp-card pad"><div class="nxp-sum">
+    <div class="nxp-sum-main"><div class="nxp-kcal"><strong data-count="${r0(kcal)}">${RM?r0(kcal):0}</strong><span>kcal</span></div>
+     <h4 class="nxp-dish">${esc(String(d.dish||'').slice(0,48))}</h4>${d.verdict?`<span class="nxp-verdict">${esc(String(d.verdict).slice(0,30))}</span>`:''}</div>
+    <div class="nxp-score sc-${g.toLowerCase()}" role="img" aria-label="${L('Score','النقطة')} ${g}, ${s}/100"><b>${g}</b><small>${s}/100</small></div>
+   </div></section>
+   <section class="nxp-card pad"><h4 class="nxp-card-t">${L('Macros','الماكرو')}</h4>
+    <div class="nxp-rings">${ring(L('Protéines','بروتين'),p,p*4/tot*100,'mp')}${ring(L('Glucides','نشويات'),c,c*4/tot*100,'mc')}${ring(L('Lipides','دهون'),f,f*9/tot*100,'mf')}</div></section>
+   ${rows?`<div><span class="nxp-cap">${L('Aliments','الماكلة')}</span><section class="nxp-card"><ul class="nxp-list">${rows}</ul></section></div>`:''}
+   ${notes?`<section class="nxp-card"><ul class="nxp-list nxp-note">${notes}</ul></section>`:''}
    ${d.src?`<p class="nxp-src">${esc(d.src)}</p>`:''}
-   <div class="nxp-acts">
-    <button type="button" class="nxp-btn primary nv-journal" ${S.added?'disabled':''}>${I(ICO.check,20)}${S.added?esc(S.added):L('Ajouter au journal','زيد للجورنال')}</button>
-    <button type="button" class="nxp-btn ghost nv-reset">${I(ICO.redo,20)}${L('Refaire','عاود')}</button>
-   </div>
-   <div class="nxp-more">
-    ${GENK?`<button type="button" class="nxp-link nv-gen" ${S.genBusy?'disabled':''}>${I(ICO.spark,18)}${S.genBusy?L('Création…','كنصاوب…'):L('Voir l’image plus saine','شوف الصحن الصحي')}</button>`:''}
-    <button type="button" class="nxp-link nv-heal">${I(ICO.chef,18)}${L('Recette plus saine','وصفة صحية')}</button>
-   </div>
-   ${S.genErr?`<p class="nv-err">${esc(S.genErr)}</p>`:''}${S.gen?`<figure class="nxp-fig"><img src="${S.gen}" alt=""><figcaption>${L('Image générée par IA · illustration','تصويرة من الذكاء الاصطناعي')}</figcaption></figure>`:''}
+   <button type="button" class="nxp-btn primary nv-journal" ${S.added?'disabled':''}>${S.added?I(ICO.check,20)+esc(S.added):L('Ajouter au journal','زيد للجورنال')}</button>
+   <section class="nxp-card"><ul class="nxp-list nxp-links">
+    ${GENK?`<li><button type="button" class="nv-gen" ${S.genBusy?'disabled':''}><i class="nxp-ni">${I(ICO.spark,16)}</i><span>${S.genBusy?L('Création…','كنصاوب…'):L('Voir l’image plus saine','شوف الصحن الصحي')}</span><em class="nxp-chev">${I(CHEV,16)}</em></button></li>`:''}
+    <li><button type="button" class="nv-heal"><i class="nxp-ni">${I(ICO.chef,16)}</i><span>${L('Recette plus saine','وصفة صحية')}</span><em class="nxp-chev">${I(CHEV,16)}</em></button></li>
+   </ul></section>
+   ${S.genErr?`<p class="nv-err">${esc(S.genErr)}</p>`:''}${S.gen?`<section class="nxp-card"><figure class="nxp-fig"><img src="${S.gen}" alt=""><figcaption>${L('Image générée par IA · illustration','تصويرة من الذكاء الاصطناعي')}</figcaption></figure></section>`:''}
    ${S.err?`<p class="nv-err">${esc(S.err)}</p>`:''}
+   <button type="button" class="nxp-btn ghost nv-reset">${L('Refaire','عاود')}</button>
   </div>`;
 }
 function view(S,hist){
@@ -122,22 +121,23 @@ function view(S,hist){
      <button type="button" class="nxp-shutter" data-shutter aria-label="${L('Prendre la photo','صور')}"><i></i></button>
      <button type="button" class="nxp-round" data-flash aria-pressed="false" aria-label="${L('Flash','الضو')}" disabled>${I(ICO.flash)}</button></div>`:''}
   </div>
+  ${mode!=='result'?'<div class="nxp-diet-slot"></div>':''}
   <div class="nv-slot" data-slot="0" hidden><input type="file" accept="image/jpeg,image/png,image/webp" hidden></div>
   ${mode==='camera'?`<div class="nxp-below">
     <button type="button" class="nxp-pill" data-desc>${I(ICO.pen,18)}${L('Ou décris ton plat','ولا وصف الماكلة')}</button>
-    <div class="nxp-dishes" data-lenis-prevent><small>${L('Plats marocains · instantané','أطباق مغربية · نتيجة دغيا')}</small><div>${DISHES.map(([n,fr,ar,k])=>`<button type="button" data-moro="${esc(n)}"><i>${foodK(k,22)}</i><span>${ARY?ar:fr}</span></button>`).join('')}</div></div>
+    <div class="nxp-dishes" data-lenis-prevent><span class="nxp-cap">${L('Plats marocains','أطباق مغربية')}</span><div>${DISHES.map(([n,fr,ar,k])=>`<button type="button" data-moro="${esc(n)}"><i>${foodK(k,26)}</i><span>${ARY?ar:fr}</span></button>`).join('')}</div></div>
     ${S.err?`<p class="nv-err">${I(ICO.warn,18)}${esc(S.err)}</p>`:''}
     ${hist||''}
   </div>`:''}
-  ${mode==='photo'&&S.err?`<div class="nxp-below"><p class="nv-err">${I(ICO.warn,18)}${esc(S.err)}</p><button type="button" class="nxp-btn ghost nv-reset">${I(ICO.redo,20)}${L('Reprendre','عاود')}</button></div>`:''}
+  ${mode==='photo'&&S.err?`<div class="nxp-below"><p class="nv-err">${I(ICO.warn,18)}${esc(S.err)}</p><button type="button" class="nxp-btn ghost nv-reset">${L('Reprendre','عاود')}</button></div>`:''}
   <div class="nxp-sheet-bg" data-sheet-close hidden></div>
   <div class="nxp-sheet" data-text-sheet hidden role="dialog" aria-label="${L('Décrire le plat','وصف الماكلة')}" data-lenis-prevent>
    <i class="nxp-grab" aria-hidden="true"></i>
    <div class="nxp-sheet-h"><h4>${L('Décris ton plat','وصف الماكلة')}</h4><button type="button" class="nxp-round sm" data-sheet-close aria-label="${L('Fermer','سد')}">${I(ICO.close,20)}</button></div>
    <div class="ch-add nv-text"><input type="text" maxlength="160" data-text value="${esc(S.text||'')}" placeholder="${L('Ex. couscous, tajine poulet, burger…','مثلا: كسكس، طاجين دجاج، برغر…')}" autocomplete="off"></div>
-   <button type="button" class="nxp-btn primary nv-go" ${(img||(S.text&&S.text.trim()))&&!S.busy?'':'disabled'}>${I(ICO.spark,20)}${L('Analyser','حلل')}</button>
+   <button type="button" class="nxp-btn primary nv-go" ${(img||(S.text&&S.text.trim()))&&!S.busy?'':'disabled'}>${L('Analyser','حلل')}</button>
   </div>
-  ${mode==='result'?resultSheet(S):''}
+  ${mode==='result'?resultSheet(S)+'<div class="nxp-diet-slot"></div>':''}
  </section>`;
 }
 
@@ -148,16 +148,26 @@ function fit(el){const vf=el.querySelector('.nxp-vf'),sh=el.querySelector('.nxp-
   im.complete?go():im.addEventListener('load',go,{once:true});}
 function count(el){const n=el.querySelector('[data-count]');if(!n)return;const to=Number(n.dataset.count)||0;if(RM||!to){n.textContent=to;return}
   const t0=performance.now(),D=1100;const step=t=>{const k=Math.min(1,(t-t0)/D),e=1-Math.pow(1-k,3);n.textContent=Math.round(to*e);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+/* ligne « régime & allergies » : sous le viseur sur cet écran, remise à sa place ailleurs */
+const CHEV='<path d="m9 6 6 6-6 6"/>';
+const SHIELD='<path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/>';
+function dietRow(box){if(!box)return;box.classList.add('nxp-row-host');box.setAttribute('dir',ARY?'rtl':'ltr');const sp=box.querySelector('.nt-diet-h>span');const hd=box.querySelector('.nt-diet-h');if(hd&&!hd.querySelector('.nxp-chev'))hd.insertAdjacentHTML('beforeend','<span class="nxp-chev" aria-hidden="true">'+I(CHEV,16)+'</span>');
+  if(sp&&!sp.querySelector('.nxp-dico')){const txt=sp.textContent.replace(/^[^\p{L}]+/u,'').trim();sp.innerHTML='<i class="nxp-dico" aria-hidden="true">'+I(SHIELD,18)+'</i><b class="nxp-emo" aria-hidden="true">🛡️</b><span>'+esc(ARY?'الحمية والحساسية':(txt||'Mon régime & allergies'))+'</span>'}}
+let dietObs=null,DIET=null;
+function placeDiet(el){const box=DIET=DIET||document.getElementById('nt-diet'),slot=el&&el.querySelector('.nxp-diet-slot');if(!box)return;
+  if(!dietObs){dietObs=new MutationObserver(()=>{if(document.body.classList.contains('nxp-on'))dietRow(box)});dietObs.observe(box,{childList:true})}
+  if(slot&&document.body.classList.contains('nxp-on')){slot.replaceWith(box);dietRow(box)}}
+function restoreDiet(){const box=DIET||document.getElementById('nt-diet'),ws=document.getElementById('ns-workspace');if(!box||!ws)return;
+  box.classList.remove('nxp-row-host');box.removeAttribute('dir');if(box.parentNode!==ws.parentNode)ws.parentNode.insertBefore(box,ws)}
 function bind(el,S){
   const st=window.__nxStudio;clearInterval(loadTimer);
-  document.body.classList.add('nxp-on');
+  sync();placeDiet(el);
   const mode=el.dataset.mode;
   const slotIn=el.querySelector('.nv-slot input');
   slotIn&&slotIn.addEventListener('change',()=>{if(slotIn.files&&slotIn.files[0]){S.__auto=true;stopCam()}});
   // une photo vient d'être choisie ou prise → analyse directe
   if(mode==='photo'&&S.__auto&&!S.err){S.__auto=false;const go=el.querySelector('.nv-go');if(go&&!go.disabled){buzz(10);setTimeout(()=>go.click(),60)}}
   if(mode==='camera'){
-    startCam(el);
     el.querySelector('[data-gallery]')?.addEventListener('click',()=>slotIn&&slotIn.click());
     el.querySelector('[data-shutter]')?.addEventListener('click',()=>{const v=el.querySelector('.nxp-video');const data=el.classList.contains('live')&&v?shoot(v):null;
       if(!data){slotIn&&slotIn.click();return}
@@ -182,7 +192,7 @@ function bind(el,S){
   window.addEventListener('resize',()=>fit(el),{passive:true});
 }
 /* robot masqué + caméra coupée quand on quitte l'écran */
-function sync(){const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);
+function sync(){const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);if(!on)restoreDiet();else placeDiet(document.querySelector('#page-studio.active .nxp'));
   const cam=document.querySelector('#page-studio.active .nxp[data-mode="camera"]');if(!cam)stopCam();else if(!stream)startCam(cam)}
 document.addEventListener('click',e=>{if(e.target.closest('.tab,[data-tab],[data-tool],.pulse-nav-links button'))setTimeout(sync,80)},true);
 new MutationObserver(()=>setTimeout(sync,30)).observe(document.getElementById('page-studio')||document.body,{attributes:true,attributeFilter:['class']});
