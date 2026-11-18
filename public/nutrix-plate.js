@@ -152,7 +152,7 @@ function count(el){const n=el.querySelector('[data-count]');if(!n)return;const t
 const CHEV='<path d="m9 6 6 6-6 6"/>';
 const SHIELD='<path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/>';
 function dietRow(box){if(!box)return;box.classList.add('nxp-row-host');box.setAttribute('dir',ARY?'rtl':'ltr');const sp=box.querySelector('.nt-diet-h>span');const hd=box.querySelector('.nt-diet-h');if(hd&&!hd.querySelector('.nxp-chev'))hd.insertAdjacentHTML('beforeend','<span class="nxp-chev" aria-hidden="true">'+I(CHEV,16)+'</span>');
-  if(sp&&!sp.querySelector('.nxp-dico')){const txt=sp.textContent.replace(/^[^\p{L}]+/u,'').trim();sp.innerHTML='<i class="nxp-dico" aria-hidden="true">'+I(SHIELD,18)+'</i><b class="nxp-emo" aria-hidden="true">🛡️</b><span>'+esc(ARY?'الحمية والحساسية':(txt||'Mon régime & allergies'))+'</span>'}}
+  if(sp&&!sp.querySelector('.nxp-dico')){const txt=sp.textContent.replace(/^[^\p{L}]+/u,'').trim();sp.innerHTML='<i class="nxp-dico" aria-hidden="true">'+I(SHIELD,18)+'</i><span>'+esc(ARY?'الحمية والحساسية':(txt||'Mon régime & allergies'))+'</span>'}}
 let dietObs=null,DIET=null;
 function placeDiet(el){const box=DIET=DIET||document.getElementById('nt-diet'),slot=el&&el.querySelector('.nxp-diet-slot');if(!box)return;
   if(!dietObs){dietObs=new MutationObserver(()=>{if(document.body.classList.contains('nxp-on'))dietRow(box)});dietObs.observe(box,{childList:true})}

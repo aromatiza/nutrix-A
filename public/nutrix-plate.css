@@ -114,13 +114,10 @@ html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h>i{width:8px!importa
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host[dir="rtl"] .nt-diet-h>i,.nxp[lang="ar"] ~ * #nt-diet .nt-diet-h>i{transform:rotate(135deg)!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host.open .nt-diet-h>i{transform:rotate(45deg)!important}
 .nxp-dico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--ios-green);color:#fff}
-.nxp-emo{display:none}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b{padding:4px var(--ios-pad) var(--ios-pad)!important;margin:0!important;border-top:.5px solid var(--ios-sep)!important;background:transparent!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b p{margin:10px 0!important;font-size:13px!important;color:var(--ios-grey)!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b button{min-height:34px!important;padding:0 12px!important;border-radius:999px!important;border:0!important;background:var(--ios-fill)!important;color:var(--ios-label)!important;font:500 15px var(--ios-font)!important;box-shadow:none!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b button.on{background:var(--ios-green)!important;color:#fff!important}
-body:not(.nxp-on) .nxp-dico{display:none}
-body:not(.nxp-on) .nxp-emo{display:inline}
 
 /* ---------- sous le viseur ---------- */
 .nxp-below{display:flex;flex-direction:column;gap:var(--ios-gap)}
@@ -280,11 +277,9 @@ html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs .ns-tab-ico{backgroun
 
 /* surfaces des outils */
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in,.nv-out,.nv-out:not(.on),.nv-card,.nv-prod,.nv-recipe,.nv-shop,.nv-pick,.nv-pick.best,.ch-panel,.ch-rec,.ch-rec.open){background:var(--st-card)!important;background-image:none!important;border-color:var(--st-line)!important;color:var(--st-ink)!important;box-shadow:none!important}
-html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-in::before{display:none!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in header h3,.nv-card h3,.nv-card h4,.nv-h,.ch-rec strong){color:var(--st-ink)!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in header p,.nv-slot-empty small,.nv-foot,.nv-h small){color:var(--st-mute)!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot,html body:not(#_v):not(#_w):not(#_x) #page-studio .nv[data-tool] .nv-slot:not(.has){background:var(--st-card2)!important;background-image:none!important;border-color:var(--st-line)!important;box-shadow:none!important}
-html body:not(#_v):not(#_w):not(#_x) #page-studio .nv[data-tool] .nv-slot:not(.has)::before{display:none!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot-empty :is(strong,.nv-i){color:var(--st-ink)!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot-empty .nv-i{background:var(--st-card)!important;box-shadow:none!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-prod-hero,.ch-emo){background:var(--st-card2)!important;background-image:none!important}
@@ -308,8 +303,8 @@ html body:not(#_v):not(#_w):not(#_x) #nt-diet .nt-diet-h{background:transparent!
 html body:not(#_v):not(#_w):not(#_x) #nt-diet .nt-diet-h em{color:var(--st-mute)!important;background:none!important}
 html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nt-diet-h>span,html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nt-diet-h>span>span{color:var(--st-ink)!important}
 html body:not(#_v):not(#_w):not(#_x) #nt-diet [data-d]:not(.on){background:var(--st-card2)!important;color:var(--st-ink)!important;border-color:var(--st-line)!important}
-html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nxp-dico{background:var(--st-sel)!important;color:var(--st-on-sel)!important}
-html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nxp-dico svg{stroke:currentColor!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico{background:var(--st-sel)!important;color:var(--st-on-sel)!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico svg{stroke:currentColor!important}
 
 /* écran Assiette : ce qui est posé directement sur le fond forêt */
 html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-head h3{color:var(--st-on-page)!important}
@@ -336,3 +331,18 @@ html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-empty :is(b,.nv-i){color:v
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-empty span{color:var(--st-mute)!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-go:disabled{opacity:1!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio #ch-addbtn{background:var(--st-sel)!important;color:var(--st-on-sel)!important;box-shadow:none!important}
+
+/* icônes au trait à la place des emojis */
+html body:not(#_v):not(#_w):not(#_x) #nt-diet:not(.nxp-row-host) .nt-diet-h>span{display:flex;align-items:center;gap:10px}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet:not(.nxp-row-host) .nxp-dico{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em){display:inline-grid;place-items:center;width:18px;height:18px;margin-inline-end:6px;font-style:normal;vertical-align:-4px}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em) .nv-i{width:18px;height:18px;background:none!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em) .nv-i svg{width:17px;height:17px}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-recipe b,.nv-prod-hero b,.nv-emoji,.ch-emo,.nv-hist-row b){display:grid;place-items:center;color:var(--st-ink)!important;font-size:0}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-acts [data-rfav].on{background:var(--st-sel)!important;color:var(--st-on-sel)!important;border-color:transparent!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-acts [data-rfav].on svg{fill:currentColor}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico{transform:none!important;rotate:none!important;border:0!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-tip,.nv-tip.alt,.nv-reset,.ch-macros span,.ch-meta span,.ch-meta .lv,.ch-ings li,.ch-ings li.miss,.ch-timer,.ch-chg,.ch-acts button:not(.ch-cook):not(.on),.nv-pick-end span){background:var(--st-card2)!important;background-image:none!important;color:var(--st-ink)!important;border-color:var(--st-line)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-crown,.nv-prod .nv-crown,.ch-ings li.have i){background:var(--st-sel)!important;color:var(--st-on-sel)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-crown :is(em,.nv-i){color:inherit!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ch-ings li.miss i,.ch-timer.run){background:var(--st-accent)!important;color:#fff!important}

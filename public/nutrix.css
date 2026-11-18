@@ -3473,15 +3473,7 @@ body.pulse-shell.dark #page-nutri #nutri-query{background-color:#141617!importan
 #page-studio .nv[data-tool="restaurant"]{--tc:#c4452f;--tc2:#e9703f;--tcs:#fdebe5;--tci:#6d1f10}
 #page-studio .nv-in{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--tcs) 0,#fff 210px)!important;border-color:color-mix(in srgb,var(--tc) 18%,#e3ece7)!important}
 #page-studio .nv-in>*{position:relative;z-index:1}
-#page-studio .nv-in::before{content:'';position:absolute;right:-30px;top:-30px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tc) 22%,transparent),transparent 68%);animation:nxBreath 6s ease-in-out infinite}
-#page-studio .nv-in::after{position:absolute;right:22px;top:14px;font-size:64px;line-height:1;opacity:.9;filter:drop-shadow(0 10px 14px rgba(0,0,0,.15));animation:nxFloat 4.5s ease-in-out infinite;pointer-events:none}
-#page-studio .nv[data-tool="plate"] .nv-in::after{content:'🍽️'}
-#page-studio .nv[data-tool="fridge"] .nv-in::after{content:'🧊'}
-#page-studio .nv[data-tool="swap"] .nv-in::after{content:'⚖️'}
-#page-studio .nv[data-tool="intelligence"] .nv-in::after{content:'🔬'}
-#page-studio .nv[data-tool="restaurant"] .nv-in::after{content:'🍴'}
 @keyframes nxFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(4deg)}}
-@keyframes nxBreath{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.18);opacity:.6}}
 #page-studio .nv-in header h3{color:var(--tci)!important;max-width:78%}
 #page-studio .nv-in header p{max-width:70%}
 #page-studio .nv-slot{border-color:color-mix(in srgb,var(--tc) 45%,#fff)!important;background:linear-gradient(160deg,var(--tcs),color-mix(in srgb,var(--tcs) 55%,#fff))!important;overflow:hidden}
@@ -3491,30 +3483,10 @@ body.pulse-shell.dark #page-nutri #nutri-query{background-color:#141617!importan
 #page-studio .nv-go{background:linear-gradient(135deg,var(--tc),var(--tc2))!important;box-shadow:0 16px 30px -16px var(--tc)!important}
 #page-studio .nv-out:not(.on){background:radial-gradient(circle at 50% 38%,var(--tcs),transparent 62%),#fff!important}
 #page-studio .nv-empty b,#page-studio .nv-empty .nv-i{color:var(--tc)!important}
-#page-studio .nv-empty b{animation:nxFloat 4s ease-in-out infinite}
-/* décors animés des zones photo */
-#page-studio .nv-slot:not(.has)::before,#page-studio .nv-slot:not(.has)::after{pointer-events:none;position:absolute}
-/* assiette : anneaux concentriques qui pulsent */
-#page-studio .nv[data-tool="plate"] .nv-slot:not(.has)::before{content:'';left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:2px solid var(--tc);opacity:.35;animation:nxRing 3s ease-out infinite}
-#page-studio .nv[data-tool="plate"] .nv-slot:not(.has)::after{content:'';left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:2px solid var(--tc);opacity:.35;animation:nxRing 3s ease-out 1.5s infinite}
 @keyframes nxRing{from{transform:scale(.55);opacity:.5}to{transform:scale(1.7);opacity:0}}
-/* frigo : bulles d'ingrédients qui montent */
-#page-studio .nv[data-tool="fridge"] .nv-slot:not(.has)::before{content:'🥕  🥛  🍅  🥬';left:0;right:0;bottom:-30px;text-align:center;font-size:26px;letter-spacing:6px;opacity:.55;animation:nxRise 6s linear infinite}
-#page-studio .nv[data-tool="fridge"] .nv-slot:not(.has)::after{content:'🧀  🥚  🍋';left:0;right:0;bottom:-30px;text-align:center;font-size:22px;letter-spacing:8px;opacity:.45;animation:nxRise 7s linear 2.6s infinite}
-@keyframes nxRise{from{transform:translateY(0)}to{transform:translateY(-330px)}}
-/* comparer : deux cadres qui s'attirent */
-#page-studio .nv-vs-dot{background:linear-gradient(135deg,var(--tc),var(--tc2))!important;color:#fff!important;animation:nxBeat 1.8s ease-in-out infinite;box-shadow:0 10px 24px -8px var(--tc)}
+#page-studio .nv-vs-dot{background:linear-gradient(135deg,var(--tc),var(--tc2))!important;color:#fff!important;box-shadow:none}
 @keyframes nxBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
-#page-studio .nv[data-tool="swap"] .nv-slot:not(.has)::before{content:'';inset:10px;border-radius:14px;border:2px dashed color-mix(in srgb,var(--tc) 40%,transparent);animation:nxMarch 1.2s linear infinite}
-@keyframes nxMarch{from{inset:10px}50%{inset:16px}to{inset:10px}}
-/* analyser : laser d'analyse */
-#page-studio .nv[data-tool="intelligence"] .nv-slot:not(.has){background-image:linear-gradient(color-mix(in srgb,var(--tc) 10%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--tc) 10%,transparent) 1px,transparent 1px),linear-gradient(160deg,var(--tcs),#fff)!important;background-size:24px 24px,24px 24px,auto!important}
-#page-studio .nv[data-tool="intelligence"] .nv-slot:not(.has)::before{content:'';left:0;right:0;height:3px;top:0;background:linear-gradient(90deg,transparent,var(--tc),transparent);box-shadow:0 0 18px 3px color-mix(in srgb,var(--tc) 60%,transparent);animation:nxLaser2 2.6s ease-in-out infinite alternate}
 @keyframes nxLaser2{from{top:6%}to{top:94%}}
-/* restaurant : nappe à rayures + vapeur */
-#page-studio .nv[data-tool="restaurant"] .nv-slot:not(.has){background-image:repeating-linear-gradient(45deg,color-mix(in srgb,var(--tc) 7%,transparent) 0 14px,transparent 14px 28px),linear-gradient(160deg,var(--tcs),#fff)!important}
-#page-studio .nv[data-tool="restaurant"] .nv-slot:not(.has)::before{content:'♨';left:50%;top:14%;font-size:34px;color:var(--tc);opacity:.45;margin-left:-12px;animation:nxSteam 3s ease-in-out infinite}
-@keyframes nxSteam{0%{transform:translateY(20px);opacity:0}50%{opacity:.55}100%{transform:translateY(-14px);opacity:0}}
 /* onglets colorés */
 #ns-tabs button[data-tool="plate"].on{background:linear-gradient(135deg,#e07b2d,#f0a53a)!important;box-shadow:0 12px 24px -12px #e07b2d!important}
 #ns-tabs button[data-tool="fridge"].on{background:linear-gradient(135deg,#0e8fa3,#35c0d1)!important;box-shadow:0 12px 24px -12px #0e8fa3!important}
@@ -3530,7 +3502,6 @@ body.pulse-shell.dark #page-studio .nv-slot-empty strong{color:#fff}
 body.pulse-shell.dark #page-studio .nv-out:not(.on){background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--tc) 16%,#191b1d),transparent 62%),#191b1d!important}
 body.pulse-shell.dark #page-studio .nv[data-tool="intelligence"] .nv-slot:not(.has),body.pulse-shell.dark #page-studio .nv[data-tool="restaurant"] .nv-slot:not(.has){background-color:#141617!important}
 @media(max-width:700px){
- #page-studio .nv-in::after{font-size:48px;right:14px;top:10px}
  #page-studio .nv-in header h3{max-width:70%}
  #page-studio .nv-in header p{max-width:66%}
  #page-studio .nv-slot{aspect-ratio:1/1}
@@ -3710,20 +3681,13 @@ body.dark .ch-nav .pri{background:linear-gradient(135deg,#3d4246,#17b26a)}body.d
 #page-studio .ns-head{position:relative;overflow:hidden;min-height:196px;padding-right:140px!important}
 #page-studio .ns-head>div:first-child{position:relative;z-index:2}
 .nt-chef{position:absolute;right:6px;bottom:0;width:150px;height:100%;z-index:1;pointer-events:none}
-.nt-av{position:absolute;right:4px;bottom:-4px;width:128px;height:144px;animation:ntChefBob 4s ease-in-out infinite}
+.nt-av{position:absolute;right:4px;bottom:-4px;width:128px;height:144px}
 .nt-av svg{width:100%;height:100%;overflow:visible}
-@keyframes ntChefBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.ch-eyes{transform-box:fill-box;transform-origin:center;animation:sbBlink 4.6s infinite}
-.ch-arm{transform-origin:130px 142px;animation:ntWave 2.4s ease-in-out infinite}
-@keyframes ntWave{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
-.nt-fl{position:absolute;font-size:22px;opacity:.9;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));animation:ntFl 5s ease-in-out infinite}
-.nt-fl.f1{right:118px;top:14px}.nt-fl.f2{right:14px;top:10px;animation-delay:-1s}.nt-fl.f3{right:136px;top:96px;animation-delay:-2s;font-size:18px}.nt-fl.f4{right:70px;top:4px;animation-delay:-3s;font-size:18px}.nt-fl.f5{right:6px;top:84px;animation-delay:-1.5s;font-size:17px}.nt-fl.f6{right:96px;top:60px;animation-delay:-2.5s;font-size:15px}
-@keyframes ntFl{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-9px) rotate(8deg)}}
 .nt-say{position:absolute;right:104px;top:34px;max-width:130px;padding:8px 11px;border-radius:14px 14px 4px 14px;background:#fff;color:#12261f;font:700 11.5px/1.3 Inter,sans-serif;box-shadow:0 8px 20px -8px rgba(0,0,0,.4);display:none}
 .nt-say.pop{animation:ntPop .45s cubic-bezier(.34,1.56,.64,1)}
 @keyframes ntPop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
 @media(min-width:560px){.nt-say{display:block}#page-studio .ns-head{padding-right:210px!important}.nt-chef{width:210px}.nt-av{width:150px;height:168px}}
-@media(max-width:559px){#page-studio .ns-head{padding-right:112px!important;min-height:190px}.nt-av{width:104px;height:116px;right:0}.nt-fl.f1{right:80px}.nt-fl.f3{right:92px;top:80px}.nt-fl.f6{display:none}#page-studio .ns-head h2{font-size:24px!important}}
+@media(max-width:559px){#page-studio .ns-head{padding-right:112px!important;min-height:190px}.nt-av{width:104px;height:116px;right:0}#page-studio .ns-head h2{font-size:24px!important}}
 #nt-diet{margin:0 0 14px;border-radius:20px;background:#fff;border:1px solid var(--nx-line,#dfe8e2);overflow:hidden}
 #nt-diet .nt-diet-h{width:100%;display:flex;align-items:center;gap:10px;padding:13px 16px;border:0;background:none;font:700 .92rem Inter,sans-serif;color:var(--nx-ink,#12261f);cursor:pointer;text-align:left}
 #nt-diet .nt-diet-h span{flex:1}#nt-diet .nt-diet-h em{font:600 .75rem Inter,sans-serif;font-style:normal;background:#e4f5ec;color:#0c6b4c;padding:4px 10px;border-radius:999px}
@@ -3742,8 +3706,7 @@ body.dark #nt-diet{background:#191a1c;border-color:rgba(190,215,150,.18)}body.da
 body.dark .nv .nt-moro button{background:#2b241a;border-color:#5a4524;color:#f1c98a}
 .nv-foot{margin:6px 0 0;font-size:.76rem;color:var(--nx-muted,#6b7a72)}
 
-.nt-glow{position:absolute;right:-50px;bottom:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(240,169,58,.55),rgba(240,169,58,0) 68%);animation:ntBlob 7s ease-in-out infinite}
-@media(min-width:560px){.nt-say{right:176px;top:auto;bottom:86px;border-radius:14px 14px 4px 14px}.nt-av{width:176px;height:198px;right:10px}.nt-chef{width:260px}#page-studio .ns-head{padding-right:280px!important;min-height:210px}.nt-fl.f3{right:200px;top:30px}.nt-fl.f1{right:150px}}
+@media(min-width:560px){.nt-say{right:176px;top:auto;bottom:86px;border-radius:14px 14px 4px 14px}.nt-av{width:176px;height:198px;right:10px}.nt-chef{width:260px}#page-studio .ns-head{padding-right:280px!important;min-height:210px}}
 
 /* menu du jour */
 #nt-menu{margin:0 0 14px;padding:16px;border-radius:22px;background:linear-gradient(135deg,#fff8ec,#eef8f1);border:1px solid #f0e1c6;display:grid;gap:12px}
@@ -4207,7 +4170,6 @@ html body.pulse-shell #page-nutri .nutri-scan-card .nutri-scan-row #nutri-barcod
 }
 #nutri-compare .nx-duel-photo,#nutri-compare-card .nx-duel-photo{animation:ntFloat 3.8s ease-in-out infinite}
 #nutri-compare .nx-duel-card:nth-of-type(2) .nx-duel-photo{animation-delay:-1.9s}
-@keyframes ntFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(2deg)}}
 #nutri-compare .nx-duel-card.win,#nutri-compare-card .nx-duel-card.win{animation:ntRise .6s var(--nt-spring) both}
 @media(prefers-reduced-motion:reduce){
   #nutri-compare-card:not(.open)>.nx-acc-toggle,#nutri-compare .nx-duel-card,#nutri-compare .nx-duel-photo,
@@ -4514,7 +4476,6 @@ body.dark .nt-tour{--scr:#191a1c;--scr-ink:#e9eceb;--scr-mut:#9db391;--scr-card:
 .nt-m-ant{transform-origin:110px 40px;animation:ntAnt 3s ease-in-out infinite}
 .nt-m-bulb{animation:ntBulb 2s ease-in-out infinite}
 @keyframes ntMFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@keyframes ntWave{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-18deg)}}
 @keyframes ntBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
 @keyframes ntAnt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
 @keyframes ntBulb{0%,100%{opacity:1}50%{opacity:.55}}

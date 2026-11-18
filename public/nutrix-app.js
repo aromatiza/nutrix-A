@@ -442,9 +442,18 @@ const I={
  drop:'<svg viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 10.5a6 6 0 0 1-12 0C6 9.2 12 3 12 3z"/></svg>',
  salt:'<svg viewBox="0 0 24 24"><path d="M8 9h8l-1 11H9zM9 9V6h6v3M10.5 13h3"/></svg>',
  muscle:'<svg viewBox="0 0 24 24"><path d="M4 14c2-1 3-3 3-6l3 1c0 2 1 3 3 3l3-2c2 0 4 2 4 5s-3 5-6 5-6 0-8-2z"/></svg>',
- close:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+ close:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+ heart:'<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-8.6-9A4.7 4.7 0 0 1 12 7.500 4.700 4.700 0 0 1 20.600 11C19 15.600 12 20 12 20z"/></svg>',
+ scale:'<svg viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.500 14a3 3 0 0 0 5 0zM19 8l-2.500 6a3 3 0 0 0 5 0z"/></svg>',
+ leaf:'<svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 15-14 0 10-5 15-13 14"/><path d="M5 19c2-5 5-8 9-10"/></svg>',
+ bolt:'<svg viewBox="0 0 24 24"><path d="M13 3 5 13.500h6L10 21l8-10.500h-6z"/></svg>',
+ recycle:'<svg viewBox="0 0 24 24"><path d="M7 19H4l3-5M17 19h3l-3-5M9 6l3-3 3 3M12 3v6M8 19h8"/></svg>',
+ coin:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M15 9.500c-.8-1-1.800-1.500-3-1.500-1.700 0-3 1-3 2.300 0 3 6 1.500 6 4.200 0 1.300-1.300 2.500-3 2.500-1.300 0-2.400-.5-3.200-1.500M12 6.500v11"/></svg>',
+ shield:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.400 3 8.300 7 10 4-1.700 7-5.600 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>'
 };
 const ico=k=>`<i class="nv-i">${I[k]}</i>`;
+const fi=(name,size=22)=>window.NxFood?window.NxFood.icon(String(name||''),size):ico('image'); // icône d'aliment au trait
 const CFG={
  plate:{title:'Photographiez votre assiette',sub:'Calories, macros et score en un coup d’œil',cta:'Analyser',slots:['Assiette']},
  fridge:{title:'Ouvrez votre frigo',sub:'Ingrédients détectés et idées de plats',cta:'Scanner le frigo',slots:['Frigo ou courses']},
@@ -569,13 +578,13 @@ Orange|orange,limoun|🍊|1 fruit (150 g)|70|1|17|0|92|Vitamine C, préfère-la 
 const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,' ').replace(/[^a-z0-9؀-ۿ ]/g,' ').replace(/\s+/g,' ').trim();
 const MAR=MAROC.split('\n').map(l=>{const a=l.split('|');return {name:a[0],keys:a[1].split(',').map(norm).filter(Boolean).concat([norm(a[0])]),emoji:a[2],portion:a[3],kcal:+a[4],p:+a[5],c:+a[6],f:+a[7],score:+a[8],tip:a[9],ing:a[10].split(',')}});
 function marocFind(q){const t=norm(q);if(t.length<3)return null;let best=null,bl=0;for(const d of MAR)for(const k of d.keys){if((t===k||t.includes(k)||(k.length>=5&&k.includes(t)&&t.length>=4))&&k.length>bl){best=d;bl=k.length}}return best}
-const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:'🇲🇦 Base cuisine marocaine · '+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
+const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:'Base cuisine marocaine · '+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
 
 /* ---------- visual atoms ---------- */
 function ring(value,max,label,sub,color='var(--nx-primary)'){const p=clamp(value/max*100,0,100),C=2*Math.PI*52;return `<div class="nv-ring" style="--c:${color}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${(C*p/100).toFixed(1)} ${C.toFixed(1)}"/></svg><div><strong>${esc(label)}</strong><small>${esc(sub)}</small></div></div>`}
 function bar(label,val,max,unit,color){return `<div class="nv-bar"><span>${esc(label)}</span><div><i style="width:${clamp(val/max*100,2,100)}%;background:${color}"></i></div><b>${val<10&&val%1?Math.round(val*10)/10:r0(val)}<small>${unit}</small></b></div>`}
 function scoreColor(s){return s>=70?'#14a37a':s>=45?'#e8a317':'#e0533d'}
-const chip=(t,e='',cls='')=>`<span class="nv-chip ${cls}">${e?`<em>${esc(e)}</em>`:''}${esc(t)}</span>`;
+const chip=(t,e='',cls='')=>`<span class="nv-chip ${cls}">${e?`<em>${fi(t,16)}</em>`:''}${esc(t)}</span>`;
 
 /* ---------- result renderers ---------- */
 const R={
@@ -587,14 +596,14 @@ const R={
  fridge(d){const items=Array.isArray(d.items)?d.items.slice(0,16):[],rec=Array.isArray(d.recipes)?d.recipes.slice(0,3):[];
   const st={frais:['frais','ok'],a_utiliser:['à utiliser','warn'],incertain:['?','mute']};
   return `<div class="nv-chips big">${items.map(i=>{const s=st[i.state]||st.incertain;return chip(short(i.name,22),i.emoji,s[1])+''}).join('')}</div>
-  <h4 class="nv-h">Idées rapides</h4><div class="nv-recipes">${rec.map(x=>`<div class="nv-recipe"><b>${esc(x.emoji||'🍽️')}</b><strong>${esc(short(x.name,40))}</strong><span>${ico('clock')}${r0(x.minutes)} min</span>${(x.missing||[]).length?`<div class="nv-miss">${(x.missing||[]).slice(0,4).map(m=>`<i>${esc(short(m,18))}</i>`).join('')}</div>`:''}</div>`).join('')}</div>${shopHtml(d)}`},
+  <h4 class="nv-h">Idées rapides</h4><div class="nv-recipes">${rec.map(x=>`<div class="nv-recipe"><b>${fi(x.name,26)}</b><strong>${esc(short(x.name,40))}</strong><span>${ico('clock')}${r0(x.minutes)} min</span>${(x.missing||[]).length?`<div class="nv-miss">${(x.missing||[]).slice(0,4).map(m=>`<i>${esc(short(m,18))}</i>`).join('')}</div>`:''}</div>`).join('')}</div>${shopHtml(d)}`},
  swap(d){const a=d.a||{},b=d.b||{},w=d.winner;
   const lab=s=>s>=75?['Excellent','#14a37a']:s>=50?['Bon','#7bbf2a']:s>=25?['Médiocre','#ef8a1c']:['Mauvais','#e0533d'];
   const lvl=(v,g,o,inv)=>{v=n(v);const good=inv?v>=g:v<=g,ok=inv?v>=o:v<=o;return good?['g','Excellent']:ok?['o','Moyen']:['r','Élevé']};
   const rows=x=>[['Énergie','flame',x.kcal,' kcal',lvl(x.kcal,150,350)],['Sucres','cube',x.sugar,' g',lvl(x.sugar,5,12)],['Lipides','drop',x.fat,' g',lvl(x.fat,3,10)],['Sel','salt',x.salt,' g',lvl(x.salt,.3,1)],['Protéines','muscle',x.p,' g',(v=>v>=8?['g','Riche']:v>=3?['o','Moyen']:['m','Faible'])(n(x.p))]];
   const side=(x,k,img)=>{const s=clamp(x.score,0,100),[t,c]=lab(s),win=w===k;
    return `<article class="nv-prod ${win?'win':''}" style="--sc:${c}">
-   <div class="nv-prod-hero"><span class="nv-letter">${k.toUpperCase()}</span>${img?`<img src="${img}" alt="">`:`<b>${esc(x.emoji||'🍽️')}</b>`}${win?`<span class="nv-crown">${ico('trophy')}<em>Meilleur choix</em></span>`:''}</div>
+   <div class="nv-prod-hero"><span class="nv-letter">${k.toUpperCase()}</span>${img?`<img src="${img}" alt="">`:`<b>${fi(x.name,56)}</b>`}${win?`<span class="nv-crown">${ico('trophy')}<em>Meilleur choix</em></span>`:''}</div>
    <div class="nv-prod-body"><h4>${esc(short(x.name,34))}</h4>${x.brand?`<small>${esc(short(x.brand,26))}</small>`:''}
     <div class="nv-score"><div class="nv-score-n"><strong>${r0(s)}</strong><small>/100</small></div><div class="nv-score-bar"><i style="width:${clamp(s,3,100)}%"></i></div><span class="nv-score-l">${t}</span></div>
     <ul class="nv-facts">${rows(x).map(([l,ic,v,u,[lv,tx]])=>`<li class="${lv}"><i class="nv-fi">${I[ic]}</i><span>${l}<small>${tx}</small></span><b>${v==null?'—':(n(v)<10&&n(v)%1?Math.round(n(v)*10)/10:r0(v))}<small>${u}</small></b><em></em></li>`).join('')}</ul>
@@ -607,7 +616,7 @@ const R={
   <ul class="nv-points">${list(d.good,'ok','check')}${list(d.watch,'warn','warn')}</ul>
   <div class="nv-bars">${bar('Énergie',n(per.kcal),600,' kcal','#e8a317')}${bar('Protéines',n(per.p),40,'g','var(--mac-p)')}${bar('Sucres',n(per.sugar),50,'g','#e0533d')}${bar('Sel',n(per.salt),3,'g','#4f8df7')}</div><p class="nv-foot">pour 100 g · estimation</p>`},
  restaurant(d){const picks=Array.isArray(d.picks)?d.picks.slice(0,3):[];const lv={leger:'Léger',moyen:'Moyen',riche:'Riche'};
-  return `<div class="nv-picks">${picks.map((x,i)=>`<div class="nv-pick ${i===0?'best':''}"><span class="nv-rank">${i+1}</span><b class="nv-emoji">${esc(x.emoji||'🍽️')}</b><div><strong>${esc(short(x.name,40))}</strong><small>${esc(short(x.why,50))}</small></div><div class="nv-pick-end"><em class="lv ${esc(x.level)}">${esc(lv[x.level]||'')}</em><span style="--b:${scoreColor(n(x.score))}">${r0(x.score)}</span></div></div>`).join('')}</div>`}
+  return `<div class="nv-picks">${picks.map((x,i)=>`<div class="nv-pick ${i===0?'best':''}"><span class="nv-rank">${i+1}</span><b class="nv-emoji">${fi(x.name,26)}</b><div><strong>${esc(short(x.name,40))}</strong><small>${esc(short(x.why,50))}</small></div><div class="nv-pick-end"><em class="lv ${esc(x.level)}">${esc(lv[x.level]||'')}</em><span style="--b:${scoreColor(n(x.score))}">${r0(x.score)}</span></div></div>`).join('')}</div>`}
 };
 const GEN={plate:{k:'better_prompt',label:'Voir l’image plus saine'},fridge:{k:'image_prompt',label:'Générer le plat'},restaurant:{k:'image_prompt',label:'Voir le plat conseillé'}};
 
@@ -671,7 +680,7 @@ function bind(tool){const S=state[tool],el=root.querySelector('.nv');
 const FAVK='nutrix-recipes-fav';
 const favGet=()=>{try{return JSON.parse(localStorage.getItem(FAVK)||'[]')}catch{return []}};
 const favSet=a=>{try{localStorage.setItem(FAVK,JSON.stringify(a.slice(0,30)))}catch{}};
-const GOALS=[['equilibre','⚖️','Équilibré'],['proteine','💪','Protéiné'],['leger','🥗','Léger'],['rapide','⚡','Rapide'],['antigaspi','♻️','Anti-gaspi'],['budget','💶','Éco']];
+const GOALS=[['equilibre','scale','Équilibré'],['proteine','muscle','Protéiné'],['leger','leaf','Léger'],['rapide','bolt','Rapide'],['antigaspi','recycle','Anti-gaspi'],['budget','coin','Éco']];
 const LEVEL={facile:'Facile',moyen:'Moyen',chef:'Chef'};
 function ensureItems(S){if(!S.items){S.items=((S.result&&S.result.items)||[]).map(i=>({name:short(i.name,30),emoji:i.emoji||'🥬',state:i.state,on:true}))}
  if(!S.goal)S.goal='equilibre';if(!S.servings)S.servings=2;if(!S.typed)S.typed=[];return S}
@@ -681,16 +690,16 @@ function viewFridge(c,S){ensureItems(S);const hasPhoto=S.imgs.filter(Boolean).le
   ${S.typed.length&&!S.items.length?`<div class="nv-chips ch-typed">${S.typed.map((t,i)=>`<button type="button" class="nv-chip ok" data-tdel="${i}">${esc(t)} ×</button>`).join('')}</div>`:''}`;
  const hasList=S.items.length>0;
  const panel=hasList||S.typed.length||S.maroc?`<div class="ch-panel">
-   ${S.maroc&&S.maroc.ref?`<div class="ch-ref"><b>🇲🇦 ${esc(S.maroc.ref.name)}</b><small>Version traditionnelle : ${esc(S.maroc.ref.portion)} · ${S.maroc.ref.kcal} kcal</small></div>`:`<h4 class="nv-h">Vos ingrédients <small>touchez pour retirer</small></h4>`}
-   <div class="nv-chips ch-items">${S.items.map((i,k)=>`<button type="button" class="nv-chip ch-it ${i.on?(i.state==='a_utiliser'?'warn':'ok'):'off'}" data-it="${k}"><em>${esc(i.emoji)}</em>${esc(i.name)}</button>`).join('')}${S.typed.map((t,i)=>`<button type="button" class="nv-chip ok ch-it" data-tdel="${i}"><em>➕</em>${esc(t)}</button>`).join('')}</div>
+   ${S.maroc&&S.maroc.ref?`<div class="ch-ref"><b>${esc(S.maroc.ref.name)}</b><small>Version traditionnelle : ${esc(S.maroc.ref.portion)} · ${S.maroc.ref.kcal} kcal</small></div>`:`<h4 class="nv-h">Vos ingrédients <small>touchez pour retirer</small></h4>`}
+   <div class="nv-chips ch-items">${S.items.map((i,k)=>`<button type="button" class="nv-chip ch-it ${i.on?(i.state==='a_utiliser'?'warn':'ok'):'off'}" data-it="${k}"><em>${fi(i.name,16)}</em>${esc(i.name)}</button>`).join('')}${S.typed.map((t,i)=>`<button type="button" class="nv-chip ok ch-it" data-tdel="${i}"><em>${ico('plus')}</em>${esc(t)}</button>`).join('')}</div>
    <h4 class="nv-h">Votre envie</h4>
-   <div class="ch-goals">${GOALS.map(g=>`<button type="button" class="${S.goal===g[0]?'on':''}" data-goal="${g[0]}"><em>${g[1]}</em>${g[2]}</button>`).join('')}</div>
+   <div class="ch-goals">${GOALS.map(g=>`<button type="button" class="${S.goal===g[0]?'on':''}" data-goal="${g[0]}"><em>${ico(g[1])}</em>${g[2]}</button>`).join('')}</div>
    <div class="ch-serv"><span>Portions</span><div><button type="button" data-sv="-1" aria-label="Moins">−</button><b>${S.servings}</b><button type="button" data-sv="1" aria-label="Plus">+</button></div></div>
    <button type="button" class="nv-go ch-go" ${S.chefBusy||!hasItems?'disabled':''}>${S.chefBusy?'<span class="nv-spin"></span>Le chef cuisine…':ico('spark')+'Créer mes recettes'}</button>
    ${S.chefErr?`<p class="nv-err">${ico('warn')}${esc(S.chefErr)} <button type="button" class="ch-retry">Réessayer</button></p>`:''}</div>`:'';
  const recipes=(S.chef&&S.chef.recipes)||[];
  const out=S.chefBusy?'<div class="nv-skel"><i></i><i></i><i></i></div>':recipes.length?`<div class="ch-list">${recipes.map((r,i)=>recipeCard(r,i,S)).join('')}</div>${shopHtml({recipes:[]})}`:`<div class="nv-empty"><b>${ico('image')}</b><span>Photo ou ingrédients tapés → 3 recettes complètes avec étapes, minuteurs et courses.</span></div>`;
- const favHtml=favs.length?`<div class="nv-hist"><h4 class="nv-h">Mes recettes ♥</h4><div class="nv-hist-row">${favs.slice(0,8).map((f,i)=>`<button type="button" data-fav="${i}" title="${esc(f.name)}"><b>${esc(f.emoji||'🍽️')}</b><span>${esc(short(f.name,20))}</span></button>`).join('')}</div></div>`:'';
+ const favHtml=favs.length?`<div class="nv-hist"><h4 class="nv-h">Mes recettes</h4><div class="nv-hist-row">${favs.slice(0,8).map((f,i)=>`<button type="button" data-fav="${i}" title="${esc(f.name)}"><b>${fi(f.name,24)}</b><span>${esc(short(f.name,20))}</span></button>`).join('')}</div></div>`:'';
  return `<section class="nv ch" data-tool="fridge">
   <div class="nv-in"><header><h3>Chef Studio</h3><p>Photographiez votre frigo : l’IA détecte, vous choisissez, le chef vous guide.</p></header>
    <div class="nv-slots n1">${slotHtml('fridge',0,'Frigo ou courses')}</div>
@@ -703,7 +712,7 @@ function macro(l,v,u,c){return `<span style="--c:${c}"><b>${r0(v)}${u}</b><small
 function recipeCard(r,i,S){const open=S.open===i,ings=Array.isArray(r.ingredients)?r.ingredients:[],steps=Array.isArray(r.steps)?r.steps:[],miss=ings.filter(x=>!x.have);
  const faved=favGet().some(f=>f.name===r.name);
  return `<article class="ch-rec ${open?'open':''}" data-r="${i}">
-  <button type="button" class="ch-rec-h" data-ropen="${i}"><b class="ch-emo">${r.img?`<img src="${r.img}" alt="">`:esc(r.emoji||'🍽️')}</b><div><strong>${esc(short(r.name,48))}</strong><small>${esc(short(r.why,70))}</small>
+  <button type="button" class="ch-rec-h" data-ropen="${i}"><b class="ch-emo">${r.img?`<img src="${r.img}" alt="">`:fi(r.name,28)}</b><div><strong>${esc(short(r.name,48))}</strong><small>${esc(short(r.why,70))}</small>
    <div class="ch-meta"><span>${ico('clock')}${r0(r.minutes)} min</span><span>${ico('flame')}${r0(r.kcal)} kcal</span>${n(r.kcal_trad)>n(r.kcal)+20?`<span class="lv facile">−${r0(n(r.kcal_trad)-n(r.kcal))} kcal</span>`:''}<span class="lv ${esc(r.level)}">${esc(LEVEL[r.level]||'Facile')}</span></div></div><i class="ch-caret"></i></button>
   ${open?`<div class="ch-rec-b">
    <div class="ch-macros">${macro('Protéines',r.p,' g','#14a37a')}${macro('Glucides',r.c,' g','#4f8df7')}${macro('Lipides',r.f,' g','#e8a317')}<span class="ch-time"><b>${r0(r.prep)}′ + ${r0(r.cook)}′</b><small>prépa + cuisson</small></span></div>
@@ -713,12 +722,12 @@ function recipeCard(r,i,S){const open=S.open===i,ings=Array.isArray(r.ingredient
    ${miss.length?`<button type="button" class="ch-link" data-rshop="${i}">${ico('check')}Ajouter ${miss.length} manquant${miss.length>1?'s':''} aux courses</button>`:''}
    <h4 class="nv-h">Préparation</h4>
    <ol class="ch-steps">${steps.map((st,k)=>`<li class="${(S.done||{})[i+'-'+k]?'done':''}"><button type="button" class="ch-chk" data-sdone="${i}-${k}" aria-label="Étape faite">${I.check}</button><div><p>${esc(short(st.t,260))}</p>${n(st.min)>0?`<button type="button" class="ch-timer" data-timer="${i}-${k}" data-min="${r0(st.min)}">${ico('clock')}<span>${r0(st.min)}:00</span></button>`:''}</div></li>`).join('')}</ol>
-   ${r.tip?`<p class="nv-tip">${ico('spark')}${esc(short(r.tip,110))}</p>`:''}${r.swap?`<p class="nv-tip alt">🥗 ${esc(short(r.swap,120))}</p>`:''}
+   ${r.tip?`<p class="nv-tip">${ico('spark')}${esc(short(r.tip,110))}</p>`:''}${r.swap?`<p class="nv-tip alt">${ico('refresh')}${esc(short(r.swap,120))}</p>`:''}
    ${r.img?`<figure class="nv-fig"><img src="${r.img}" alt=""><figcaption>Illustration IA</figcaption></figure>`:''}
    <div class="ch-acts"><button type="button" class="ch-cook" data-cook="${i}">${ico('flame')}Mode cuisine</button>
     <button type="button" data-rimg="${i}" ${r.imgBusy||r.img||!r.image_prompt?'disabled':''}>${r.imgBusy?'<span class="nv-spin dark"></span>':ico('image')}Image</button>
     <button type="button" data-rjournal="${i}" ${r.added?'disabled':''}>${ico('check')}${r.added?'Ajouté':'Journal'}</button>
-    <button type="button" data-rfav="${i}" class="${faved?'on':''}">${faved?'♥':'♡'} Favori</button></div>
+    <button type="button" data-rfav="${i}" class="${faved?'on':''}">${ico('heart')}Favori</button></div>
    </div>`:''}
  </article>`}
 const TM={};
@@ -789,11 +798,11 @@ const CHEF_SVG='<svg viewBox="0 0 150 168" aria-hidden="true"><defs><linearGradi
  '<path d="M42 138h88c10 0 16 8 15 18H27c-1-10 5-18 15-18z" fill="url(#chW)"/><circle cx="86" cy="148" r="8" fill="#0f1f18"/><path d="M86 153c-4-2-6-4.500-6-7a3 3 0 0 1 6-1 3 3 0 0 1 6 1c0 2.500-2 5-6 7z" fill="url(#chG)"/>'+
  '</g>'+
  '<g class="ch-arm"><path d="M130 142c14-2 20-14 16-26" stroke="url(#chW)" stroke-width="12" stroke-linecap="round" fill="none"/><circle cx="146" cy="114" r="8" fill="url(#chW)"/><path d="M146 108V86" stroke="#c9a46a" stroke-width="3.500" stroke-linecap="round"/><ellipse cx="146" cy="80" rx="8" ry="10" fill="#e8c27a"/></g></svg>';
-const TIPS={plate:'Montre-moi ton assiette !',fridge:'Dis-moi ce qu’il y a au frigo 👨‍🍳',swap:'Deux produits ? Je te dis le meilleur.',intelligence:'Je décrypte l’étiquette pour toi.',restaurant:'Je t’aide à choisir au resto.'};
+const TIPS={plate:'Montre-moi ton assiette !',fridge:'Dis-moi ce qu’il y a au frigo',swap:'Deux produits ? Je te dis le meilleur.',intelligence:'Je décrypte l’étiquette pour toi.',restaurant:'Je t’aide à choisir au resto.'};
 function studioDeco(){const head=document.querySelector('#page-studio .ns-head');if(!head||head.querySelector('.nt-chef'))return;
  const sym=head.querySelector('.ns-head-symbol');if(sym)sym.style.display='none';
  const d=document.createElement('div');d.className='nt-chef';
- d.innerHTML='<i class="nt-glow"></i><span class="nt-fl f1">🥕</span><span class="nt-fl f2">🍅</span><span class="nt-fl f3">🥑</span><span class="nt-fl f4">🍋</span><span class="nt-fl f5">🌿</span><span class="nt-fl f6">🧅</span><div class="nt-say">'+TIPS.plate+'</div><div class="nt-av">'+CHEF_SVG+'</div>';
+ d.innerHTML='<div class="nt-say">'+TIPS.plate+'</div><div class="nt-av">'+CHEF_SVG+'</div>';
  head.appendChild(d);
  const say=d.querySelector('.nt-say');
  document.getElementById('ns-tabs')?.addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b&&TIPS[b.dataset.tool]){say.classList.remove('pop');void say.offsetWidth;say.textContent=TIPS[b.dataset.tool];say.classList.add('pop')}})}
@@ -801,7 +810,7 @@ const DIETS=['Végétarien','Halal','Sans gluten','Sans lactose','Sans sucre ajo
 function dietBar(){const page=document.getElementById('page-studio'),ws=document.getElementById('ns-workspace');if(!page||!ws||document.getElementById('nt-diet'))return;
  const get=()=>{try{return JSON.parse(localStorage.getItem('nutrix-prefs')||'[]')}catch{return []}};
  const box=document.createElement('div');box.id='nt-diet';
- const draw=()=>{const on=get();box.innerHTML=`<button type="button" class="nt-diet-h" aria-expanded="${box.classList.contains('open')}"><span>🛡️ Mon régime & allergies</span><em>${on.length?on.length+' actif'+(on.length>1?'s':''):'Aucun'}</em><i></i></button><div class="nt-diet-b"><p>Utilisé par les recettes du Chef, l’analyse et le scanner pour t’alerter.</p><div>${DIETS.map(k=>`<button type="button" class="${on.includes(k)?'on':''}" data-d="${esc(k)}">${esc(k)}</button>`).join('')}</div></div>`;
+ const draw=()=>{const on=get();box.innerHTML=`<button type="button" class="nt-diet-h" aria-expanded="${box.classList.contains('open')}"><span><i class="nxp-dico" aria-hidden="true">${I.shield}</i><span>Mon régime &amp; allergies</span></span><em>${on.length?on.length+' actif'+(on.length>1?'s':''):'Aucun'}</em><i></i></button><div class="nt-diet-b"><p>Utilisé par les recettes du Chef, l’analyse et le scanner pour t’alerter.</p><div>${DIETS.map(k=>`<button type="button" class="${on.includes(k)?'on':''}" data-d="${esc(k)}">${esc(k)}</button>`).join('')}</div></div>`;
   box.querySelector('.nt-diet-h').onclick=()=>{box.classList.toggle('open');draw()};
   box.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=get(),k=b.dataset.d,i=a.indexOf(k);if(i>=0)a.splice(i,1);else a.push(k);try{localStorage.setItem('nutrix-prefs',JSON.stringify(a))}catch{}draw()})};
  draw();ws.parentNode.insertBefore(box,ws)}
