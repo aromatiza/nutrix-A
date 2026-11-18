@@ -372,3 +372,26 @@ html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-out:has(.ch-list){backgrou
 html body:not(#_v):not(#_w):not(#_x) #ns-workspace:focus{outline:none!important}
 .nxp-cam-b{display:none}.no-cam .nxp-cam-a,.no-cam .nxp-cam,.cam-wait .nxp-cam{display:none!important}.no-cam .nxp-cam-b{display:inline}
 html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-cam{min-height:44px;padding:0 16px;border:0;border-radius:var(--st-r-sm);background:var(--st-card);color:var(--st-ink);font-size:15px;font-weight:600;cursor:pointer}
+
+/* Comparer : tout reste dans sa carte, même sur petit écran */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prods{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod,html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body{min-width:0}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body h4{overflow-wrap:anywhere}
+@media(max-width:760px){html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body{padding:10px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod .nv-crown{inset:auto 8px 8px;justify-content:center;padding:5px 6px;font-size:.72rem;white-space:nowrap}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-score{grid-template-columns:minmax(0,1fr);grid-template-areas:"n" "l" "b";padding:10px;gap:6px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-score-l{justify-self:start;padding:4px 9px;font-size:.76rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li{grid-template-columns:28px minmax(0,1fr) 8px;grid-template-areas:"i s e" "i v v";gap:2px 7px;padding:9px 0}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts .nv-fi{grid-area:i;width:28px;height:28px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>span{grid-area:s;min-width:0;font-size:.84rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>b{grid-area:v;white-space:nowrap;font-size:.86rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>em{grid-area:e;width:8px;height:8px}
+}
+/* la bulle d'aide du robot ne couvre plus les outils du Studio ; le robot reste disponible */
+html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) .nx-robot-bubble{display:none!important}
+@media(max-width:560px){
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-vs-slots .nv-slot{aspect-ratio:auto!important;min-height:160px;height:auto!important}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-vs-slots .nv-slot-empty{position:static;padding:14px 8px}
+}
