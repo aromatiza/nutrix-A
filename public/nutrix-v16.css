@@ -242,10 +242,6 @@ html:not(#_v):not(#_w) body #pulse-home .pulse-template-section,html:not(#_v):no
 html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top :is(.circle,.nx-language-switch){background:var(--v16-surface)!important;color:var(--v16-ink)!important;border-color:var(--v16-line)!important}
 html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top .nx-lang-choice{color:var(--v16-mute)!important}
 html:not(#_v):not(#_w) body:not(.dark):not(:has(#page-home.active)) header.top .nx-lang-choice:is([aria-pressed="true"],.active,.on){background:var(--g-500)!important;color:#fff!important}
-/* Studio : un seul accent pour tous les outils = violet doux (plus d'orange) */
-html:not(#_v):not(#_w) body #page-studio,html:not(#_v):not(#_w) body #page-studio [data-tool]{--tc:#8466ff!important;--tc2:#6c4cf2!important;--tci:#4a33b8!important;--tcs:#efeaff!important}
-html:not(#_v):not(#_w) body #page-studio .nv-go:not(:disabled){background:var(--p-grad)!important;box-shadow:var(--p-shadow)!important;color:#fff!important}
-html:not(#_v):not(#_w) body.dark #page-studio,html:not(#_v):not(#_w) body.dark #page-studio [data-tool]{--tci:#c9bcff!important;--tcs:rgba(157,134,255,.14)!important}
 /* ---------- recherche d'un produit (après scan) ---------- */
 .v16-find{position:fixed;inset:0;z-index:9100;display:grid;place-items:center;padding:24px;background:rgba(8,24,18,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:v16fade .2s ease}
 .v16-find[hidden]{display:none}
@@ -331,8 +327,6 @@ html:not(#_v):not(#_w) body.dark svg text{fill:var(--d-mute)}
 /* cuisine marocaine + promo */
 html:not(#_v):not(#_w) body.dark .mr-promo{background:var(--d-elev)!important;border-color:var(--d-line)!important;box-shadow:none!important}
 html:not(#_v):not(#_w) body.dark .mr-promo>i{background:var(--d-green)!important;color:#0d1a13!important}
-/* Studio et réglages suivent les mêmes niveaux */
-html:not(#_v):not(#_w) body.dark #page-studio .nv-go:not(:disabled){background:var(--d-green)!important;color:#0d1a13!important;box-shadow:none!important}
 /* changement de thème : fondu court et léger (pas de flash) */
 html.theme-switching body,html.theme-switching body *{transition:background-color .28s ease,color .28s ease,border-color .28s ease!important}
 /* sombre — corrections de l'audit de contraste */
