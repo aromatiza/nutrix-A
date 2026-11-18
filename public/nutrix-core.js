@@ -708,7 +708,7 @@ function showTab(t) {
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
   document.getElementById('date-nav').hidden = (t === 'faq' || t === 'ai' || t === 'journal' || t === 'nutri' || t === 'home' || t === 'studio' || t === 'maroc');
   if (t === 'ai' && typeof window.renderSpaceAI === 'function') window.renderSpaceAI();
-  const titles = { home: ['Accueil', 'Votre nutrition, simplifiée'], health: ['Santé', 'Suivi de ta journée'], nutri: ['Space Nutri', 'Scan · score · comparaison'], journal: ['Space Daily', 'Explorer les produits & la science'], ai: ['Space AI', 'Ton compagnon bien-être intelligent'], faq: ['Projet', 'Présentation et méthodologie'], studio: ['Nutrix Studio','Vos outils nutritionnels intelligents'], maroc: ['Cuisine marocaine','Tes plats préférés, version healthy'] };
+  const titles = { home: ['Accueil', 'Votre nutrition, simplifiée'], health: ['Santé', 'Suivi de ta journée'], nutri: ['Space Nutri', 'Scan · score · comparaison'], journal: ['Space Daily', 'Explorer les produits & la science'], ai: ['Space AI', 'Ton compagnon bien-être intelligent'], faq: ['Projet', 'Présentation et méthodologie'], studio: ['Nutrix Studio','Repas, frigo, produits et menus'], maroc: ['Cuisine marocaine','Tes plats préférés, version healthy'] };
   document.getElementById('page-title').textContent = titles[t][0];
   document.getElementById('page-sub').textContent = titles[t][1];
 }

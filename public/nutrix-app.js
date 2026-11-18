@@ -456,10 +456,10 @@ const ico=k=>`<i class="nv-i">${I[k]}</i>`;
 const fi=(name,size=22)=>window.NxFood?window.NxFood.icon(String(name||''),size):ico('image'); // icône d'aliment au trait
 const CFG={
  plate:{title:'Photographiez votre assiette',sub:'Calories, macros et score en un coup d’œil',cta:'Analyser',slots:['Assiette']},
- fridge:{title:'Ouvrez votre frigo',sub:'Ingrédients détectés et idées de plats',cta:'Scanner le frigo',slots:['Frigo ou courses']},
- swap:{title:'Deux produits, un gagnant',sub:'Ajoutez les deux photos pour comparer',cta:'Comparer',slots:['Produit A','Produit B']},
- intelligence:{title:'Décryptez un produit',sub:'Photo de l’emballage ou de l’étiquette',cta:'Décrypter',slots:['Produit']},
- restaurant:{title:'Menu ou plat du resto',sub:'Les meilleurs choix, classés',cta:'Trouver le meilleur choix',slots:['Menu ou plat']}
+ fridge:{title:'Cuisine avec ton frigo',sub:'Prends une photo, choisis tes ingrédients et reçois 3 recettes.',cta:'Scanner le frigo',slots:['Frigo ou courses']},
+ swap:{title:'Compare deux produits',sub:'Ajoute une photo de chaque produit.',cta:'Comparer',slots:['Produit A','Produit B']},
+ intelligence:{title:'Lis une étiquette',sub:'Photographie l’emballage ou la liste des ingrédients.',cta:'Analyser l’étiquette',slots:['Produit']},
+ restaurant:{title:'Choisis au restaurant',sub:'Photographie le menu ou le plat.',cta:'Classer les plats',slots:['Menu ou plat']}
 };
 const state={};
 const HK='nutrix-vision-history';
@@ -695,13 +695,13 @@ function viewFridge(c,S){ensureItems(S);const hasPhoto=S.imgs.filter(Boolean).le
    <h4 class="nv-h">Votre envie</h4>
    <div class="ch-goals">${GOALS.map(g=>`<button type="button" class="${S.goal===g[0]?'on':''}" data-goal="${g[0]}"><em>${ico(g[1])}</em>${g[2]}</button>`).join('')}</div>
    <div class="ch-serv"><span>Portions</span><div><button type="button" data-sv="-1" aria-label="Moins">−</button><b>${S.servings}</b><button type="button" data-sv="1" aria-label="Plus">+</button></div></div>
-   <button type="button" class="nv-go ch-go" ${S.chefBusy||!hasItems?'disabled':''}>${S.chefBusy?'<span class="nv-spin"></span>Le chef cuisine…':ico('spark')+'Créer mes recettes'}</button>
+   <button type="button" class="nv-go ch-go" ${S.chefBusy||!hasItems?'disabled':''}>${S.chefBusy?'<span class="nv-spin"></span>Préparation des recettes…':ico('spark')+'Créer mes recettes'}</button>
    ${S.chefErr?`<p class="nv-err">${ico('warn')}${esc(S.chefErr)} <button type="button" class="ch-retry">Réessayer</button></p>`:''}</div>`:'';
  const recipes=(S.chef&&S.chef.recipes)||[];
  const out=S.chefBusy?'<div class="nv-skel"><i></i><i></i><i></i></div>':recipes.length?`<div class="ch-list">${recipes.map((r,i)=>recipeCard(r,i,S)).join('')}</div>${shopHtml({recipes:[]})}`:`<div class="nv-empty"><b>${ico('image')}</b><span>Photo ou ingrédients tapés → 3 recettes complètes avec étapes, minuteurs et courses.</span></div>`;
  const favHtml=favs.length?`<div class="nv-hist"><h4 class="nv-h">Mes recettes</h4><div class="nv-hist-row">${favs.slice(0,8).map((f,i)=>`<button type="button" data-fav="${i}" title="${esc(f.name)}"><b>${fi(f.name,24)}</b><span>${esc(short(f.name,20))}</span></button>`).join('')}</div></div>`:'';
  return `<section class="nv ch" data-tool="fridge">
-  <div class="nv-in"><header><h3>Chef Studio</h3><p>Photographiez votre frigo : l’IA détecte, vous choisissez, le chef vous guide.</p></header>
+  <div class="nv-in"><header><h3>Cuisine avec ton frigo</h3><p>Prends une photo, choisis tes ingrédients et reçois 3 recettes.</p></header>
    <div class="nv-slots n1">${slotHtml('fridge',0,'Frigo ou courses')}</div>
    <button type="button" class="nv-go" ${hasPhoto&&!S.busy?'':'disabled'}>${S.busy?'<span class="nv-spin"></span>Détection en cours':ico('camera')+'Détecter les ingrédients'}</button>
    ${S.err?`<p class="nv-err">${ico('warn')}${esc(S.err)} <button type="button" class="ch-retry-scan">Réessayer</button></p>`:''}
@@ -798,7 +798,7 @@ const CHEF_SVG='<svg viewBox="0 0 150 168" aria-hidden="true"><defs><linearGradi
  '<path d="M42 138h88c10 0 16 8 15 18H27c-1-10 5-18 15-18z" fill="url(#chW)"/><circle cx="86" cy="148" r="8" fill="#0f1f18"/><path d="M86 153c-4-2-6-4.500-6-7a3 3 0 0 1 6-1 3 3 0 0 1 6 1c0 2.500-2 5-6 7z" fill="url(#chG)"/>'+
  '</g>'+
  '<g class="ch-arm"><path d="M130 142c14-2 20-14 16-26" stroke="url(#chW)" stroke-width="12" stroke-linecap="round" fill="none"/><circle cx="146" cy="114" r="8" fill="url(#chW)"/><path d="M146 108V86" stroke="#c9a46a" stroke-width="3.500" stroke-linecap="round"/><ellipse cx="146" cy="80" rx="8" ry="10" fill="#e8c27a"/></g></svg>';
-const TIPS={plate:'Montre-moi ton assiette !',fridge:'Dis-moi ce qu’il y a au frigo',swap:'Deux produits ? Je te dis le meilleur.',intelligence:'Je décrypte l’étiquette pour toi.',restaurant:'Je t’aide à choisir au resto.'};
+const TIPS={plate:'Montre ton assiette',fridge:'Ouvre ton frigo',swap:'Compare deux produits',intelligence:'Lis une étiquette',restaurant:'Choisis ton plat'};
 function studioDeco(){const head=document.querySelector('#page-studio .ns-head');if(!head||head.querySelector('.nt-chef'))return;
  const sym=head.querySelector('.ns-head-symbol');if(sym)sym.style.display='none';
  const d=document.createElement('div');d.className='nt-chef';

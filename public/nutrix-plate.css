@@ -6,6 +6,7 @@
 body{
   --st-page:#1b4533; --st-page2:#143628; --st-card:#f4ecdd; --st-card2:#e9dcc2; --st-ink:#13261d; --st-mute:#58624f;
   --st-line:rgba(19,38,29,.14); --st-on-page:#f4ecdd; --st-on-page-mute:#cfd6c7; --st-on-fill:rgba(244,236,221,.13);
+  --st-head:Fraunces,Georgia,serif; --st-body:"DM Sans",system-ui,sans-serif; --st-r:14px; --st-r-sm:10px; --st-r-xs:8px;
   --st-accent:#6f3ff5; --st-sel:#1b4533; --st-on-sel:#f4ecdd; --st-scrim:rgba(20,54,40,.84);
 }
 body.dark{
@@ -346,3 +347,22 @@ html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-tip,.nv-tip.alt,.nv-re
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-crown,.nv-prod .nv-crown,.ch-ings li.have i){background:var(--st-sel)!important;color:var(--st-on-sel)!important;box-shadow:none!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-crown :is(em,.nv-i){color:inherit!important}
 html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ch-ings li.miss i,.ch-timer.run){background:var(--st-accent)!important;color:#fff!important}
+
+/* typographie Studio : un titre, un texte ; arabe en IBM Plex */
+html[lang="ary"] body{--st-head:"IBM Plex Sans Arabic",Tahoma,sans-serif;--st-body:"IBM Plex Sans Arabic",Tahoma,sans-serif}
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio,#page-studio *,.ch-cookov,.ch-cookov *){font-family:var(--st-body)!important}
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio :is(h2,h3,.nxp-head h3,.nxp-sheet-h h4,.nxp-card-t),.ch-cookov h3),html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) #page-title{font-family:var(--st-head)!important;font-weight:600!important;letter-spacing:0!important}
+
+/* une seule échelle d'arrondis */
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ns-head,.ns-tabs,#nt-diet,.nv-in,.nv-out,.nv-card,.nv-prod,.nv-verdict,.nv-shop,.nv-recipe,.nv-pick,.ch-rec,.nxp-card,.nxp-vf){border-radius:var(--st-r)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ns-tabs button,.nv-slot,.nv-go,.nv-gen,.nv-reset,.nv-tip,.nv-empty b,.nv-slot-empty .nv-i,.ch-add input,.ch-macros span,.ch-ings li,.ch-acts button,.ch-serv>div,.ch-emo,.nxp-btn,.nv-text input){border-radius:var(--st-r-sm)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip,.ch-goals button,.ch-meta span,.ch-meta .lv,.ch-timer,.nv-pick-end span,.nxp-pill,#nt-diet [data-d]){border-radius:var(--st-r-xs)!important}
+
+/* plats marocains : rangée compacte plutôt que des cartes identiques */
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes>div{gap:8px}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button{display:inline-flex;align-items:center;gap:8px;width:auto;height:48px;padding-block:0;padding-inline:8px 14px;border-radius:var(--st-r-sm)!important;font-size:15px}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button i{width:32px;height:32px;border-radius:var(--st-r-xs)}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button i svg{width:19px;height:19px}
+
+/* recettes : directement sur le fond, sans carte dans la carte */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-out:has(.ch-list){background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important}
