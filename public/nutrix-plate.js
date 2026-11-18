@@ -41,20 +41,22 @@ const LOAD=ARY?['كنشوف الصحن…','كنعرف الماكلة…','كن�
 const grade=s=>s>=75?'A':s>=55?'B':s>=35?'C':'D';
 
 /* ---------------- caméra ---------------- */
-let stream=null,torch=false;
+let stream=null,torch=false,camOn=false,camBusy=false; // la caméra démarre après un geste, ou si elle est déjà autorisée
 function stopCam(){if(stream){stream.getTracks().forEach(t=>{try{t.stop()}catch{}});stream=null}torch=false}
 const track=()=>stream&&stream.getVideoTracks()[0];
 const active=()=>!!document.querySelector('#page-studio.active .nxp[data-mode="camera"]');
+function askCam(el){camOn=true;el.classList.add('cam-wait');startCam(el)}
 async function startCam(el){
-  const v=el.querySelector('.nxp-video');if(!v||!active())return;
-  if(!navigator.mediaDevices?.getUserMedia){el.classList.add('no-cam');return}
+  const v=el.querySelector('.nxp-video');if(!v||!active()||camBusy)return;
+  if(!navigator.mediaDevices?.getUserMedia){camOn=false;el.classList.add('no-cam');return}
+  camBusy=true;
   try{
     if(!stream)stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});
     if(!active()){stopCam();return}
     v.srcObject=stream;await v.play().catch(()=>{});el.classList.add('live');el.classList.remove('no-cam');
     let ok=false;try{ok=!!track().getCapabilities?.().torch}catch{}
     const fb=el.querySelector('[data-flash]');if(fb){fb.disabled=!ok;fb.setAttribute('aria-pressed','false')}
-  }catch{el.classList.add('no-cam');el.classList.remove('live')}
+  }catch{camOn=false;el.classList.add('no-cam');el.classList.remove('live')}finally{camBusy=false}
 }
 function shoot(v,max=1280){const w=v.videoWidth,h=v.videoHeight;if(!w||!h)return null;const k=Math.min(1,max/Math.max(w,h));const c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(v,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.84)}
 
@@ -112,10 +114,10 @@ function view(S,hist){
   return `<section class="nv nxp" data-tool="plate" data-mode="${mode}" dir="${ARY?'rtl':'ltr'}" lang="${ARY?'ar':'fr'}">
   ${head()}
   <div class="nxp-vf ${noPhotoResult?'nophoto':''}">
-   ${mode==='camera'?`<video class="nxp-video" playsinline muted autoplay></video><div class="nxp-empty">${I(ICO.camera,34)}<span>${L('Autorise la caméra ou choisis une photo','خلي الكاميرا تخدم ولا ختار تصويرة')}</span></div>${brackets()}`:''}
+   ${mode==='camera'?`<video class="nxp-video" playsinline muted autoplay></video><div class="nxp-empty">${I(ICO.camera,34)}<span class="nxp-cam-a">${L('Active la caméra ou choisis une photo','شعل الكاميرا ولا ختار تصويرة')}</span><span class="nxp-cam-b">${L('Caméra indisponible. Choisis une photo.','الكاميرا ما خدامةش. ختار تصويرة.')}</span><button type="button" class="nxp-cam" data-cam>${L('Activer la caméra','شعل الكاميرا')}</button></div>${brackets()}`:''}
    ${shot}
    ${noPhotoResult?`<div class="nxp-dishicon">${food(S.result.dish,64)}</div>`:''}
-   ${mode==='analyzing'?`<div class="nxp-status" role="status" aria-live="polite"><i></i><span>${LOAD[0]}</span></div>`:''}
+   ${mode==='analyzing'?`<div class="nxp-status"><i></i><span>${LOAD[0]}</span></div>`:''}
    ${mode==='camera'?`<div class="nxp-ctrl">
      <button type="button" class="nxp-round" data-gallery aria-label="${L('Choisir une photo','ختار تصويرة')}">${I(ICO.gallery)}</button>
      <button type="button" class="nxp-shutter" data-shutter aria-label="${L('Prendre la photo','صور')}"><i></i></button>
@@ -131,10 +133,10 @@ function view(S,hist){
   </div>`:''}
   ${mode==='photo'&&S.err?`<div class="nxp-below"><p class="nv-err">${I(ICO.warn,18)}${esc(S.err)}</p><button type="button" class="nxp-btn ghost nv-reset">${L('Reprendre','عاود')}</button></div>`:''}
   <div class="nxp-sheet-bg" data-sheet-close hidden></div>
-  <div class="nxp-sheet" data-text-sheet hidden role="dialog" aria-label="${L('Décrire le plat','وصف الماكلة')}" data-lenis-prevent>
+  <div class="nxp-sheet" data-text-sheet hidden role="dialog" aria-modal="true" aria-label="${L('Décrire le plat','وصف الماكلة')}" data-lenis-prevent>
    <i class="nxp-grab" aria-hidden="true"></i>
    <div class="nxp-sheet-h"><h4>${L('Décris ton plat','وصف الماكلة')}</h4><button type="button" class="nxp-round sm" data-sheet-close aria-label="${L('Fermer','سد')}">${I(ICO.close,20)}</button></div>
-   <div class="ch-add nv-text"><input type="text" maxlength="160" data-text value="${esc(S.text||'')}" placeholder="${L('Ex. couscous, tajine poulet, burger…','مثلا: كسكس، طاجين دجاج، برغر…')}" autocomplete="off"></div>
+   <div class="ch-add nv-text"><input type="text" maxlength="160" data-text aria-label="${L('Décris ton plat','وصف الماكلة')}" value="${esc(S.text||'')}" placeholder="${L('Ex. couscous, tajine poulet, burger…','مثلا: كسكس، طاجين دجاج، برغر…')}" autocomplete="off"></div>
    <button type="button" class="nxp-btn primary nv-go" ${(img||(S.text&&S.text.trim()))&&!S.busy?'':'disabled'}>${L('Analyser','حلل')}</button>
   </div>
   ${mode==='result'?resultSheet(S)+'<div class="nxp-diet-slot"></div>':''}
@@ -152,7 +154,7 @@ function count(el){const n=el.querySelector('[data-count]');if(!n)return;const t
 const CHEV='<path d="m9 6 6 6-6 6"/>';
 const SHIELD='<path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/>';
 function dietRow(box){if(!box)return;box.classList.add('nxp-row-host');box.setAttribute('dir',ARY?'rtl':'ltr');const sp=box.querySelector('.nt-diet-h>span');const hd=box.querySelector('.nt-diet-h');if(hd&&!hd.querySelector('.nxp-chev'))hd.insertAdjacentHTML('beforeend','<span class="nxp-chev" aria-hidden="true">'+I(CHEV,16)+'</span>');
-  if(sp&&!sp.querySelector('.nxp-dico')){const txt=sp.textContent.replace(/^[^\p{L}]+/u,'').trim();sp.innerHTML='<i class="nxp-dico" aria-hidden="true">'+I(SHIELD,18)+'</i><b class="nxp-emo" aria-hidden="true">🛡️</b><span>'+esc(ARY?'الحمية والحساسية':(txt||'Mon régime & allergies'))+'</span>'}}
+  if(sp&&!sp.querySelector('.nxp-dico')){const txt=sp.textContent.replace(/^[^\p{L}]+/u,'').trim();sp.innerHTML='<i class="nxp-dico" aria-hidden="true">'+I(SHIELD,18)+'</i><span>'+esc(ARY?'الحمية والحساسية':(txt||'Mon régime & allergies'))+'</span>'}}
 let dietObs=null,DIET=null;
 function placeDiet(el){const box=DIET=DIET||document.getElementById('nt-diet'),slot=el&&el.querySelector('.nxp-diet-slot');if(!box)return;
   if(!dietObs){dietObs=new MutationObserver(()=>{if(document.body.classList.contains('nxp-on'))dietRow(box)});dietObs.observe(box,{childList:true})}
@@ -169,14 +171,17 @@ function bind(el,S){
   if(mode==='photo'&&S.__auto&&!S.err){S.__auto=false;const go=el.querySelector('.nv-go');if(go&&!go.disabled){buzz(10);setTimeout(()=>go.click(),60)}}
   if(mode==='camera'){
     el.querySelector('[data-gallery]')?.addEventListener('click',()=>slotIn&&slotIn.click());
+    el.querySelector('[data-cam]')?.addEventListener('click',()=>askCam(el));
     el.querySelector('[data-shutter]')?.addEventListener('click',()=>{const v=el.querySelector('.nxp-video');const data=el.classList.contains('live')&&v?shoot(v):null;
-      if(!data){slotIn&&slotIn.click();return}
+      if(!data){if(!el.classList.contains('live')&&!el.classList.contains('no-cam')){askCam(el);return}slotIn&&slotIn.click();return}
       buzz(15);el.classList.add('flashfx');S.imgs[0]=data;S.result=null;S.gen=null;S.err='';S.genErr='';S.__auto=true;stopCam();setTimeout(()=>st&&st.render('plate'),RM?0:160)});
     el.querySelector('[data-flash]')?.addEventListener('click',async e=>{const b=e.currentTarget,t=track();if(!t)return;torch=!torch;try{await t.applyConstraints({advanced:[{torch}]});b.setAttribute('aria-pressed',String(torch));}catch{torch=false}});
   }
   // feuille « décrire »
   const sheet=el.querySelector('[data-text-sheet]'),bg=el.querySelector('.nxp-sheet-bg');
-  const openSheet=o=>{sheet.hidden=!o;bg.hidden=!o;if(o)setTimeout(()=>sheet.querySelector('[data-text]')?.focus(),80)};
+  let opener=null;
+  const openSheet=o=>{if(o)opener=document.activeElement;sheet.hidden=!o;bg.hidden=!o;if(o)setTimeout(()=>sheet.querySelector('[data-text]')?.focus(),80);else{opener?.focus?.();opener=null}};
+  sheet.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();openSheet(false);return}if(e.key!=='Tab')return;const f=[...sheet.querySelectorAll('button:not([disabled]),input')].filter(x=>x.offsetParent);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
   el.querySelector('[data-desc]')?.addEventListener('click',()=>openSheet(true));
   el.querySelectorAll('[data-sheet-close]').forEach(b=>b.addEventListener('click',()=>openSheet(false)));
   if(S.__sheet){S.__sheet=false;openSheet(true)}
@@ -191,14 +196,21 @@ function bind(el,S){
   // les étiquettes arrivent après la feuille : sinon la feuille masquerait l'animation
   window.addEventListener('resize',()=>fit(el),{passive:true});
 }
+/* lien direct vers chaque outil : #studio/frigo, #studio/comparer… */
+const TOOL_SLUG={plate:'assiette',fridge:'frigo',swap:'comparer',intelligence:'analyser',restaurant:'restaurant'};
+let routeReady=false;
+function writeRoute(){if(!routeReady)return;const on=document.querySelector('#page-studio.active'),tool=document.querySelector('#ns-tabs button.on')?.dataset.tool,want=on&&TOOL_SLUG[tool]?'#studio/'+TOOL_SLUG[tool]:'';if(location.hash===want||(!want&&!location.hash.startsWith('#studio')))return;history.replaceState(null,'',location.pathname+location.search+want)}
+function readRoute(){const m=location.hash.match(/^#studio(?:\/([a-z]+))?$/);if(!m)return;try{window.showTab('studio')}catch{return}const tool=Object.keys(TOOL_SLUG).find(k=>TOOL_SLUG[k]===m[1]);const b=tool&&document.querySelector('#ns-tabs [data-tool="'+tool+'"]');if(b&&!b.classList.contains('on'))b.click()}
 /* robot masqué + caméra coupée quand on quitte l'écran */
-function sync(){const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);if(!on)restoreDiet();else placeDiet(document.querySelector('#page-studio.active .nxp'));
-  const cam=document.querySelector('#page-studio.active .nxp[data-mode="camera"]');if(!cam)stopCam();else if(!stream)startCam(cam)}
-document.addEventListener('click',e=>{if(e.target.closest('.tab,[data-tab],[data-tool],.pulse-nav-links button'))setTimeout(sync,80)},true);
+function sync(){writeRoute();const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);if(!on)restoreDiet();else placeDiet(document.querySelector('#page-studio.active .nxp'));
+  const cam=document.querySelector('#page-studio.active .nxp[data-mode="camera"]');if(!cam)stopCam();else if(!stream&&camOn)startCam(cam)}
+document.addEventListener('click',e=>{if(e.target.closest('.tab,[data-tab],#ns-tabs [data-tool],.pulse-nav-links button'))setTimeout(sync,80)},true);
 new MutationObserver(()=>setTimeout(sync,30)).observe(document.getElementById('page-studio')||document.body,{attributes:true,attributeFilter:['class']});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopCam();else sync()});
 window.NxPlate={view,bind,sync,stop:stopCam};
+try{navigator.permissions?.query?.({name:'camera'})?.then(x=>{if(x.state==='granted'){camOn=true;sync()}}).catch(()=>{})}catch{}
 // si l'écran a été dessiné avant le chargement de ce fichier, on le redessine
-const redraw=()=>{const st=window.__nxStudio;if(st&&document.querySelector('#ns-tabs button.on[data-tool="plate"]')&&!document.querySelector('.nxp'))st.render('plate');sync()};
+const redraw=()=>{const st=window.__nxStudio;if(st&&document.querySelector('#ns-tabs button.on[data-tool="plate"]')&&!document.querySelector('.nxp'))st.render('plate');readRoute();routeReady=true;sync()};
+window.addEventListener('hashchange',readRoute);
 if(document.readyState==='complete')redraw();else window.addEventListener('load',redraw,{once:true});
 })();

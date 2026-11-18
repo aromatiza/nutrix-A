@@ -1,25 +1,33 @@
-/* NUTRIX — écran « Assiette / الصحن ». Style iOS natif, sobre (listes
-   « inset grouped ») : fond gris système, cartes blanches, hairlines,
-   un seul vert, aucun dégradé ni halo. Tout passe par les variables --ios-*.
-   Ne s'applique qu'à cet écran (.nxp et body.nxp-on). */
+/* NUTRIX — Studio et écran « Assiette / الصحن ».
+   Vert forêt (fond), sable (cartes), violet plat (action principale).
+   Les variables --ios-* gardent la structure de l'écran et pointent vers --st-*. */
 
 /* ---------- tokens ---------- */
+body{
+  --st-page:#1b4533; --st-page2:#143628; --st-card:#f4ecdd; --st-card2:#e9dcc2; --st-ink:#13261d; --st-mute:#58624f;
+  --st-line:rgba(19,38,29,.14); --st-on-page:#f4ecdd; --st-on-page-mute:#cfd6c7; --st-on-fill:rgba(244,236,221,.13);
+  --st-head:Fraunces,Georgia,serif; --st-body:"DM Sans",system-ui,sans-serif; --st-r:14px; --st-r-sm:10px; --st-r-xs:8px;
+  --st-accent:#6f3ff5; --st-sel:#1b4533; --st-on-sel:#f4ecdd; --st-scrim:rgba(20,54,40,.84);
+}
+body.dark{
+  --st-page:#0f2a1f; --st-page2:#0b2018; --st-card:#173a2b; --st-card2:#1f4a37; --st-ink:#f4ecdd; --st-mute:#c9c6b2;
+  --st-line:rgba(244,236,221,.14); --st-on-page:#f4ecdd; --st-on-page-mute:#c9c6b2; --st-on-fill:rgba(244,236,221,.1);
+  --st-accent:#7248f2; --st-sel:#f4ecdd; --st-on-sel:#13261d; --st-scrim:rgba(11,32,24,.86);
+}
 body.nxp-on,.nxp{
-  --ios-bg:#f2f2f7; --ios-card:#ffffff; --ios-fill:rgba(118,118,128,.12); --ios-fill2:rgba(118,118,128,.08);
-  --ios-label:#000000; --ios-label2:rgba(60,60,67,.85); --ios-grey:#8e8e93; --ios-grey3:#c7c7cc;
-  --ios-sep:rgba(60,60,67,.18); --ios-hair:rgba(0,0,0,.08);
-  --ios-green:#248a3d; --ios-green-ink:#1e7a35; --ios-green-fill:rgba(36,138,61,.1); --ios-on-green:#ffffff;
+  --ios-bg:var(--st-page); --ios-card:var(--st-card); --ios-fill:rgba(19,38,29,.08); --ios-fill2:rgba(19,38,29,.05);
+  --ios-label:var(--st-ink); --ios-label2:var(--st-ink); --ios-grey:var(--st-mute); --ios-grey3:#a4977c;
+  --ios-sep:var(--st-line); --ios-hair:var(--st-line);
+  --ios-green:var(--st-accent); --ios-green-ink:#1b4533; --ios-green-fill:rgba(27,69,51,.11); --ios-on-green:#fff;
   --ios-r:16px; --ios-r-sm:12px; --ios-gap:12px; --ios-pad:16px;
-  --mac-p:#34c759; --mac-c:#0a84ff; --mac-f:#ff9f0a;
+  --mac-p:#1b4533; --mac-c:#a8894f; --mac-f:#6f3ff5;
   --sc-a:#248a3d; --sc-b:#7cb342; --sc-c:#f2a900; --sc-d:#e5484d;
   --ios-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","IBM Plex Sans Arabic","Helvetica Neue",system-ui,sans-serif;
 }
 body.dark.nxp-on,body.dark .nxp{
-  --ios-bg:#000000; --ios-card:#1c1c1e; --ios-fill:rgba(118,118,128,.24); --ios-fill2:rgba(118,118,128,.16);
-  --ios-label:#ffffff; --ios-label2:rgba(235,235,245,.8); --ios-grey:#8e8e93; --ios-grey3:#48484a;
-  --ios-sep:rgba(84,84,88,.65); --ios-hair:rgba(255,255,255,.08);
-  --ios-green:#2fb350; --ios-green-ink:#30d158; --ios-green-fill:rgba(48,209,88,.14); --ios-on-green:#ffffff;
-  --mac-p:#30d158; --mac-c:#0a84ff; --mac-f:#ff9f0a;
+  --ios-fill:rgba(244,236,221,.1); --ios-fill2:rgba(244,236,221,.06); --ios-grey3:#8f9b8c;
+  --ios-green-ink:#f4ecdd; --ios-green-fill:rgba(244,236,221,.1);
+  --mac-p:#8fc4a7; --mac-c:#d8c6a2; --mac-f:#a98bff;
 }
 .nxp[lang="ar"]{--ios-font:"IBM Plex Sans Arabic",-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
 
@@ -107,13 +115,10 @@ html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h>i{width:8px!importa
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host[dir="rtl"] .nt-diet-h>i,.nxp[lang="ar"] ~ * #nt-diet .nt-diet-h>i{transform:rotate(135deg)!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host.open .nt-diet-h>i{transform:rotate(45deg)!important}
 .nxp-dico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--ios-green);color:#fff}
-.nxp-emo{display:none}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b{padding:4px var(--ios-pad) var(--ios-pad)!important;margin:0!important;border-top:.5px solid var(--ios-sep)!important;background:transparent!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b p{margin:10px 0!important;font-size:13px!important;color:var(--ios-grey)!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b button{min-height:34px!important;padding:0 12px!important;border-radius:999px!important;border:0!important;background:var(--ios-fill)!important;color:var(--ios-label)!important;font:500 15px var(--ios-font)!important;box-shadow:none!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-b button.on{background:var(--ios-green)!important;color:#fff!important}
-body:not(.nxp-on) .nxp-dico{display:none}
-body:not(.nxp-on) .nxp-emo{display:inline}
 
 /* ---------- sous le viseur ---------- */
 .nxp-below{display:flex;flex-direction:column;gap:var(--ios-gap)}
@@ -223,7 +228,6 @@ html body.nxp-on:not(#_v):not(#_w) #page-studio .ns-tabs button span{overflow:hi
 html body.nxp-on:not(#_v):not(#_w) #page-studio .ns-tabs button .ns-tab-ico{width:18px!important;height:18px!important;margin:0!important;background:none!important;color:inherit!important}
 html body.nxp-on:not(#_v):not(#_w) #page-studio .ns-tabs button .ns-tab-ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 html body.nxp-on:not(#_v):not(#_w) #page-studio .ns-tabs button.on{background:var(--ios-card)!important;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 .5px var(--ios-hair)!important;font-weight:600!important}
-body.dark.nxp-on #page-studio .ns-tabs button.on{background:#636366!important}
 html[lang="ary"] body.nxp-on #page-studio .ns-tabs{direction:rtl}
 
 @media(min-width:900px){
@@ -253,3 +257,141 @@ html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h em{flex:none}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h em{width:auto!important;min-width:0!important;max-width:40%!important;margin:0!important;flex:none!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h>span{flex:1 1 auto!important;width:auto!important}
 html body:not(#_v):not(#_w) #nt-diet.nxp-row-host .nt-diet-h>span>span{flex:1 1 auto;width:auto!important}
+
+/* ==========================================================================
+   STUDIO — palette : vert forêt (fond), sable (cartes), violet plat (action).
+   Aucun dégradé, aucune lueur colorée. Toutes les couleurs viennent de --st-*.
+   ========================================================================== */
+html body:not(#_v):not(#_w):not(#_x) #page-studio,html body:not(#_v):not(#_w):not(#_x) #page-studio [data-tool]{--tc:var(--st-accent)!important;--tc2:var(--st-accent)!important;--tci:var(--st-ink)!important;--tcs:var(--st-card2)!important;--nx-primary:var(--st-sel)!important;--nx-primary-2:var(--st-sel)!important;--nx-line:var(--st-line)!important;--nx-muted:var(--st-mute)!important}
+html:not(#_v):not(#_w):not(#_x) body:has(#page-studio.active),html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) #page-studio{background:var(--st-page)!important;background-image:none!important}
+html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) :is(#page-title,#page-sub,.premium-footer,.premium-footer *),html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-footnote{color:var(--st-on-page)!important}
+
+/* bandeau : la photo reste, sous un voile uni */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-head{background-color:var(--st-page2)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-head::before{background:var(--st-scrim)!important}
+
+/* onglets */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs{background:var(--st-on-fill)!important;border:0!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs button{background:transparent!important;background-image:none!important;border-color:transparent!important;color:var(--st-on-page)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs button.on{background:var(--st-card)!important;color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs .ns-tab-ico{background:none!important;color:inherit!important;box-shadow:none!important}
+
+/* surfaces des outils */
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in,.nv-out,.nv-out:not(.on),.nv-card,.nv-prod,.nv-recipe,.nv-shop,.nv-pick,.nv-pick.best,.ch-panel,.ch-rec,.ch-rec.open){background:var(--st-card)!important;background-image:none!important;border-color:var(--st-line)!important;color:var(--st-ink)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in header h3,.nv-card h3,.nv-card h4,.nv-h,.ch-rec strong){color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-in header p,.nv-slot-empty small,.nv-foot,.nv-h small){color:var(--st-mute)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot,html body:not(#_v):not(#_w):not(#_x) #page-studio .nv[data-tool] .nv-slot:not(.has){background:var(--st-card2)!important;background-image:none!important;border-color:var(--st-line)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot-empty :is(strong,.nv-i){color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-slot-empty .nv-i{background:var(--st-card)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-prod-hero,.ch-emo){background:var(--st-card2)!important;background-image:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-hero::after{display:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod.win{border-color:var(--st-accent)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-fig,.nv-hist-row button:hover img,.nv-hist-row button:hover b){box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-skel i{background:var(--st-card2)!important;background-image:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-scan{background:var(--st-accent)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(input:not([type=checkbox]):not([type=radio]),select,textarea){background:var(--st-card2)!important;color:var(--st-ink)!important;border-color:var(--st-line)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(input,textarea)::placeholder{color:var(--st-mute)!important}
+
+/* actions : violet plat = l'action principale ; forêt = sélection */
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio .nv-go:not(:disabled),#page-studio .ch-acts .ch-cook,#page-studio .nv-vs-dot,.ch-nav .pri){background:var(--st-accent)!important;background-image:none!important;color:#fff!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-go:disabled{background:var(--st-card2)!important;background-image:none!important;color:var(--st-mute)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio .nv-gen:not(.nxp-links .nv-gen),#page-studio .nv-verdict,#page-studio .ch-goals button.on,#page-studio .ch-goals .mar.on,#nt-diet [data-d].on,#nt-diet.nxp-row-host .nt-diet-b button.on){background:var(--st-sel)!important;background-image:none!important;color:var(--st-on-sel)!important;border-color:transparent!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) .ch-prog i{background:var(--st-accent)!important;background-image:none!important}
+
+/* régime & allergies */
+html body:not(#_v):not(#_w):not(#_x) #nt-diet{background:var(--st-card)!important;background-image:none!important;border-color:var(--st-line)!important;color:var(--st-ink)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nt-diet-h{background:transparent!important;color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nt-diet-h em{color:var(--st-mute)!important;background:none!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nt-diet-h>span,html body:not(#_v):not(#_w):not(#_x) #nt-diet.nxp-row-host .nt-diet-h>span>span{color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet [data-d]:not(.on){background:var(--st-card2)!important;color:var(--st-ink)!important;border-color:var(--st-line)!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico{background:var(--st-sel)!important;color:var(--st-on-sel)!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico svg{stroke:currentColor!important}
+
+/* écran Assiette : ce qui est posé directement sur le fond forêt */
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-head h3{color:var(--st-on-page)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp :is(.nxp-head p,.nxp-cap,.nxp-src){color:var(--st-on-page-mute)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-pill{background:var(--st-on-fill)!important;color:var(--st-on-page)!important}
+html body:not(#_v):not(#_w):not(#_x) #ns-workspace .nxp .nxp-btn.ghost{color:var(--st-on-page)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp :is(.nxp-links .nxp-ni){background:var(--st-sel)!important;color:var(--st-on-sel)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishicon{color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-sheet{background:var(--st-card)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp-sheet .nv-text input{background:var(--st-card2)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nv-hist .nv-h{color:var(--st-on-page-mute)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-note .nxp-ni.warn{background:var(--st-card2)!important;color:var(--st-ink)!important}
+
+/* détails : cartes, contrôles et états dans les deux thèmes */
+html body:not(#_v):not(#_w):not(#_x) .nxp :is(.nxp-card,.nxp-dishes button){background:var(--st-card)!important;background-image:none!important;border-color:var(--st-line)!important;color:var(--st-ink)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-card-t{background:none!important;color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-ctrl .nxp-round{color:#fff!important}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-links button{background:transparent!important;color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ns-tabs{border-radius:14px!important}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet:not(.nxp-row-host) .nxp-chev{display:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ch-goals button:not(.on),.ch-serv>div,.ch-serv button,.nv-chip,.nv-empty b){background:var(--st-card2)!important;background-image:none!important;color:var(--st-ink)!important;border-color:var(--st-line)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-chip.warn{border-color:var(--st-accent)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-empty :is(b,.nv-i){color:var(--st-ink)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-empty span{color:var(--st-mute)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-go:disabled{opacity:1!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio #ch-addbtn{background:var(--st-sel)!important;color:var(--st-on-sel)!important;box-shadow:none!important}
+
+/* icônes au trait à la place des emojis */
+html body:not(#_v):not(#_w):not(#_x) #nt-diet:not(.nxp-row-host) .nt-diet-h>span{display:flex;align-items:center;gap:10px}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet:not(.nxp-row-host) .nxp-dico{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em){display:inline-grid;place-items:center;width:18px;height:18px;margin-inline-end:6px;font-style:normal;vertical-align:-4px}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em) .nv-i{width:18px;height:18px;background:none!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip em,.ch-goals em) .nv-i svg{width:17px;height:17px}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-recipe b,.nv-prod-hero b,.nv-emoji,.ch-emo,.nv-hist-row b){display:grid;place-items:center;color:var(--st-ink)!important;font-size:0}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-acts [data-rfav].on{background:var(--st-sel)!important;color:var(--st-on-sel)!important;border-color:transparent!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-acts [data-rfav].on svg{fill:currentColor}
+html body:not(#_v):not(#_w):not(#_x) #nt-diet .nxp-dico{transform:none!important;rotate:none!important;border:0!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-tip,.nv-tip.alt,.nv-reset,.ch-macros span,.ch-meta span,.ch-meta .lv,.ch-ings li,.ch-ings li.miss,.ch-timer,.ch-chg,.ch-acts button:not(.ch-cook):not(.on),.nv-pick-end span){background:var(--st-card2)!important;background-image:none!important;color:var(--st-ink)!important;border-color:var(--st-line)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-crown,.nv-prod .nv-crown,.ch-ings li.have i){background:var(--st-sel)!important;color:var(--st-on-sel)!important;box-shadow:none!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-crown :is(em,.nv-i){color:inherit!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ch-ings li.miss i,.ch-timer.run){background:var(--st-accent)!important;color:#fff!important}
+
+/* typographie Studio : un titre, un texte ; arabe en IBM Plex */
+html[lang="ary"] body{--st-head:"IBM Plex Sans Arabic",Tahoma,sans-serif;--st-body:"IBM Plex Sans Arabic",Tahoma,sans-serif}
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio,#page-studio *,.ch-cookov,.ch-cookov *){font-family:var(--st-body)!important}
+html body:not(#_v):not(#_w):not(#_x) :is(#page-studio :is(h2,h3,.nxp-head h3,.nxp-sheet-h h4,.nxp-card-t),.ch-cookov h3),html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) #page-title{font-family:var(--st-head)!important;font-weight:600!important;letter-spacing:0!important}
+
+/* une seule échelle d'arrondis */
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ns-head,.ns-tabs,#nt-diet,.nv-in,.nv-out,.nv-card,.nv-prod,.nv-verdict,.nv-shop,.nv-recipe,.nv-pick,.ch-rec,.nxp-card,.nxp-vf){border-radius:var(--st-r)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.ns-tabs button,.nv-slot,.nv-go,.nv-gen,.nv-reset,.nv-tip,.nv-empty b,.nv-slot-empty .nv-i,.ch-add input,.ch-macros span,.ch-ings li,.ch-acts button,.ch-serv>div,.ch-emo,.nxp-btn,.nv-text input){border-radius:var(--st-r-sm)!important}
+html body:not(#_v):not(#_w):not(#_x) #page-studio :is(.nv-chip,.ch-goals button,.ch-meta span,.ch-meta .lv,.ch-timer,.nv-pick-end span,.nxp-pill,#nt-diet [data-d]){border-radius:var(--st-r-xs)!important}
+
+/* plats marocains : rangée compacte plutôt que des cartes identiques */
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes>div{gap:8px}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button{display:inline-flex;align-items:center;gap:8px;width:auto;height:48px;padding-block:0;padding-inline:8px 14px;border-radius:var(--st-r-sm)!important;font-size:15px}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button i{width:32px;height:32px;border-radius:var(--st-r-xs)}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button i svg{width:19px;height:19px}
+
+/* recettes : directement sur le fond, sans carte dans la carte */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-out:has(.ch-list){background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important}
+
+/* accessibilité et caméra à la demande */
+.nx-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+html body:not(#_v):not(#_w):not(#_x) #ns-workspace:focus{outline:none!important}
+.nxp-cam-b{display:none}.no-cam .nxp-cam-a,.no-cam .nxp-cam,.cam-wait .nxp-cam{display:none!important}.no-cam .nxp-cam-b{display:inline}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-cam{min-height:44px;padding:0 16px;border:0;border-radius:var(--st-r-sm);background:var(--st-card);color:var(--st-ink);font-size:15px;font-weight:600;cursor:pointer}
+
+/* Comparer : tout reste dans sa carte, même sur petit écran */
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prods{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod,html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body{min-width:0}
+html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body h4{overflow-wrap:anywhere}
+@media(max-width:760px){html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod-body{padding:10px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-prod .nv-crown{inset:auto 8px 8px;justify-content:center;padding:5px 6px;font-size:.72rem;white-space:nowrap}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-score{grid-template-columns:minmax(0,1fr);grid-template-areas:"n" "l" "b";padding:10px;gap:6px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-score-l{justify-self:start;padding:4px 9px;font-size:.76rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li{grid-template-columns:28px minmax(0,1fr) 8px;grid-template-areas:"i s e" "i v v";gap:2px 7px;padding:9px 0}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts .nv-fi{grid-area:i;width:28px;height:28px}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>span{grid-area:s;min-width:0;font-size:.84rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>b{grid-area:v;white-space:nowrap;font-size:.86rem}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-facts li>em{grid-area:e;width:8px;height:8px}
+}
+/* la bulle d'aide du robot ne couvre plus les outils du Studio ; le robot reste disponible */
+html body:not(#_v):not(#_w):not(#_x):has(#page-studio.active) .nx-robot-bubble{display:none!important}
+@media(max-width:560px){
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-vs-slots .nv-slot{aspect-ratio:auto!important;min-height:160px;height:auto!important}
+  html body:not(#_v):not(#_w):not(#_x) #page-studio .nv-vs-slots .nv-slot-empty{position:static;padding:14px 8px}
+}
