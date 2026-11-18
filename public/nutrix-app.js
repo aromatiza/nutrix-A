@@ -413,7 +413,8 @@ const renderers={plate:renderPlate,fridge:renderFridge,swap:renderSwap,intellige
 let active='plate';
 function show(tool){if(!renderers[tool])return;active=tool;tabs.querySelectorAll('button').forEach(b=>{const selected=b.dataset.tool===tool;b.classList.toggle('on',selected);b.setAttribute('aria-pressed',selected?'true':'false')});if(window.NutrixVision&&window.NutrixVision.render(tool))return;renderers[tool]();}
 tabs.addEventListener('click',e=>{const b=e.target.closest('button[data-tool]');if(b)show(b.dataset.tool)});
-show(active);
+// l'écran principal est dessiné par NutrixVision ; cette version reste en secours si elle n'a rien affiché
+setTimeout(()=>{if(!root.children.length)show(active)},0);
 })();
 }catch(e){console.error("[Nutrix] nutrix-studio.js",e)}
 

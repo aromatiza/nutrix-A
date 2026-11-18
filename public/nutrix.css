@@ -3031,7 +3031,7 @@ body.pulse-shell.dark .pulse-metric-card,body.pulse-shell.dark .pulse-diet-card{
 #page-studio .ns-eyebrow{color:#8fe3c2!important;letter-spacing:.14em;font-size:.74rem;font-weight:700}
 #page-studio .ns-head-symbol{background:rgba(255,255,255,.12)!important;color:#fff!important;border-radius:18px}
 #page-studio .ns-tabs{display:flex;gap:8px;overflow-x:auto;padding:18px 2px 6px;scrollbar-width:none}
-#page-studio .ns-tabs button{white-space:nowrap;border:1px solid var(--nx-line)!important;background:#fff!important;color:var(--nx-muted)!important;border-radius:999px!important;padding:10px 18px!important;font:600 .9rem Inter,sans-serif;min-height:44px;transition:all .15s}
+#page-studio .ns-tabs button{white-space:nowrap;border:1px solid var(--nx-line)!important;background:#fff!important;color:var(--nx-muted)!important;border-radius:999px!important;padding:10px 18px!important;font:600 .9rem Inter,sans-serif;min-height:44px;transition:background-color .15s,color .15s,border-color .15s}
 #page-studio .ns-tabs button:hover{border-color:var(--nx-primary)!important;color:var(--nx-primary)!important}
 #page-studio .ns-tabs button.on{background:var(--nx-primary)!important;border-color:var(--nx-primary)!important;color:#fff!important;box-shadow:0 10px 22px -12px rgba(15,122,90,.9)}
 #page-studio .ns-card{background:#fff!important;border:1px solid var(--nx-line)!important;border-radius:var(--nx-radius)!important;box-shadow:0 1px 2px rgba(18,38,31,.04),0 14px 34px -22px rgba(18,38,31,.22)!important}
@@ -3604,7 +3604,7 @@ body.pulse-shell.dark .ob-sub{color:#e9eceb}
 .ch .ch-it:active{transform:scale(.94)}
 .ch .ch-it.off{opacity:.38;text-decoration:line-through;background:#eef0ee;color:#6b7280}
 .ch .ch-goals{display:flex;flex-wrap:wrap;gap:8px}
-.ch .ch-goals button{border:1.5px solid var(--nx-line,#dfe8e2);background:#fff;border-radius:999px;padding:9px 14px;font:600 .86rem Inter,sans-serif;color:var(--nx-ink,#12261f);cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:all .2s}
+.ch .ch-goals button{border:1.5px solid var(--nx-line,#dfe8e2);background:#fff;border-radius:999px;padding:9px 14px;font:600 .86rem Inter,sans-serif;color:var(--nx-ink,#12261f);cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:background-color .2s,color .2s,border-color .2s}
 .ch .ch-goals button.on{background:linear-gradient(135deg,var(--nx-primary,#0f7a5a),var(--nx-primary-2,#17b26a));border-color:transparent;color:#fff;box-shadow:0 8px 18px -8px rgba(15,122,90,.7)}
 .ch .ch-serv{display:flex;align-items:center;justify-content:space-between;margin-top:14px;font:600 .92rem Inter,sans-serif;color:var(--nx-ink,#12261f)}
 .ch .ch-serv div{display:flex;align-items:center;gap:14px;background:#f1f6f3;border-radius:999px;padding:4px}
@@ -3696,7 +3696,7 @@ body.dark .ch-nav .pri{background:linear-gradient(135deg,#3d4246,#17b26a)}body.d
 #nt-diet .nt-diet-b{display:none;padding:0 16px 16px}#nt-diet.open .nt-diet-b{display:block;animation:nvin .3s ease}
 #nt-diet p{margin:0 0 10px;font-size:.8rem;color:var(--nx-muted,#6b7a72)}
 #nt-diet .nt-diet-b>div{display:flex;flex-wrap:wrap;gap:7px}
-#nt-diet [data-d]{border:1.5px solid var(--nx-line,#dfe8e2);background:#fff;border-radius:999px;padding:8px 13px;font:600 .8rem Inter,sans-serif;color:var(--nx-ink,#12261f);cursor:pointer;transition:all .2s}
+#nt-diet [data-d]{border:1.5px solid var(--nx-line,#dfe8e2);background:#fff;border-radius:999px;padding:8px 13px;font:600 .8rem Inter,sans-serif;color:var(--nx-ink,#12261f);cursor:pointer;transition:background-color .2s,color .2s,border-color .2s}
 #nt-diet [data-d].on{background:linear-gradient(135deg,#0f7a5a,#17b26a);color:#fff;border-color:transparent;box-shadow:0 6px 14px -6px rgba(15,122,90,.7)}
 body.dark #nt-diet{background:#191a1c;border-color:rgba(190,215,150,.18)}body.dark #nt-diet .nt-diet-h{color:#e9eceb}body.dark #nt-diet [data-d]{background:#1f2224;color:#e9eceb;border-color:rgba(190,215,150,.18)}body.dark #nt-diet [data-d].on{color:#fff}body.dark #nt-diet .nt-diet-h em{background:#202325;color:#8fe0b8}
 .nv .nt-moro{margin-top:12px}.nv .nt-moro small{display:block;font:700 .74rem Inter,sans-serif;color:var(--nx-muted,#6b7a72);margin-bottom:8px;letter-spacing:.02em}

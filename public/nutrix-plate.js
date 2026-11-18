@@ -196,8 +196,13 @@ function bind(el,S){
   // les étiquettes arrivent après la feuille : sinon la feuille masquerait l'animation
   window.addEventListener('resize',()=>fit(el),{passive:true});
 }
+/* lien direct vers chaque outil : #studio/frigo, #studio/comparer… */
+const TOOL_SLUG={plate:'assiette',fridge:'frigo',swap:'comparer',intelligence:'analyser',restaurant:'restaurant'};
+let routeReady=false;
+function writeRoute(){if(!routeReady)return;const on=document.querySelector('#page-studio.active'),tool=document.querySelector('#ns-tabs button.on')?.dataset.tool,want=on&&TOOL_SLUG[tool]?'#studio/'+TOOL_SLUG[tool]:'';if(location.hash===want||(!want&&!location.hash.startsWith('#studio')))return;history.replaceState(null,'',location.pathname+location.search+want)}
+function readRoute(){const m=location.hash.match(/^#studio(?:\/([a-z]+))?$/);if(!m)return;try{window.showTab('studio')}catch{return}const tool=Object.keys(TOOL_SLUG).find(k=>TOOL_SLUG[k]===m[1]);const b=tool&&document.querySelector('#ns-tabs [data-tool="'+tool+'"]');if(b&&!b.classList.contains('on'))b.click()}
 /* robot masqué + caméra coupée quand on quitte l'écran */
-function sync(){const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);if(!on)restoreDiet();else placeDiet(document.querySelector('#page-studio.active .nxp'));
+function sync(){writeRoute();const on=!!document.querySelector('#page-studio.active .nxp');document.body.classList.toggle('nxp-on',on);if(!on)restoreDiet();else placeDiet(document.querySelector('#page-studio.active .nxp'));
   const cam=document.querySelector('#page-studio.active .nxp[data-mode="camera"]');if(!cam)stopCam();else if(!stream&&camOn)startCam(cam)}
 document.addEventListener('click',e=>{if(e.target.closest('.tab,[data-tab],#ns-tabs [data-tool],.pulse-nav-links button'))setTimeout(sync,80)},true);
 new MutationObserver(()=>setTimeout(sync,30)).observe(document.getElementById('page-studio')||document.body,{attributes:true,attributeFilter:['class']});
@@ -205,6 +210,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)stopCam();e
 window.NxPlate={view,bind,sync,stop:stopCam};
 try{navigator.permissions?.query?.({name:'camera'})?.then(x=>{if(x.state==='granted'){camOn=true;sync()}}).catch(()=>{})}catch{}
 // si l'écran a été dessiné avant le chargement de ce fichier, on le redessine
-const redraw=()=>{const st=window.__nxStudio;if(st&&document.querySelector('#ns-tabs button.on[data-tool="plate"]')&&!document.querySelector('.nxp'))st.render('plate');sync()};
+const redraw=()=>{const st=window.__nxStudio;if(st&&document.querySelector('#ns-tabs button.on[data-tool="plate"]')&&!document.querySelector('.nxp'))st.render('plate');readRoute();routeReady=true;sync()};
+window.addEventListener('hashchange',readRoute);
 if(document.readyState==='complete')redraw();else window.addEventListener('load',redraw,{once:true});
 })();
