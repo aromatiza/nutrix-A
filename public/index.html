@@ -599,7 +599,8 @@
       <button type="button" data-tool="intelligence"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></i> <span>Analyser</span></button>
       <button type="button" data-tool="restaurant"><i class="ns-tab-ico"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v6M9 3v6M17 21V3c-2.5 1.5-3.5 4-3.5 8h3.5"/></svg></i> <span>Restaurant</span></button>
     </nav>
-    <div class="ns-workspace" id="ns-workspace" aria-live="polite"></div>
+    <div class="ns-workspace" id="ns-workspace" tabindex="-1"></div>
+    <p class="nx-sr-only" id="ns-status" role="status" aria-live="polite"></p>
     <p class="ns-footnote">Estimations générées par IA, à titre indicatif. Pas un avis médical.</p>
   </section>
 

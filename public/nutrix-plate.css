@@ -366,3 +366,9 @@ html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-dishes button i svg{width:19px;he
 
 /* recettes : directement sur le fond, sans carte dans la carte */
 html body:not(#_v):not(#_w):not(#_x) #page-studio .ch-out:has(.ch-list){background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important}
+
+/* accessibilité et caméra à la demande */
+.nx-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+html body:not(#_v):not(#_w):not(#_x) #ns-workspace:focus{outline:none!important}
+.nxp-cam-b{display:none}.no-cam .nxp-cam-a,.no-cam .nxp-cam,.cam-wait .nxp-cam{display:none!important}.no-cam .nxp-cam-b{display:inline}
+html body:not(#_v):not(#_w):not(#_x) .nxp .nxp-cam{min-height:44px;padding:0 16px;border:0;border-radius:var(--st-r-sm);background:var(--st-card);color:var(--st-ink);font-size:15px;font-weight:600;cursor:pointer}

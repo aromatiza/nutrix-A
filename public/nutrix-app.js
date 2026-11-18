@@ -621,14 +621,14 @@ const R={
 const GEN={plate:{k:'better_prompt',label:'Voir l’image plus saine'},fridge:{k:'image_prompt',label:'Générer le plat'},restaurant:{k:'image_prompt',label:'Voir le plat conseillé'}};
 
 /* ---------- view ---------- */
-function slotHtml(tool,i,name){const img=state[tool].imgs[i];return `<div class="nv-slot ${img?'has':''}" data-slot="${i}" tabindex="0" role="button" aria-label="${esc(name)}">
+function slotHtml(tool,i,name){const img=state[tool].imgs[i];return `<div class="nv-slot ${img?'has':''}" data-slot="${i}"${img?'':` tabindex="0" role="button" aria-label="${esc(name)}"`}>
  ${img?`<img src="${img}" alt="${esc(name)}"><span class="nv-scan"></span><button type="button" class="nv-x" data-clear="${i}" aria-label="Retirer">${I.close}</button>`:`<div class="nv-slot-empty">${ico('camera')}<strong>${esc(name)}</strong><small>Prendre ou déposer une photo</small></div>`}
  <input type="file" accept="image/jpeg,image/png,image/webp" ${'capture' in document.createElement('input')?'':''} hidden></div>`}
 function view(tool){const c=CFG[tool],S=state[tool];if(tool==='plate'&&window.NxPlate)return window.NxPlate.view(S,histHtml('plate'));if(tool==='swap')return viewSwap(c,S);if(tool==='fridge')return viewFridge(c,S);const ready=S.imgs.filter(Boolean).length>=c.slots.length||!!(S.text&&S.text.trim());
  return `<section class="nv" data-tool="${tool}">
   <div class="nv-in"><header><h3>${esc(c.title)}</h3><p>${esc(c.sub)}</p></header>
    <div class="nv-slots n${c.slots.length}">${c.slots.map((nm,i)=>slotHtml(tool,i,nm)).join('')}</div>
-   <div class="ch-add nv-text"><input type="text" maxlength="160" data-text value="${esc(S.text||'')}" placeholder="${tool==='restaurant'?'Ou écrivez le menu : tajine, pizza, salade…':tool==='intelligence'?'Ou écrivez le produit : Nutella, yaourt nature…':'Ou décrivez : couscous, tajine poulet, burger…'}" autocomplete="off"></div>
+   <div class="ch-add nv-text"><input type="text" maxlength="160" data-text aria-label="Décrire le plat ou le menu" value="${esc(S.text||'')}" placeholder="${tool==='restaurant'?'Ou écrivez le menu : tajine, pizza, salade…':tool==='intelligence'?'Ou écrivez le produit : Nutella, yaourt nature…':'Ou décrivez : couscous, tajine poulet, burger…'}" autocomplete="off"></div>
    ${tool==='plate'?`<div class="nt-moro"><small>🇲🇦 Plats marocains · instantané</small><div>${['Harira','Tajine poulet olives citron','Couscous aux sept légumes','Msemen','Pastilla au poulet','Sardines grillées','Zaalouk','Thé à la menthe (sucré)','Chebakia','Baghrir (2 crêpes)'].map(n=>`<button type="button" data-moro="${esc(n)}">${esc(n.replace(/ \(.*\)/,'').replace(' olives citron',''))}</button>`).join('')}</div></div>`:''}
    <button type="button" class="nv-go" ${ready&&!S.busy?'':'disabled'}>${S.busy?'<span class="nv-spin"></span>Analyse en cours':ico('spark')+esc(c.cta)}</button>
    ${S.err?`<p class="nv-err">${ico('warn')}${esc(S.err)}</p>`:''}${histHtml(tool)}</div>
@@ -642,7 +642,12 @@ function viewSwap(c,S){const ready=S.imgs.filter(Boolean).length>=2;
    ${S.err?`<p class="nv-err">${ico('warn')}${esc(S.err)}</p>`:''}${histHtml('swap')}</div>
   ${S.busy?'<div class="nv-out on"><div class="nv-skel"><i></i><i></i><i></i></div></div>':S.result?`<div class="nv-out on nv-out-wide">${R.swap(S.result)}<button type="button" class="nv-reset">${ico('refresh')}Nouvelle comparaison</button></div>`:''}
  </section>`}
-function render(tool){if(!CFG[tool])return false;state[tool]=state[tool]||{imgs:[]};root.innerHTML=view(tool);bind(tool);return true}
+/* le contenu est redessiné à chaque action : on garde le focus au bon endroit et on annonce seulement l'état utile */
+function focusRef(){const a=document.activeElement;if(!a||a===root||!root.contains(a))return null;const attrs=[...a.attributes].filter(x=>x.name.startsWith('data-')).map(x=>`[${x.name}="${CSS.escape(x.value)}"]`).join('');const first=a.classList[0]?'.'+CSS.escape(a.classList[0]):'';return {sel:a.tagName.toLowerCase()+(attrs||first),start:a.selectionStart,end:a.selectionEnd}}
+function restoreFocus(ref){if(!ref)return;const el=root.querySelector(ref.sel);const target=el&&el.offsetParent&&!el.disabled?el:root;target.focus({preventScroll:true});if(target!==root&&ref.start!=null){try{target.setSelectionRange(ref.start,ref.end)}catch{}}}
+let lastStatus='';
+function announce(S){const box=document.getElementById('ns-status');if(!box)return;const msg=S.busy?'Analyse en cours…':S.chefBusy?'Préparation des recettes…':S.err||S.chefErr||(S.result||(S.chef&&S.chef.recipes)?'Résultat prêt.':'');if(msg===lastStatus)return;lastStatus=msg;box.textContent=msg}
+function render(tool){if(!CFG[tool])return false;state[tool]=state[tool]||{imgs:[]};const ref=focusRef();root.innerHTML=view(tool);bind(tool);restoreFocus(ref);announce(state[tool]);return true}
 window.__nxStudio={state,render};   // utilisé par nutrix-plate.js (UI de l’écran Assiette)
 function bind(tool){const S=state[tool],el=root.querySelector('.nv');
  el.querySelectorAll('.nv-slot').forEach(slot=>{const i=Number(slot.dataset.slot),inp=slot.querySelector('input');
@@ -686,7 +691,7 @@ function ensureItems(S){if(!S.items){S.items=((S.result&&S.result.items)||[]).ma
  if(!S.goal)S.goal='equilibre';if(!S.servings)S.servings=2;if(!S.typed)S.typed=[];return S}
 function viewFridge(c,S){ensureItems(S);const hasPhoto=S.imgs.filter(Boolean).length>=1,hasItems=S.items.some(i=>i.on)||S.typed.length||S.maroc;
  const favs=favGet();
- const typed=`<div class="ch-add"><input type="text" id="ch-in" maxlength="40" placeholder="Ou tapez un ingrédient : œufs, riz, poulet…" autocomplete="off"><button type="button" id="ch-addbtn" aria-label="Ajouter">+</button></div>
+ const typed=`<div class="ch-add"><input type="text" id="ch-in" aria-label="Ajouter un ingrédient" maxlength="40" placeholder="Ou tapez un ingrédient : œufs, riz, poulet…" autocomplete="off"><button type="button" id="ch-addbtn" aria-label="Ajouter">+</button></div>
   ${S.typed.length&&!S.items.length?`<div class="nv-chips ch-typed">${S.typed.map((t,i)=>`<button type="button" class="nv-chip ok" data-tdel="${i}">${esc(t)} ×</button>`).join('')}</div>`:''}`;
  const hasList=S.items.length>0;
  const panel=hasList||S.typed.length||S.maroc?`<div class="ch-panel">

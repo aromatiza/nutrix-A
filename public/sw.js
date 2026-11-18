@@ -1,5 +1,5 @@
 /* V13: network first and immutable offline shell fallback, no API caching. */
-const CACHE='nutrix-pro-v21-studio-20261118';
+const CACHE='nutrix-pro-v22-studio-20261118';
 const SHELL=['/','/index.html','/nutrix.css','/nutrix-core.js','/nutrix-layers.js','/nutrix-app.js','/nutrix-v16.css','/nutrix-v16.js','/nutrix-plate.css','/nutrix-plate.js','/nutrix-food-icons.js','/nutrix-settings.css','/nutrix-settings.js','/nutrix-darija.js','/manifest.json','/icon.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
