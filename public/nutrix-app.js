@@ -579,14 +579,17 @@ Orange|orange,limoun|🍊|1 fruit (150 g)|70|1|17|0|92|Vitamine C, préfère-la 
 const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,' ').replace(/[^a-z0-9؀-ۿ ]/g,' ').replace(/\s+/g,' ').trim();
 const MAR=MAROC.split('\n').map(l=>{const a=l.split('|');return {name:a[0],keys:a[1].split(',').map(norm).filter(Boolean).concat([norm(a[0])]),emoji:a[2],portion:a[3],kcal:+a[4],p:+a[5],c:+a[6],f:+a[7],score:+a[8],tip:a[9],ing:a[10].split(',')}});
 function marocFind(q){const t=norm(q);if(t.length<3)return null;let best=null,bl=0;for(const d of MAR)for(const k of d.keys){if((t===k||t.includes(k)||(k.length>=5&&k.includes(t)&&t.length>=4))&&k.length>bl){best=d;bl=k.length}}return best}
-/* ---------- NutriX Data : plats marocains VALIDÉS (Supabase) — remplacent l'ancienne base estimée ----------
-   Valeurs calculées par la base (méthode des recettes, ingrédients TMCA/CIQUAL/USDA), Nutri-Score 2023, NOVA et photo
-   validés par l'équipe. Les plats encore absents de NutriX Data restent affichés, marqués « ancienne estimation ». */
+/* ---------- NutriX Data : plats marocains VALIDÉS (Supabase) — SEULE source de la cuisine marocaine ----------
+   Valeurs calculées par la base (méthode des recettes, ingrédients TMCA/CIQUAL/USDA), Nutri-Score 2023, NOVA, note /100
+   et photo validés par l'équipe. Dès que la base répond, l'ancienne liste estimée est retirée ; elle ne sert que
+   de secours tant que rien n'a jamais pu être chargé (premier lancement hors ligne). */
 MAR.forEach(d=>{d.old=true});
 const ND_SCORE={a:90,b:75,c:58,d:42,e:25};
 const ndEmoji=(cat,name)=>{const s=norm((cat||'')+' '+name);return /soupe|harira|bissara|chorba/.test(s)?'🍲':/couscous|seffa|berkoukes|rfissa/.test(s)?'🍛':/tajine|tagine|tanjia/.test(s)?'🥘':/pain|khobz|msemen|batbout|harcha|baghrir|mlaoui|rghaif|galette|crepe|beignet|sfenj/.test(s)?'🫓':/patisserie|dessert|gateau|corne|ghriba|chebakia|briouate|sellou|amlou|douceur|biscuit/.test(s)?'🍪':/salade|zaalouk|taktouka/.test(s)?'🥗':/the|boisson|jus|lben/.test(s)?'🍵':/pastilla/.test(s)?'🥧':'🍽️'};
-function ndMerge(list){
+function ndMerge(list,only){
  let changed=0;
+ // NutriX Data uniquement : on retire toutes les anciennes fiches estimées
+ if(only&&Array.isArray(list)&&list.some(x=>x&&x.name&&x.kcal>0))MAR.splice(0,MAR.length,...MAR.filter(o=>o.data));
  for(const x of list){
   if(!x||!x.name||!(x.kcal>0))continue;
   const keys=[x.name,x.darija,x.ar].map(norm).filter(Boolean);
@@ -594,7 +597,7 @@ function ndMerge(list){
   const grade=String(x.nutriscore||'').toLowerCase();
   const d={name:x.name,keys,emoji:ndEmoji(x.category,x.name),portion:'1 portion ('+Math.round(x.portion_g)+' g)',kcal:x.kcal,p:x.p,c:x.c,f:x.f,
    score:ND_SCORE[grade]??50,tip:'Données NutriX Data validées par l’équipe'+(grade?' · Nutri-Score '+grade.toUpperCase():'')+(x.nova?' · NOVA '+x.nova:''),
-   ing:x.ing&&x.ing.length?x.ing:[x.name],data:true,ns:grade?grade.toUpperCase():'',nova:x.nova||null,img:x.image||'',imgCredit:x.image_credit||'',imgSource:x.image_source||'',per100:x.per100,sources:x.sources||[]};
+   ing:x.ing&&x.ing.length?x.ing:[x.name],data:true,ns:grade?grade.toUpperCase():'',nova:x.nova||null,rating:x.rating??null,img:x.image||'',imgCredit:x.image_credit||'',imgSource:x.image_source||'',per100:x.per100,sources:x.sources||[]};
   // remplace l'ancienne fiche du même plat (même nom ou mêmes mots-clés), sinon ajoute en tête
   const tok=t=>t.split(' ').filter(w=>w.length>=4),nt=tok(base);
   const same=o=>{const on=norm(o.name),ot=tok(on);return on===base||base.startsWith(on+' ')||(ot.length>=2&&ot.every(w=>nt.some(x=>x.startsWith(w)||w.startsWith(x))))||o.keys.some(k=>k.length>=5&&(keys.includes(k)||base===k||base.startsWith(k+' ')))};
@@ -605,8 +608,8 @@ function ndMerge(list){
  if(changed){MAR.sort((a,b)=>(b.data?1:0)-(a.data?1:0));try{document.dispatchEvent(new CustomEvent('nutrixdata:ready',{detail:{count:changed}}))}catch{}}
 }
 const ND_KEY='nutrix-data-dishes-v1';
-try{const c=JSON.parse(localStorage.getItem(ND_KEY)||'null');if(c&&Array.isArray(c.d))ndMerge(c.d)}catch{}
-const ndLoad=()=>fetch('/api/data/dishes').then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.dishes))return;try{localStorage.setItem(ND_KEY,JSON.stringify({t:Date.now(),d:j.dishes}))}catch{}ndMerge(j.dishes)}).catch(()=>{});
+try{const c=JSON.parse(localStorage.getItem(ND_KEY)||'null');if(c&&Array.isArray(c.d))ndMerge(c.d,true)}catch{}
+const ndLoad=()=>fetch('/api/data/dishes').then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.dishes))return;try{localStorage.setItem(ND_KEY,JSON.stringify({t:Date.now(),d:j.dishes}))}catch{}MAR.splice(0,MAR.length,...MAR.filter(o=>!o.data));ndMerge(j.dishes,true)}).catch(()=>{});
 try{(window.requestIdleCallback||(f=>setTimeout(f,800)))(ndLoad)}catch{ndLoad()}
 
 const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:(d.data?'NutriX Data · validé · ':'Ancienne estimation · ')+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
@@ -1466,7 +1469,7 @@ try{if(/[?&]warm=1\b/.test(location.search)){const bar=document.createElement('d
 const mrNS=s=>s>=80?'A':s>=65?'B':s>=50?'C':s>=35?'D':'E';
 const mrNova=d=>/^(Dattes|Amandes|Figues|Grenade|Orange|Jus d’orange|Salade|Zaalouk|Taktouka|Sardines)/.test(d.name)?1:/^(Merguez|Sandwich)/.test(d.name)?4:/^(Khobz|Msemen|Mlaoui|Rghaif|Harcha|Batbout|Baghrir|Sfenj|Chebakia|Cornes|Briouate|Sellou|Amlou|Ghoriba|Zlabia|Mhancha|Fekkas|Pastilla au lait|Olives|Fromage|Lben|Thé|Bsissa)/.test(d.name)?3:2;
 const mrEco=d=>{const s=(d.name+' '+d.ing.join(' ')).toLowerCase();return /agneau|bœuf|boeuf|méchoui|mechoui|tanjia|lham|mrouzia|hergma|merguez|kefta|viande|khlii/.test(s)?(/légume|legume|courge|carotte/.test(s)?'D':'E'):/poulet|djej|djaj|foie|dinde/.test(s)?'C':/poisson|sardine|crevette|hout/.test(s)?'B':/beurre|smen|lait|fromage|jben|lben|oeuf|œuf|miel|sucre|amande/.test(s)?'B':'A'};
-const mrBadges=d=>{const n=d.data&&d.ns?d.ns:mrNS(d.score),v=d.data&&d.nova?d.nova:mrNova(d),e=mrEco(d),how=d.data?'NutriX Data':'ancienne estimation';return `<span class="mr-bdg"><span class="mr-ns" title="Nutri-Score ${n} (${how})"><small>NUTRI-SCORE</small><span>${'ABCDE'.split('').map(x=>`<i class="n${x}${x===n?' on':''}">${x}</i>`).join('')}</span></span><span class="mr-nova v${v}" title="NOVA ${v} (${how})"><small>NOVA</small><b>${v}</b></span><span class="mr-eco e${e}" title="Impact environnemental ${e} (estimé)"><b>${e}</b><span>green<br>score</span></span></span>`};
+const mrBadges=d=>{const n=d.data&&d.ns?d.ns:mrNS(d.score),v=d.data&&d.nova?d.nova:mrNova(d),e=mrEco(d),how=d.data?'NutriX Data':'ancienne estimation';return `<span class="mr-bdg">${d.data&&d.rating!=null?`<span class="mr-rate" title="Note NutriX /100 (70 % Nutri-Score + 30 % NOVA)" style="display:inline-flex;align-items:baseline;gap:1px;padding:4px 10px;border-radius:99px;font-weight:800;color:#fff;background:${d.rating>=75?'#038141':d.rating>=50?'#a3b10f':d.rating>=25?'#ee8100':'#e63e11'}">${d.rating}<small style="font-size:10px;opacity:.85">/100</small></span>`:''}<span class="mr-ns" title="Nutri-Score ${n} (${how})"><small>NUTRI-SCORE</small><span>${'ABCDE'.split('').map(x=>`<i class="n${x}${x===n?' on':''}">${x}</i>`).join('')}</span></span><span class="mr-nova v${v}" title="NOVA ${v} (${how})"><small>NOVA</small><b>${v}</b></span><span class="mr-eco e${e}" title="Impact environnemental ${e} (estimé)"><b>${e}</b><span>green<br>score</span></span></span>`};
 
 /* ---------- Cuisine marocaine : section dédiée ---------- */
 const MR_CATS=[['all','Tout'],['tajine','Tajines & plats'],['couscous','Couscous'],['soupe','Soupes'],['salade','Salades'],['grill','Grillades'],['petit','Petit-déj'],['douceur','Douceurs'],['fruit','Fruits & boissons']];
