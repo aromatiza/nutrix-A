@@ -1,0 +1,226 @@
+/* ==========================================================================
+   NutriX Motion — couche visuelle animée (v1)
+   Chargée EN DERNIER. Tout est sous body.nxm (ajouté par nutrix-motion.js) :
+   si le JS ne charge pas, le site reste exactement comme avant.
+   Désactiver : localStorage.setItem('nutrix-motion','off') puis recharger.
+   Palette : vert forêt 60 % · sable 30 % · violet électrique 10 % (accent).
+   ========================================================================== */
+
+@property --nxm-ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+body.nxm {
+  --nxm-forest: #1f6a47;
+  --nxm-emerald: #22b07d;
+  --nxm-mint: #7be3b5;
+  --nxm-sand: #f4ead7;
+  --nxm-sand-2: #ead9b9;
+  --nxm-purple: #7c4dff;
+  --nxm-purple-2: #a98bff;
+  --nxm-coral: #ff8a65;
+  --nxm-grad: linear-gradient(120deg, var(--nxm-emerald) 0%, var(--nxm-forest) 45%, var(--nxm-purple) 100%);
+  --nxm-grad-soft: linear-gradient(135deg, rgba(34,176,125,.16), rgba(124,77,255,.14));
+  --nxm-ease-out: cubic-bezier(.22, 1, .36, 1);
+  --nxm-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --nxm-card-shadow: 0 1px 2px rgba(20,60,40,.06), 0 8px 24px -8px rgba(20,60,40,.18);
+  --nxm-card-shadow-hover: 0 2px 4px rgba(20,60,40,.06), 0 22px 48px -14px rgba(31,106,71,.35), 0 0 0 1px rgba(124,77,255,.10);
+  --nxm-spot: rgba(255,255,255,.55);
+}
+body.nxm.dark {
+  --nxm-card-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -10px rgba(0,0,0,.6);
+  --nxm-card-shadow-hover: 0 2px 4px rgba(0,0,0,.4), 0 24px 56px -16px rgba(34,176,125,.28), 0 0 0 1px rgba(169,139,255,.22);
+  --nxm-spot: rgba(169,139,255,.16);
+}
+
+/* ---------- 1. Fond « aurora » animé ---------- */
+.nxm-aurora {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+  contain: strict;
+}
+.nxm-aurora i {
+  position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%;
+  filter: blur(70px); opacity: .38; will-change: transform;
+}
+.nxm-aurora i:nth-child(1) { background: radial-gradient(circle, var(--nxm-mint), transparent 65%); top: -14vmax; left: -10vmax; animation: nxm-drift-a 26s ease-in-out infinite alternate; }
+.nxm-aurora i:nth-child(2) { background: radial-gradient(circle, var(--nxm-purple-2), transparent 65%); top: 30vh; right: -16vmax; opacity: .26; animation: nxm-drift-b 32s ease-in-out infinite alternate; }
+.nxm-aurora i:nth-child(3) { background: radial-gradient(circle, var(--nxm-sand-2), transparent 65%); bottom: -18vmax; left: 20vw; opacity: .5; animation: nxm-drift-c 38s ease-in-out infinite alternate; }
+body.nxm.dark .nxm-aurora i { opacity: .22; }
+body.nxm.dark .nxm-aurora i:nth-child(3) { background: radial-gradient(circle, var(--nxm-forest), transparent 65%); opacity: .4; }
+@keyframes nxm-drift-a { to { transform: translate3d(18vw, 12vh, 0) scale(1.15); } }
+@keyframes nxm-drift-b { to { transform: translate3d(-22vw, -10vh, 0) scale(.9); } }
+@keyframes nxm-drift-c { to { transform: translate3d(-14vw, -16vh, 0) scale(1.2); } }
+
+/* ---------- 2. Barre de progression du scroll ---------- */
+.nxm-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; pointer-events: none;
+  background: var(--nxm-grad); transform-origin: 0 50%; transform: scaleX(var(--nxm-p, 0));
+  box-shadow: 0 0 12px rgba(124,77,255,.5);
+}
+html[lang="ary"] .nxm-progress { transform-origin: 100% 50%; }
+
+/* ---------- 3. Hero ---------- */
+body.nxm .pulse-hero { isolation: isolate; }
+body.nxm .pulse-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.16) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: nxm-sheen 7s var(--nxm-ease-out) 1.2s infinite;
+}
+@keyframes nxm-sheen { 0% { transform: translateX(-120%); } 28%, 100% { transform: translateX(120%); } }
+body.nxm .pulse-hero-inner { position: relative; z-index: 2; }
+
+body.nxm .pulse-hero-inner > * { animation: nxm-rise .9s var(--nxm-ease-out) both; }
+body.nxm .pulse-hero-inner > :nth-child(1) { animation-delay: .05s; }
+body.nxm .pulse-hero-inner > :nth-child(2) { animation-delay: .15s; }
+body.nxm .pulse-hero-inner > :nth-child(3) { animation-delay: .28s; }
+body.nxm .pulse-hero-inner > :nth-child(4) { animation-delay: .4s; }
+@keyframes nxm-rise { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
+/* mot mis en couleur dans le titre (ajouté par le JS) */
+body.nxm .nxm-hl {
+  background: linear-gradient(90deg, var(--nxm-mint), #fff 40%, var(--nxm-purple-2) 70%, var(--nxm-mint));
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: nxm-hl 6s linear infinite;
+}
+@keyframes nxm-hl { to { background-position: -220% 0; } }
+
+/* ---------- 4. Boutons ---------- */
+body.nxm :is(.nx-big, .pulse-btn, .btn) {
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: transform .25s var(--nxm-ease-out), box-shadow .3s var(--nxm-ease-out), filter .25s ease;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+body.nxm :is(.nx-big, .pulse-btn, .btn, .chip-btn, .file-btn, .nx-inline-btn):active { transform: scale(.97); }
+body.nxm .nx-big-primary, body.nxm .pulse-btn-primary {
+  background-image: linear-gradient(120deg, #6a3dff, var(--nxm-purple) 40%, #9b6bff 70%, #6a3dff);
+  background-size: 220% 100%;
+  box-shadow: 0 10px 28px -10px rgba(124,77,255,.7), inset 0 1px 0 rgba(255,255,255,.25);
+  animation: nxm-btn-flow 6s ease-in-out infinite;
+}
+@keyframes nxm-btn-flow { 50% { background-position: 100% 0; } }
+/* reflet qui traverse le bouton au survol */
+body.nxm :is(.nx-big, .pulse-btn, .btn)::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .7s var(--nxm-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  body.nxm :is(.nx-big, .pulse-btn, .btn):hover { transform: translateY(-2px); filter: saturate(1.15); }
+  body.nxm :is(.nx-big, .pulse-btn, .btn):hover::before { transform: translateX(120%); }
+  body.nxm :is(.nx-big-primary, .pulse-btn-primary):hover { box-shadow: 0 16px 36px -10px rgba(124,77,255,.85), 0 0 0 4px rgba(124,77,255,.14); }
+}
+/* onde au clic */
+.nxm-ripple {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+  width: 12px; height: 12px; margin: -6px 0 0 -6px;
+  background: rgba(255,255,255,.5);
+  animation: nxm-ripple .6s var(--nxm-ease-out) forwards;
+}
+@keyframes nxm-ripple { to { transform: scale(var(--nxm-r, 30)); opacity: 0; } }
+
+/* ---------- 5. Cartes ---------- */
+body.nxm .nxm-card {
+  transition: transform .45s var(--nxm-ease-out), box-shadow .45s var(--nxm-ease-out);
+  box-shadow: var(--nxm-card-shadow);
+}
+/* calque lumière + bordure dégradée (span ajouté par le JS, ne touche pas au contenu) */
+.nxm-glow {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
+  opacity: 0; transition: opacity .4s var(--nxm-ease-out);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--nxm-spot), transparent 45%);
+}
+.nxm-glow::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+  background: conic-gradient(from var(--nxm-ang), var(--nxm-emerald), var(--nxm-purple), var(--nxm-mint), var(--nxm-coral), var(--nxm-emerald));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: nxm-spin 4s linear infinite; animation-play-state: paused;
+}
+@keyframes nxm-spin { to { --nxm-ang: 360deg; } }
+@media (hover: hover) and (pointer: fine) {
+  body.nxm .nxm-card:hover {
+    box-shadow: var(--nxm-card-shadow-hover);
+    transform: perspective(900px) translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  }
+  body.nxm .nxm-card:hover > .nxm-glow { opacity: 1; }
+  body.nxm .nxm-card:hover > .nxm-glow::after { animation-play-state: running; }
+}
+/* tactile : petit retour au toucher */
+@media (hover: none) {
+  body.nxm .nxm-card:active { transform: scale(.985); }
+}
+
+/* cartes d'images : zoom doux de la photo */
+body.nxm .pulse-diet-card { overflow: hidden; }
+body.nxm .pulse-diet-card img { transition: transform .8s var(--nxm-ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  body.nxm .pulse-diet-card:hover img { transform: scale(1.07); }
+}
+
+/* anneaux et barres de macros : remplissage animé */
+body.nxm .pulse-progress-track > span { transition: width 1.2s var(--nxm-ease-out), transform 1.2s var(--nxm-ease-out); }
+body.nxm .pulse-ring { transition: --pct 1.2s var(--nxm-ease-out); }
+body.nxm .pulse-ring-val { font-variant-numeric: tabular-nums; }
+
+/* ---------- 6. Apparition au scroll ---------- */
+body.nxm .nxm-reveal {
+  opacity: 0; transform: translateY(28px) scale(.97);
+  transition: opacity .8s var(--nxm-ease-out), transform .8s var(--nxm-ease-out);
+  transition-delay: var(--nxm-d, 0ms);
+}
+body.nxm .nxm-reveal.nxm-in { opacity: 1; transform: none; }
+/* une fois apparue, la carte reprend ses transitions de survol normales */
+body.nxm .nxm-card.nxm-reveal.nxm-done { transition: transform .45s var(--nxm-ease-out), box-shadow .45s var(--nxm-ease-out); transition-delay: 0ms; }
+
+/* titres de section : soulignement dégradé qui se dessine */
+body.nxm .pulse-section-head h2, body.nxm .section-title { position: relative; text-wrap: balance; }
+body.nxm .pulse-section-head h2::after {
+  content: ""; display: block; width: 72px; height: 4px; margin: 12px auto 0; border-radius: 4px;
+  background: var(--nxm-grad); transform: scaleX(0); transform-origin: center;
+  transition: transform .9s var(--nxm-ease-out) .25s;
+}
+body.nxm .pulse-section-head.nxm-in h2::after, body.nxm .pulse-section-head:not(.nxm-reveal) h2::after { transform: scaleX(1); }
+body.nxm .pulse-eyebrow {
+  background: var(--nxm-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body.nxm .pulse-hero .pulse-eyebrow { background: linear-gradient(90deg, var(--nxm-sand), var(--nxm-mint)); -webkit-background-clip: text; background-clip: text; }
+
+/* ---------- 7. Changement d'onglet ---------- */
+body.nxm .page.nxm-enter { animation: nxm-page .55s var(--nxm-ease-out) both; }
+@keyframes nxm-page { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------- 8. Navigation ---------- */
+body.nxm .pulse-nav-links .tab { transition: transform .3s var(--nxm-ease-spring), color .25s ease, background-color .25s ease; }
+body.nxm .pulse-nav-links .tab svg { transition: transform .4s var(--nxm-ease-spring); }
+body.nxm .pulse-nav-links .tab.active svg { transform: translateY(-1px) scale(1.12); filter: drop-shadow(0 4px 8px rgba(124,77,255,.45)); }
+body.nxm .pulse-nav-links .tab.nxm-pop svg { animation: nxm-pop .5s var(--nxm-ease-spring); }
+@keyframes nxm-pop { 0% { transform: scale(.8); } 60% { transform: scale(1.25) rotate(-6deg); } 100% { transform: translateY(-1px) scale(1.12); } }
+@media (hover: hover) and (pointer: fine) {
+  body.nxm .pulse-nav-links .tab:hover svg { transform: translateY(-2px) scale(1.08); }
+}
+
+/* ---------- 9. Mascotte et téléphones de la visite ---------- */
+body.nxm .nt-mascot { animation: nxm-bob 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes nxm-bob { 50% { transform: translateY(-8px) rotate(-2deg); } }
+body.nxm .nt-bubble { animation: nxm-pop-in .7s var(--nxm-ease-spring) .6s both; transform-origin: 0 100%; }
+@keyframes nxm-pop-in { from { opacity: 0; transform: scale(.6) translateY(10px); } to { opacity: 1; transform: none; } }
+body.nxm .nt-fig { transition: transform .5s var(--nxm-ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  body.nxm .nt-fig:hover { transform: translateY(-10px) rotate(-1.5deg); }
+}
+
+/* ---------- 10. Focus visible (accessibilité) ---------- */
+body.nxm :is(button, a, [role="button"], input, select, textarea, .tab):focus-visible {
+  outline: 2.5px solid var(--nxm-purple); outline-offset: 3px; border-radius: 12px;
+  box-shadow: 0 0 0 6px rgba(124,77,255,.18);
+}
+
+/* ---------- 11. Mouvement réduit : on coupe toutes les animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .nxm-aurora, .nxm-progress, .nxm-glow, .nxm-ripple { display: none !important; }
+  body.nxm *, body.nxm *::before, body.nxm *::after { animation: none !important; }
+  body.nxm .nxm-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  body.nxm .nxm-card, body.nxm .nxm-card:hover, body.nxm .nt-fig:hover, body.nxm .pulse-diet-card:hover img { transform: none !important; }
+  body.nxm .nxm-hl { color: inherit; background: none; }
+}
