@@ -596,7 +596,9 @@ function ndMerge(list){
    score:ND_SCORE[grade]??50,tip:'Données NutriX Data validées par l’équipe'+(grade?' · Nutri-Score '+grade.toUpperCase():'')+(x.nova?' · NOVA '+x.nova:''),
    ing:x.ing&&x.ing.length?x.ing:[x.name],data:true,ns:grade?grade.toUpperCase():'',nova:x.nova||null,img:x.image||'',imgCredit:x.image_credit||'',imgSource:x.image_source||'',per100:x.per100,sources:x.sources||[]};
   // remplace l'ancienne fiche du même plat (même nom ou mêmes mots-clés), sinon ajoute en tête
-  const i=MAR.findIndex(o=>o.data?norm(o.name)===norm(d.name):(norm(o.name)===base||o.keys.some(k=>k.length>=5&&keys.includes(k))));
+  const tok=t=>t.split(' ').filter(w=>w.length>=4),nt=tok(base);
+  const same=o=>{const on=norm(o.name),ot=tok(on);return on===base||base.startsWith(on+' ')||(ot.length>=2&&ot.every(w=>nt.some(x=>x.startsWith(w)||w.startsWith(x))))||o.keys.some(k=>k.length>=5&&(keys.includes(k)||base===k||base.startsWith(k+' ')))};
+  const i=MAR.findIndex(o=>o.data?norm(o.name)===norm(d.name):same(o));
   if(i>=0){if(!MAR[i].data||norm(MAR[i].name)===norm(d.name))MAR[i]=d;else MAR.unshift(d)}else MAR.unshift(d);
   changed++;
  }
