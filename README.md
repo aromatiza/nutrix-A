@@ -23,6 +23,17 @@ lib/             Code partagé par toutes les routes
 server.js        serveur local (npm start) — mêmes routes que Vercel
 ```
 
+## Front-end (public/) — ordre de chargement
+| Fichier | Rôle |
+|---|---|
+| `nutrix.css`, `nutrix-v16.css`, `nutrix-plate.css`, `nutrix-settings.css` | styles de base de l'app, du Studio et des réglages |
+| `nutrix-motion.css` / `.js` | couche animée : cartes, apparitions, visite de l'accueil (désactivable : `localStorage.nutrix-motion = off`) |
+| `nutrix-ui.css` / `.js` | mode sombre unifié, boutons thème/langue animés, compression des photos avant l'IA, guide du scanner, robot guide du Studio |
+| `nutrix-core.js` → `nutrix-layers.js` → `nutrix-app.js` → `nutrix-v16.js` → `nutrix-settings.js` | logique de l'app (dans cet ordre) |
+| `nutrix-darija.js` | traduction Darija, chargée seulement si la langue est دارجة |
+
+Les nouvelles retouches visuelles vont dans `nutrix-ui.*` ou `nutrix-motion.*` (chargés en dernier) plutôt que dans les gros fichiers historiques.
+
 ## Variables Vercel
 | Variable | Rôle |
 |---|---|
