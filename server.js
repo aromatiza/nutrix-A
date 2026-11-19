@@ -9,6 +9,7 @@ const routes=[
   [/^\/api\/health$/,'./api/health'],
   [/^\/api\/off\/search$/,'./api/off/search'],
   [/^\/api\/off\/product\/\d{8,14}$/,'./api/off/product/[code]'],
+  [/^\/api\/data\/dishes$/,'./api/data/dishes'],
   [/^\/api\/ai\/chat$/,'./api/ai/chat'],
   [/^\/api\/ai\/photo$/,'./api/ai/photo'],
   [/^\/api\/ai\/vision$/,'./api/ai/vision'],

@@ -5,7 +5,8 @@ public/          Front-end (HTML/CSS/JS), servi par le CDN de Vercel
 api/             Back-end : UNE fonction Vercel par route (chacune monte en charge séparément)
   health.js            GET  /api/health            (?test=gemini[&code=…] → teste chaque modèle)
   off/search.js        GET  /api/off/search?q=     (Open Food Facts + cache)
-  off/product/[code].js GET /api/off/product/<code-barres>
+  off/product/[code].js GET /api/off/product/<code-barres>  (NutriX Data validé → Open Food Facts → UPCitemdb + IA)
+  data/dishes.js       GET  /api/data/dishes        (plats marocains validés de NutriX Data)
   ai/chat.js           POST /api/ai/chat           (stream:true → réponse en direct)
   ai/photo.js          POST /api/ai/photo          (étiquette / repas dans le chat)
   ai/vision.js         POST /api/ai/vision         (Studio + recettes Chef)
@@ -36,6 +37,7 @@ server.js        serveur local (npm start) — mêmes routes que Vercel
 | `NUTRIX_ACCESS_CODE` | code sirri demandé avant d'utiliser l'IA |
 | `AI_DAILY_LIMIT` | demandes IA par personne et par jour |
 | `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (ou `KV_REST_API_URL/TOKEN`) | limites + cache partagés entre toutes les instances (recommandé en production) |
+| `NUTRIX_DATA_URL` + `NUTRIX_DATA_ANON_KEY` | base NutriX Data (Supabase). Optionnel : par défaut le projet « nutrix » et sa clé publique anon (lecture des données validées seulement) |
 | `GEMINI_THINKING` | `low` (défaut), `medium`, `high` : réflexion des modèles Gemini 3+ |
 
 Anciennes variables toujours acceptées : `GEMINI_MODEL` (chef), `GEMINI_FAST_MODEL`, `GEMINI_CHAT_MODEL`, `GEMINI_VISION_MODEL`, `GEMINI_IMAGE_MODEL`.
