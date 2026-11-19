@@ -6,7 +6,6 @@
    Palette : vert forêt 60 % · sable 30 % · violet électrique 10 % (accent).
    ========================================================================== */
 
-@property --nxm-ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 
 body.nxm {
   --nxm-forest: #1f6a47;
@@ -31,41 +30,16 @@ body.nxm.dark {
   --nxm-spot: rgba(169,139,255,.16);
 }
 
-/* ---------- 1. Fond « aurora » animé ---------- */
-.nxm-aurora {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-  contain: strict;
-}
-.nxm-aurora i {
-  position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%;
-  filter: blur(70px); opacity: .38; will-change: transform;
-}
-.nxm-aurora i:nth-child(1) { background: radial-gradient(circle, var(--nxm-mint), transparent 65%); top: -14vmax; left: -10vmax; animation: nxm-drift-a 26s ease-in-out infinite alternate; }
-.nxm-aurora i:nth-child(2) { background: radial-gradient(circle, var(--nxm-purple-2), transparent 65%); top: 30vh; right: -16vmax; opacity: .26; animation: nxm-drift-b 32s ease-in-out infinite alternate; }
-.nxm-aurora i:nth-child(3) { background: radial-gradient(circle, var(--nxm-sand-2), transparent 65%); bottom: -18vmax; left: 20vw; opacity: .5; animation: nxm-drift-c 38s ease-in-out infinite alternate; }
-body.nxm.dark .nxm-aurora i { opacity: .22; }
-body.nxm.dark .nxm-aurora i:nth-child(3) { background: radial-gradient(circle, var(--nxm-forest), transparent 65%); opacity: .4; }
-@keyframes nxm-drift-a { to { transform: translate3d(18vw, 12vh, 0) scale(1.15); } }
-@keyframes nxm-drift-b { to { transform: translate3d(-22vw, -10vh, 0) scale(.9); } }
-@keyframes nxm-drift-c { to { transform: translate3d(-14vw, -16vh, 0) scale(1.2); } }
-
 /* ---------- 2. Barre de progression du scroll ---------- */
 .nxm-progress {
   position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; pointer-events: none;
   background: var(--nxm-grad); transform-origin: 0 50%; transform: scaleX(var(--nxm-p, 0));
-  box-shadow: 0 0 12px rgba(124,77,255,.5);
+  
 }
 html[lang="ary"] .nxm-progress { transform-origin: 100% 50%; }
 
 /* ---------- 3. Hero ---------- */
 body.nxm .pulse-hero { isolation: isolate; }
-body.nxm .pulse-hero::after {
-  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
-  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.16) 50%, transparent 65%);
-  transform: translateX(-120%);
-  animation: nxm-sheen 7s var(--nxm-ease-out) 1.2s infinite;
-}
-@keyframes nxm-sheen { 0% { transform: translateX(-120%); } 28%, 100% { transform: translateX(120%); } }
 body.nxm .pulse-hero-inner { position: relative; z-index: 2; }
 
 body.nxm .pulse-hero-inner > * { animation: nxm-rise .9s var(--nxm-ease-out) both; }
@@ -73,31 +47,25 @@ body.nxm .pulse-hero-inner > :nth-child(1) { animation-delay: .05s; }
 body.nxm .pulse-hero-inner > :nth-child(2) { animation-delay: .15s; }
 body.nxm .pulse-hero-inner > :nth-child(3) { animation-delay: .28s; }
 body.nxm .pulse-hero-inner > :nth-child(4) { animation-delay: .4s; }
-@keyframes nxm-rise { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes nxm-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
 
 /* mot mis en couleur dans le titre (ajouté par le JS) */
 body.nxm .nxm-hl {
-  background: linear-gradient(90deg, var(--nxm-mint), #fff 40%, var(--nxm-purple-2) 70%, var(--nxm-mint));
-  background-size: 220% 100%;
+  background: linear-gradient(90deg, var(--nxm-mint), var(--nxm-purple-2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: nxm-hl 6s linear infinite;
 }
-@keyframes nxm-hl { to { background-position: -220% 0; } }
 
 /* ---------- 4. Boutons ---------- */
 body.nxm :is(.nx-big, .pulse-btn, .btn) {
   position: relative; overflow: hidden; isolation: isolate;
-  transition: transform .25s var(--nxm-ease-out), box-shadow .3s var(--nxm-ease-out), filter .25s ease;
+  transition: transform .25s var(--nxm-ease-out), box-shadow .3s var(--nxm-ease-out);
   touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
 body.nxm :is(.nx-big, .pulse-btn, .btn, .chip-btn, .file-btn, .nx-inline-btn):active { transform: scale(.97); }
 body.nxm .nx-big-primary, body.nxm .pulse-btn-primary {
-  background-image: linear-gradient(120deg, #6a3dff, var(--nxm-purple) 40%, #9b6bff 70%, #6a3dff);
-  background-size: 220% 100%;
-  box-shadow: 0 10px 28px -10px rgba(124,77,255,.7), inset 0 1px 0 rgba(255,255,255,.25);
-  animation: nxm-btn-flow 6s ease-in-out infinite;
+  background-image: linear-gradient(120deg, #6a3dff, #9b6bff);
+  box-shadow: 0 8px 20px -10px rgba(124,77,255,.6);
 }
-@keyframes nxm-btn-flow { 50% { background-position: 100% 0; } }
 /* reflet qui traverse le bouton au survol */
 body.nxm :is(.nx-big, .pulse-btn, .btn)::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -106,7 +74,7 @@ body.nxm :is(.nx-big, .pulse-btn, .btn)::before {
   transition: transform .7s var(--nxm-ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  body.nxm :is(.nx-big, .pulse-btn, .btn):hover { transform: translateY(-2px); filter: saturate(1.15); }
+  body.nxm :is(.nx-big, .pulse-btn, .btn):hover { transform: translateY(-2px); }
   body.nxm :is(.nx-big, .pulse-btn, .btn):hover::before { transform: translateX(120%); }
   body.nxm :is(.nx-big-primary, .pulse-btn-primary):hover { box-shadow: 0 16px 36px -10px rgba(124,77,255,.85), 0 0 0 4px rgba(124,77,255,.14); }
 }
@@ -128,23 +96,14 @@ body.nxm .nxm-card {
 .nxm-glow {
   position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
   opacity: 0; transition: opacity .4s var(--nxm-ease-out);
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--nxm-spot), transparent 45%);
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), var(--nxm-spot), transparent 45%);
 }
-.nxm-glow::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
-  background: conic-gradient(from var(--nxm-ang), var(--nxm-emerald), var(--nxm-purple), var(--nxm-mint), var(--nxm-coral), var(--nxm-emerald));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  animation: nxm-spin 4s linear infinite; animation-play-state: paused;
-}
-@keyframes nxm-spin { to { --nxm-ang: 360deg; } }
 @media (hover: hover) and (pointer: fine) {
   body.nxm .nxm-card:hover {
     box-shadow: var(--nxm-card-shadow-hover);
-    transform: perspective(900px) translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform: translateY(-4px);
   }
   body.nxm .nxm-card:hover > .nxm-glow { opacity: 1; }
-  body.nxm .nxm-card:hover > .nxm-glow::after { animation-play-state: running; }
 }
 /* tactile : petit retour au toucher */
 @media (hover: none) {
@@ -165,8 +124,8 @@ body.nxm .pulse-ring-val { font-variant-numeric: tabular-nums; }
 
 /* ---------- 6. Apparition au scroll ---------- */
 body.nxm .nxm-reveal {
-  opacity: 0; transform: translateY(28px) scale(.97);
-  transition: opacity .8s var(--nxm-ease-out), transform .8s var(--nxm-ease-out);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s var(--nxm-ease-out), transform .5s var(--nxm-ease-out);
   transition-delay: var(--nxm-d, 0ms);
 }
 body.nxm .nxm-reveal.nxm-in { opacity: 1; transform: none; }
@@ -187,8 +146,8 @@ body.nxm .pulse-eyebrow {
 body.nxm .pulse-hero .pulse-eyebrow { background: linear-gradient(90deg, var(--nxm-sand), var(--nxm-mint)); -webkit-background-clip: text; background-clip: text; }
 
 /* ---------- 7. Changement d'onglet ---------- */
-body.nxm .page.nxm-enter { animation: nxm-page .55s var(--nxm-ease-out) both; }
-@keyframes nxm-page { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+body.nxm .page.nxm-enter { animation: nxm-page .35s var(--nxm-ease-out) both; }
+@keyframes nxm-page { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* ---------- 8. Navigation ---------- */
 body.nxm .pulse-nav-links .tab { transition: transform .3s var(--nxm-ease-spring), color .25s ease, background-color .25s ease; }
@@ -201,13 +160,97 @@ body.nxm .pulse-nav-links .tab.nxm-pop svg { animation: nxm-pop .5s var(--nxm-ea
 }
 
 /* ---------- 9. Mascotte et téléphones de la visite ---------- */
-body.nxm .nt-mascot { animation: nxm-bob 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
-@keyframes nxm-bob { 50% { transform: translateY(-8px) rotate(-2deg); } }
 body.nxm .nt-bubble { animation: nxm-pop-in .7s var(--nxm-ease-spring) .6s both; transform-origin: 0 100%; }
 @keyframes nxm-pop-in { from { opacity: 0; transform: scale(.6) translateY(10px); } to { opacity: 1; transform: none; } }
 body.nxm .nt-fig { transition: transform .5s var(--nxm-ease-out); }
 @media (hover: hover) and (pointer: fine) {
   body.nxm .nt-fig:hover { transform: translateY(-10px) rotate(-1.5deg); }
+}
+
+/* ---------- 9b. Studio : fond clair sable au lieu du vert foncé ---------- */
+body.nxm {
+  --st-page: #f7f2e8; --st-page2: #efe6d3; --st-card: #ffffff; --st-card2: #f4ecdd;
+  --st-ink: #13261d; --st-mute: #5d6b5f; --st-line: rgba(19,38,29,.10);
+  --st-on-page: #13261d; --st-on-page-mute: #5d6b5f; --st-on-fill: rgba(31,106,71,.08);
+  --st-head: Poppins, "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --st-sel: #1f6a47; --st-on-sel: #ffffff; --st-accent: #7c4dff;
+}
+body.nxm.dark {
+  --st-page: #121715; --st-page2: #0e1211; --st-card: #1b2220; --st-card2: #232c29;
+  --st-ink: #eef2ee; --st-mute: #a9b3ad; --st-line: rgba(255,255,255,.09);
+  --st-on-page: #eef2ee; --st-on-page-mute: #a9b3ad; --st-on-fill: rgba(255,255,255,.06);
+  --st-sel: #22b07d; --st-on-sel: #0e1211;
+}
+body.nxm.nxp-on #page-studio :is(.nxp-row-host, .nxp-vf, .nt-diet-h) { border-radius: 18px; }
+body.nxm.nxp-on #page-studio .nxp-row-host { box-shadow: var(--nxm-card-shadow); border: 1px solid var(--st-line); }
+body.nxm.nxp-on #page-studio .nxp-vf { box-shadow: 0 24px 50px -24px rgba(19,38,29,.55); }
+
+/* ---------- 9c. Cartes « pro » : bord fin, ombre douce, coins réguliers ---------- */
+body.nxm :is(.pulse-metric-card, .pulse-diet-card, .nxs-card, .explore-panel, .nutri-scan-card, .nutri-search-card, .nutri-results-card, .nx-postscan-card) {
+  border-radius: 20px;
+  outline: 1px solid rgba(31,106,71,.08); outline-offset: -1px;
+}
+body.nxm.dark :is(.pulse-metric-card, .pulse-diet-card, .nxs-card, .explore-panel, .nutri-scan-card, .nutri-search-card, .nutri-results-card, .nx-postscan-card) { outline-color: rgba(255,255,255,.07); }
+body.nxm .pulse-metric-card h3, body.nxm .pulse-diet-card h3 { letter-spacing: -.01em; }
+
+/* ---------- 9d. Visite de l'accueil : chaque écran raconte son histoire (en boucle, seulement s'il est visible) ---------- */
+/* l'app met en pause les écrans non centrés : on relance ceux qui sont visibles */
+body.nxm .nt-fig.nxm-play * { animation-play-state: running !important; }
+/* 1. Scanne : le laser balaie, le code-barres clignote, puis « détecté » */
+body.nxm .nt-fig.nxm-play .nt-s-laser { animation: nxm-laser 4s var(--nxm-ease-out) infinite; top: 120px; }
+@keyframes nxm-laser { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 45% { transform: translateY(120px); } 55% { transform: translateY(120px); opacity: 1; } 62%, 100% { transform: translateY(60px); opacity: 0; } }
+body.nxm .nt-fig.nxm-play .nt-s-bars { animation: nxm-bars 4s ease-in-out infinite; }
+@keyframes nxm-bars { 0%, 40% { opacity: .9; } 50% { opacity: 1; filter: drop-shadow(0 0 8px #7be3b5); } 60%, 100% { opacity: .9; } }
+body.nxm .nt-fig.nxm-play .nt-s-chip { animation: nxm-chip 4s var(--nxm-ease-spring) infinite; }
+@keyframes nxm-chip { 0%, 50% { opacity: 0; transform: translateY(16px) scale(.9); } 60%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(8px); } }
+
+/* 2. Comprends : la note s'allume lettre par lettre, puis les additifs arrivent */
+body.nxm .nt-fig.nxm-play .nt-s-ns i { animation: nxm-grade 5s ease-in-out infinite; }
+body.nxm .nt-fig.nxm-play .nt-s-ns i:nth-child(2) { animation-delay: .15s; }
+body.nxm .nt-fig.nxm-play .nt-s-ns i:nth-child(3) { animation-delay: .3s; }
+body.nxm .nt-fig.nxm-play .nt-s-ns i:nth-child(4) { animation-delay: .45s; }
+body.nxm .nt-fig.nxm-play .nt-s-ns i:nth-child(5) { animation-delay: .6s; }
+@keyframes nxm-grade { 0%, 100% { transform: none; } 6% { transform: translateY(-3px); } 12% { transform: none; } }
+body.nxm .nt-fig.nxm-play .nt-s-ns i.on, body.nxm .nt-fig.nxm-play .nt-s-cap i.on { animation: nxm-ping 2.5s ease-out infinite 1s; }
+@keyframes nxm-ping { 0% { transform: scale(1); } 15% { transform: scale(1.15); } 30%, 100% { transform: scale(1); } }
+body.nxm .nt-fig.nxm-play .nt-k-fiche .nt-s-row { animation: nxm-row 5s var(--nxm-ease-out) infinite; }
+body.nxm .nt-fig.nxm-play .nt-k-fiche .nt-s-row:last-child { animation-delay: .25s; }
+@keyframes nxm-row { 0%, 20% { opacity: 0; transform: translateX(-14px); } 32%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* 3. Compare : barres qui se remplissent, trophée qui saute */
+body.nxm .nt-fig.nxm-play .nt-s-bar i { transform-origin: 0 50%; animation: nxm-fill 5s var(--nxm-ease-out) infinite; }
+body.nxm .nt-fig.nxm-play .nt-s-bar.b i { animation-delay: .2s; }
+html[lang="ary"] body.nxm .nt-fig.nxm-play .nt-s-bar i { transform-origin: 100% 50%; }
+@keyframes nxm-fill { 0% { transform: scaleX(0); } 35%, 90% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: .6; } }
+body.nxm .nt-fig.nxm-play .nt-s-vs em { animation: nxm-trophy 5s var(--nxm-ease-spring) infinite; display: inline-block; }
+@keyframes nxm-trophy { 0%, 35% { transform: scale(0) rotate(-20deg); } 45% { transform: scale(1.3) rotate(8deg); } 55%, 100% { transform: none; } }
+
+/* 4. Suis tes repas : l'anneau et les macros se remplissent */
+body.nxm .nt-fig.nxm-play .nt-s-ring .fg { animation: nxm-ring 5s var(--nxm-ease-out) infinite; }
+@keyframes nxm-ring { 0% { stroke-dashoffset: 251; } 40%, 92% { stroke-dashoffset: 96; } 100% { stroke-dashoffset: 96; opacity: .7; } }
+body.nxm .nt-fig.nxm-play .nt-s-mac i { transform-origin: 0 50%; animation: nxm-fill 5s var(--nxm-ease-out) infinite; }
+body.nxm .nt-fig.nxm-play .nt-s-mac span:nth-child(2) i { animation-delay: .15s; }
+body.nxm .nt-fig.nxm-play .nt-s-mac span:nth-child(3) i { animation-delay: .3s; }
+
+/* 5. Coach : les messages arrivent un par un */
+body.nxm .nt-fig.nxm-play .nt-k-ai :is(.nt-s-msg, .nt-s-typing) { animation: nxm-msg 6s var(--nxm-ease-out) infinite both; }
+body.nxm .nt-fig.nxm-play .nt-k-ai .nt-s-msg:nth-of-type(3) { animation-name: nxm-msg2; }
+body.nxm .nt-fig.nxm-play .nt-k-ai .nt-s-msg:nth-of-type(4) { animation-name: nxm-msg3; }
+body.nxm .nt-fig.nxm-play .nt-k-ai .nt-s-typing { animation-name: nxm-msg4; }
+@keyframes nxm-msg  { 0% { opacity: 0; transform: translateY(10px) scale(.95); } 6%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes nxm-msg2 { 0%, 22% { opacity: 0; transform: translateY(10px) scale(.95); } 30%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes nxm-msg3 { 0%, 46% { opacity: 0; transform: translateY(10px) scale(.95); } 54%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes nxm-msg4 { 0%, 62% { opacity: 0; } 68%, 92% { opacity: 1; } 100% { opacity: 0; } }
+body.nxm .nt-s-vs b, body.nxm .nt-s-ring b { font-variant-numeric: tabular-nums; }
+
+/* ---------- 9e. Cuisine marocaine (mobile) : les scores restent dans la carte ---------- */
+body.nxm .nt-card { overflow: hidden; min-width: 0; }
+body.nxm .nt-card .nt-badges { flex-wrap: wrap; gap: 6px 8px; min-width: 0; max-width: 100%; }
+body.nxm .nt-card .nt-badges > * { min-width: 0; max-width: 100%; flex: 0 1 auto; }
+body.nxm .nt-card .nt-badges :is(svg, img) { max-width: 100%; height: auto; }
+@media (max-width: 420px) {
+  body.nxm .nt-card .nt-badges { gap: 5px 6px; }
+  body.nxm .nt-card .nt-badges > * { zoom: .88; }
 }
 
 /* ---------- 10. Focus visible (accessibilité) ---------- */
@@ -218,7 +261,7 @@ body.nxm :is(button, a, [role="button"], input, select, textarea, .tab):focus-vi
 
 /* ---------- 11. Mouvement réduit : on coupe toutes les animations ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .nxm-aurora, .nxm-progress, .nxm-glow, .nxm-ripple { display: none !important; }
+  .nxm-progress, .nxm-glow, .nxm-ripple { display: none !important; }
   body.nxm *, body.nxm *::before, body.nxm *::after { animation: none !important; }
   body.nxm .nxm-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   body.nxm .nxm-card, body.nxm .nxm-card:hover, body.nxm .nt-fig:hover, body.nxm .pulse-diet-card:hover img { transform: none !important; }

@@ -18,13 +18,7 @@
   ].join(',');
   const REVEAL_SEL = CARD_SEL + ',.pulse-section-head,.nt-fig,.section-title';
 
-  /* ---- calques décoratifs ---- */
-  const aurora = document.createElement('div');
-  aurora.className = 'nxm-aurora';
-  aurora.setAttribute('aria-hidden', 'true');
-  aurora.innerHTML = '<i></i><i></i><i></i>';
-  body.prepend(aurora);
-
+  /* ---- barre de scroll ---- */
   const bar = document.createElement('div');
   bar.className = 'nxm-progress';
   bar.setAttribute('aria-hidden', 'true');
@@ -79,15 +73,10 @@
     const x = (lastEv.clientX - r.left) / r.width, y = (lastEv.clientY - r.top) / r.height;
     tiltEl.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
     tiltEl.style.setProperty('--my', (y * 100).toFixed(1) + '%');
-    // inclinaison légère, plus faible sur les grandes cartes
-    const k = r.width > 520 ? 2 : 5;
-    tiltEl.style.setProperty('--rx', ((0.5 - y) * k).toFixed(2) + 'deg');
-    tiltEl.style.setProperty('--ry', ((x - 0.5) * k).toFixed(2) + 'deg');
   };
   const onMove = e => {
     if (!fine.matches || reduce.matches) return;
     const c = e.target.closest && e.target.closest('.nxm-card');
-    if (tiltEl && tiltEl !== c) { tiltEl.style.removeProperty('--rx'); tiltEl.style.removeProperty('--ry'); }
     tiltEl = c;
     lastEv = e;
     if (c && !raf) raf = requestAnimationFrame(applyTilt);
@@ -118,7 +107,7 @@
       const el = en.target;
       el.classList.add('nxm-in');
       io.unobserve(el);
-      setTimeout(() => el.classList.add('nxm-done'), 1200);
+      setTimeout(() => el.classList.add('nxm-done'), 800);
     }
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
 
@@ -131,7 +120,7 @@
     if (r.width === 0 || r.top < innerHeight * 0.92) return; // déjà visible ou caché : on ne touche pas
     const sibs = el.parentElement ? [...el.parentElement.children].filter(c => c.matches(REVEAL_SEL)) : [];
     const i = Math.max(0, sibs.indexOf(el));
-    el.style.setProperty('--nxm-d', Math.min(i, 6) * 90 + 'ms');
+    el.style.setProperty('--nxm-d', Math.min(i, 4) * 60 + 'ms');
     el.classList.add('nxm-reveal');
     io.observe(el);
   };
@@ -139,6 +128,42 @@
   const scan = root => {
     (root.querySelectorAll ? root : document).querySelectorAll(CARD_SEL).forEach(prepCard);
     (root.querySelectorAll ? root : document).querySelectorAll(REVEAL_SEL).forEach(prepReveal);
+  };
+
+
+  /* ---- visite de l'accueil : animer seulement les écrans visibles + compteurs ---- */
+  const countUp = (el, to, ms) => {
+    const t0 = performance.now();
+    const step = t => {
+      const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(to * e);
+      if (k < 1 && el.isConnected) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const runCounters = fig => {
+    fig.querySelectorAll('.nt-s-vs b, .nt-s-ring b').forEach(b => {
+      if (!b.dataset.nxmTo) { const n = parseInt(b.textContent, 10); if (!n) return; b.dataset.nxmTo = n; }
+      countUp(b, +b.dataset.nxmTo, 1600);
+    });
+  };
+  const figTimers = new WeakMap();
+  const figIO = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    for (const en of entries) {
+      const f = en.target;
+      if (en.isIntersecting && !reduce.matches) {
+        f.classList.add('nxm-play');
+        if (!figTimers.has(f)) { runCounters(f); figTimers.set(f, setInterval(() => runCounters(f), 5000)); }
+      } else {
+        f.classList.remove('nxm-play');
+        clearInterval(figTimers.get(f)); figTimers.delete(f);
+      }
+    }
+  }, { threshold: 0.35 }) : null;
+  const seenFig = new WeakSet();
+  const prepTour = () => {
+    if (!figIO) return;
+    document.querySelectorAll('.nt-fig').forEach(f => { if (!seenFig.has(f)) { seenFig.add(f); figIO.observe(f); } });
   };
 
   /* ---- changement d'onglet + nouveaux contenus ---- */
@@ -153,7 +178,9 @@
 
   let pending = false;
   const mo = new MutationObserver(muts => {
+    let added = false;
     for (const m of muts) {
+      if (m.type === 'childList' && m.addedNodes.length && ![...m.addedNodes].every(n => n.classList && n.classList.contains('nxm-ripple'))) added = true;
       if (m.type === 'attributes') {
         const t = m.target;
         if (t.classList.contains('page') && t.classList.contains('active') && !(m.oldValue || '').includes('active')) enterPage(t);
@@ -163,15 +190,16 @@
         }
       }
     }
-    if (!pending) {
+    if (added && !pending) {
       pending = true;
-      setTimeout(() => { pending = false; scan(document); highlightHero(); }, 250);
+      setTimeout(() => { pending = false; scan(document); highlightHero(); prepTour(); }, 400);
     }
   });
 
   const start = () => {
     highlightHero();
     scan(document);
+    prepTour();
     onScroll();
     mo.observe(body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
   };
