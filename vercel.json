@@ -7,6 +7,7 @@
     "api/health.js": { "maxDuration": 40 },
     "api/off/*.js": { "maxDuration": 20 },
     "api/off/product/*.js": { "maxDuration": 20 },
+    "api/data/*.js": { "maxDuration": 15 },
     "api/ai/chat.js": { "maxDuration": 60 },
     "api/ai/photo.js": { "maxDuration": 60 },
     "api/ai/transcribe.js": { "maxDuration": 45 },

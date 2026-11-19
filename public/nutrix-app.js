@@ -579,7 +579,35 @@ Orange|orange,limoun|🍊|1 fruit (150 g)|70|1|17|0|92|Vitamine C, préfère-la 
 const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,' ').replace(/[^a-z0-9؀-ۿ ]/g,' ').replace(/\s+/g,' ').trim();
 const MAR=MAROC.split('\n').map(l=>{const a=l.split('|');return {name:a[0],keys:a[1].split(',').map(norm).filter(Boolean).concat([norm(a[0])]),emoji:a[2],portion:a[3],kcal:+a[4],p:+a[5],c:+a[6],f:+a[7],score:+a[8],tip:a[9],ing:a[10].split(',')}});
 function marocFind(q){const t=norm(q);if(t.length<3)return null;let best=null,bl=0;for(const d of MAR)for(const k of d.keys){if((t===k||t.includes(k)||(k.length>=5&&k.includes(t)&&t.length>=4))&&k.length>bl){best=d;bl=k.length}}return best}
-const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:'Base cuisine marocaine · '+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
+/* ---------- NutriX Data : plats marocains VALIDÉS (Supabase) — remplacent l'ancienne base estimée ----------
+   Valeurs calculées par la base (méthode des recettes, ingrédients TMCA/CIQUAL/USDA), Nutri-Score 2023, NOVA et photo
+   validés par l'équipe. Les plats encore absents de NutriX Data restent affichés, marqués « ancienne estimation ». */
+MAR.forEach(d=>{d.old=true});
+const ND_SCORE={a:90,b:75,c:58,d:42,e:25};
+const ndEmoji=(cat,name)=>{const s=norm((cat||'')+' '+name);return /soupe|harira|bissara|chorba/.test(s)?'🍲':/couscous|seffa|berkoukes|rfissa/.test(s)?'🍛':/tajine|tagine|tanjia/.test(s)?'🥘':/pain|khobz|msemen|batbout|harcha|baghrir|mlaoui|rghaif|galette|crepe|beignet|sfenj/.test(s)?'🫓':/patisserie|dessert|gateau|corne|ghriba|chebakia|briouate|sellou|amlou|douceur|biscuit/.test(s)?'🍪':/salade|zaalouk|taktouka/.test(s)?'🥗':/the|boisson|jus|lben/.test(s)?'🍵':/pastilla/.test(s)?'🥧':'🍽️'};
+function ndMerge(list){
+ let changed=0;
+ for(const x of list){
+  if(!x||!x.name||!(x.kcal>0))continue;
+  const keys=[x.name,x.darija,x.ar].map(norm).filter(Boolean);
+  const base=norm(x.name.replace(/\(.*?\)/g,''));if(base&&!keys.includes(base))keys.push(base);
+  const grade=String(x.nutriscore||'').toLowerCase();
+  const d={name:x.name,keys,emoji:ndEmoji(x.category,x.name),portion:'1 portion ('+Math.round(x.portion_g)+' g)',kcal:x.kcal,p:x.p,c:x.c,f:x.f,
+   score:ND_SCORE[grade]??50,tip:'Données NutriX Data validées par l’équipe'+(grade?' · Nutri-Score '+grade.toUpperCase():'')+(x.nova?' · NOVA '+x.nova:''),
+   ing:x.ing&&x.ing.length?x.ing:[x.name],data:true,ns:grade?grade.toUpperCase():'',nova:x.nova||null,img:x.image||'',imgCredit:x.image_credit||'',imgSource:x.image_source||'',per100:x.per100,sources:x.sources||[]};
+  // remplace l'ancienne fiche du même plat (même nom ou mêmes mots-clés), sinon ajoute en tête
+  const i=MAR.findIndex(o=>o.data?norm(o.name)===norm(d.name):(norm(o.name)===base||o.keys.some(k=>k.length>=5&&keys.includes(k))));
+  if(i>=0){if(!MAR[i].data||norm(MAR[i].name)===norm(d.name))MAR[i]=d;else MAR.unshift(d)}else MAR.unshift(d);
+  changed++;
+ }
+ if(changed){MAR.sort((a,b)=>(b.data?1:0)-(a.data?1:0));try{document.dispatchEvent(new CustomEvent('nutrixdata:ready',{detail:{count:changed}}))}catch{}}
+}
+const ND_KEY='nutrix-data-dishes-v1';
+try{const c=JSON.parse(localStorage.getItem(ND_KEY)||'null');if(c&&Array.isArray(c.d))ndMerge(c.d)}catch{}
+const ndLoad=()=>fetch('/api/data/dishes').then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.dishes))return;try{localStorage.setItem(ND_KEY,JSON.stringify({t:Date.now(),d:j.dishes}))}catch{}ndMerge(j.dishes)}).catch(()=>{});
+try{(window.requestIdleCallback||(f=>setTimeout(f,800)))(ndLoad)}catch{ndLoad()}
+
+const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:(d.data?'NutriX Data · validé · ':'Ancienne estimation · ')+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
 
 /* ---------- visual atoms ---------- */
 function ring(value,max,label,sub,color='var(--nx-primary)'){const p=clamp(value/max*100,0,100),C=2*Math.PI*52;return `<div class="nv-ring" style="--c:${color}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${(C*p/100).toFixed(1)} ${C.toFixed(1)}"/></svg><div><strong>${esc(label)}</strong><small>${esc(sub)}</small></div></div>`}
@@ -1399,13 +1427,14 @@ const MR_W={'Harira':'en:Harira|fr:Harira','Couscous aux sept légumes':'en:Cous
   mem[name]={t:ok?Date.now():Date.now()-2*864e5,l:list.slice(0,10),ai:ok||!!c.ai};wr(KEY,mem);refill(name);return mem[name].l}
  function pump(){while(run<3&&queue.length){const [n,res]=queue.shift();run++;enrich(n).then(res,()=>res((mem[n]||{}).l||[])).finally(()=>{run--;pump()})}}
  function bg(name){return wait[name]||(wait[name]=new Promise(res=>{queue.push([name,res]);pump()}).finally(()=>delete wait[name]))}
- async function load(name){const c=mem[name],age=c?Date.now()-c.t:1e15;
+ const ndImg=name=>{const d=(window.NutrixMaroc&&window.NutrixMaroc.MAR||[]).find(x=>x.name===name);return d&&d.data&&d.img?{u:d.img,f:d.imgSource||'',a:d.imgCredit||'',l:'NutriX Data'}:null};
+ async function load(name){const nd=ndImg(name);if(nd)return [nd];const c=mem[name],age=c?Date.now()-c.t:1e15;
   if(c&&c.l.length){if(age>(c.ai?30:3)*864e5)bg(name);return c.l}           // cache affiché immédiatement, rafraîchi en fond si vieux
   if(c&&!c.l.length&&age<864e5)return [];
   const w=((await wiki())[name]||[]).slice();
   if(w.length){mem[name]={t:Date.now(),l:w,ai:false};wr(KEY,mem);bg(name);return w}  // photo Wikipedia tout de suite, IA ensuite
   return bg(name)}                                                           // pas de photo Wikipedia : seule l'IA peut en trouver
- function pick(name){if(mine[name])return {u:mine[name],mine:true};const l=(mem[name]||{}).l||[];if(!l.length)return null;const x=l[(day()+hash(name)+(off[name]||0))%l.length];return x}
+ function pick(name){if(mine[name])return {u:mine[name],mine:true};const nd=ndImg(name);if(nd)return nd;const l=(mem[name]||{}).l||[];if(!l.length)return null;const x=l[(day()+hash(name)+(off[name]||0))%l.length];return x}
  const big=u=>/\/500px-/.test(u)?u.replace('/500px-','/960px-'):u;
  function html(d,cls=''){const p=pick(d.name);return `<span class="mr-ph ${cls} ${p?'':'wait'}" data-ph="${d.name.replace(/"/g,'&quot;')}"><b>${d.emoji}</b>${p?`<img src="${(cls.includes('big')?big(p.u):p.u).replace(/"/g,'&quot;')}" alt="" loading="lazy" decoding="async">`:''}</span>`}
  function fill(el){const n=el.dataset.ph,p=pick(n);if(!p){el.classList.add('none');return}el.classList.remove('wait','none');const src=el.classList.contains('big')?big(p.u):p.u;let img=el.querySelector('img');if(img&&img.getAttribute('src')===src)return;if(!img){img=document.createElement('img');img.alt='';img.decoding='async';el.appendChild(img)}img.classList.remove('ok');img.src=src}
@@ -1435,7 +1464,7 @@ try{if(/[?&]warm=1\b/.test(location.search)){const bar=document.createElement('d
 const mrNS=s=>s>=80?'A':s>=65?'B':s>=50?'C':s>=35?'D':'E';
 const mrNova=d=>/^(Dattes|Amandes|Figues|Grenade|Orange|Jus d’orange|Salade|Zaalouk|Taktouka|Sardines)/.test(d.name)?1:/^(Merguez|Sandwich)/.test(d.name)?4:/^(Khobz|Msemen|Mlaoui|Rghaif|Harcha|Batbout|Baghrir|Sfenj|Chebakia|Cornes|Briouate|Sellou|Amlou|Ghoriba|Zlabia|Mhancha|Fekkas|Pastilla au lait|Olives|Fromage|Lben|Thé|Bsissa)/.test(d.name)?3:2;
 const mrEco=d=>{const s=(d.name+' '+d.ing.join(' ')).toLowerCase();return /agneau|bœuf|boeuf|méchoui|mechoui|tanjia|lham|mrouzia|hergma|merguez|kefta|viande|khlii/.test(s)?(/légume|legume|courge|carotte/.test(s)?'D':'E'):/poulet|djej|djaj|foie|dinde/.test(s)?'C':/poisson|sardine|crevette|hout/.test(s)?'B':/beurre|smen|lait|fromage|jben|lben|oeuf|œuf|miel|sucre|amande/.test(s)?'B':'A'};
-const mrBadges=d=>{const n=mrNS(d.score),v=mrNova(d),e=mrEco(d);return `<span class="mr-bdg"><span class="mr-ns" title="Nutri-Score ${n} (estimé)"><small>NUTRI-SCORE</small><span>${'ABCDE'.split('').map(x=>`<i class="n${x}${x===n?' on':''}">${x}</i>`).join('')}</span></span><span class="mr-nova v${v}" title="NOVA ${v} (estimé)"><small>NOVA</small><b>${v}</b></span><span class="mr-eco e${e}" title="Impact environnemental ${e} (estimé)"><b>${e}</b><span>green<br>score</span></span></span>`};
+const mrBadges=d=>{const n=d.data&&d.ns?d.ns:mrNS(d.score),v=d.data&&d.nova?d.nova:mrNova(d),e=mrEco(d),how=d.data?'NutriX Data':'ancienne estimation';return `<span class="mr-bdg"><span class="mr-ns" title="Nutri-Score ${n} (${how})"><small>NUTRI-SCORE</small><span>${'ABCDE'.split('').map(x=>`<i class="n${x}${x===n?' on':''}">${x}</i>`).join('')}</span></span><span class="mr-nova v${v}" title="NOVA ${v} (${how})"><small>NOVA</small><b>${v}</b></span><span class="mr-eco e${e}" title="Impact environnemental ${e} (estimé)"><b>${e}</b><span>green<br>score</span></span></span>`};
 
 /* ---------- Cuisine marocaine : section dédiée ---------- */
 const MR_CATS=[['all','Tout'],['tajine','Tajines & plats'],['couscous','Couscous'],['soupe','Soupes'],['salade','Salades'],['grill','Grillades'],['petit','Petit-déj'],['douceur','Douceurs'],['fruit','Fruits & boissons']];
@@ -1443,6 +1472,7 @@ const mrCat=n=>/^(Pastilla|Mrouzia|Lham lhalou|Méchoui|Tanjia|Rfissa)/.test(n)?
 function setupMaroc(){
  const root=$('#mr-root');if(!root||root.dataset.ready)return;const V=window.NutrixMaroc;if(!V){setTimeout(setupMaroc,500);return}
  root.dataset.ready='1';
+ document.addEventListener('nutrixdata:ready',()=>{try{paint()}catch{}});
  const A=ar,L=(f,a)=>A()?a:f,esc=V.esc;
  const st={cat:'all',q:'',dish:null,recs:{},busy:false,err:'',open:0,done:{},dietOpen:false,lim:24};
  const DIETS=['Végétarien','Halal','Sans gluten','Sans lactose','Sans sucre ajouté','Sans arachides','Sans œufs','Sans fruits à coque','Sans poisson','Diabète','Hypertension'];
