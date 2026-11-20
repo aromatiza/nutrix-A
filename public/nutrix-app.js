@@ -867,7 +867,9 @@ function pick(slot,prefs){const pool=MAR.filter(d=>allowed(d,prefs)&&(slot==='b'
  if(!pool.length)return null;
  const sorted=pool.slice().sort((x,y)=>x.name<y.name?-1:1),r=seedRand(dayKey()*7+(slot==='b'?1:slot==='l'?2:3)),order=sorted.map(d=>[r(),d]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
  // le dîner reste plus léger que le déjeuner
- const arr=slot==='d'?order.filter(d=>d.kcal<=560).concat(order.filter(d=>d.kcal>560)):order;
+ let arr=slot==='d'?order.filter(d=>d.kcal<=560).concat(order.filter(d=>d.kcal>560)):order;
+ // le dîner ne répète jamais le déjeuner (ni la même famille de plat : tajine/tajine, couscous/couscous)
+ if(slot==='d'){const l=pick('l',prefs);if(l){const fam=x=>norm(x.name).split(/[ (]/)[0];const other=arr.filter(d=>d.name!==l.name&&fam(d)!==fam(l)),diff=arr.filter(d=>d.name!==l.name);arr=other.length?other:diff.length?diff:arr}}
  return arr[(MENU.shift[slot])%arr.length]}
 const moPool=()=>{let P=[];try{P=JSON.parse(localStorage.getItem('nutrix-prefs')||'[]')}catch{}const r=seedRand(dayKey()+Date.now()%97);return MAR.filter(d=>allowed(d,P)&&!SNACK.test(d.name)&&!SIDE.test(d.name)&&!BREAK.test(d.name)).map(d=>[r(),d.name]).sort((a,b)=>a[0]-b[0]).slice(0,12).map(x=>x[1])};
 function launchMaroc(dish){const F=state.fridge=state.fridge||{imgs:[]};const ref=dish?{name:dish.name,portion:dish.portion,kcal:dish.kcal,ing:dish.ing}:null;Object.assign(F,{imgs:[],result:null,items:[],typed:[],goal:'equilibre',servings:2,chef:null,chefErr:'',dish:dish?dish.name:'',maroc:{ref,pool:ref?[]:moPool()},open:0,done:{}});document.querySelector('#ns-tabs [data-tool=fridge]')?.click();setTimeout(()=>{render('fridge');runChef(F,'fridge')},60)}

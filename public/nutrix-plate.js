@@ -81,7 +81,7 @@ function resultSheet(S){
   const tot=p*4+c*4+f*9||1;const items=Array.isArray(d.items)?d.items.slice(0,12):[];
   const gsum=items.reduce((a,i)=>a+num(i.grams),0);
   const rows=items.map(i=>{const gr=num(i.grams);let kc=num(i.kcal),approx=false;if(!kc&&gr&&gsum){kc=kcal*gr/gsum;approx=true}
-    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b><bdi dir="ltr">${approx?'≈ ':''}${r0(kc)}</bdi><small> kcal</small></b>`:''}</li>`}).join('');
+    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${i.source==='nutrixdata'?`<em title="Valeurs de la base NutriX Data validée" style="display:inline-block;margin-inline-start:6px;padding:1px 7px;border-radius:99px;background:#038141;color:#fff;font-size:10px;font-style:normal;font-weight:700;vertical-align:middle">NutriX Data</em>`:''}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b><bdi dir="ltr">${approx?'≈ ':''}${r0(kc)}</bdi><small> kcal</small></b>`:''}</li>`}).join('');
   const alerts=(Array.isArray(d.alerts)?d.alerts:[]).filter(Boolean).slice(0,3);
   const notes=alerts.map(a=>`<li><i class="nxp-ni warn">${I(ICO.warn,16)}</i><span class="nxp-fn">${esc(String(a).slice(0,40))}</span></li>`).join('')+(d.tip?`<li><i class="nxp-ni">${I(ICO.info,16)}</i><span class="nxp-fn">${esc(String(d.tip).slice(0,140))}</span></li>`:'');
   const GENK=d.better_prompt;
