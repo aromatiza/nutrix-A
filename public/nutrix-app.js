@@ -612,7 +612,7 @@ try{const c=JSON.parse(localStorage.getItem(ND_KEY)||'null');if(c&&Array.isArray
 const ndLoad=()=>fetch('/api/data/dishes').then(r=>r.ok?r.json():null).then(j=>{if(!j||!Array.isArray(j.dishes))return;try{localStorage.setItem(ND_KEY,JSON.stringify({t:Date.now(),d:j.dishes}))}catch{}MAR.splice(0,MAR.length,...MAR.filter(o=>!o.data));ndMerge(j.dishes,true)}).catch(()=>{});
 try{(window.requestIdleCallback||(f=>setTimeout(f,800)))(ndLoad)}catch{ndLoad()}
 
-const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:(d.data?'NutriX Data · validé · ':'Ancienne estimation · ')+d.portion,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
+const marocResult=d=>({dish:d.name,items:d.ing.map(n=>({name:n,emoji:'',grams:0})),kcal:d.kcal,p:d.p,c:d.c,f:d.f,score:d.score,verdict:d.score>=75?'Excellent':d.score>=55?'Correct':d.score>=40?'Modéré':'À limiter',tip:d.tip,src:(d.data?'NutriX Data · validé · ':'Ancienne estimation · ')+d.portion,data:d.data?[{kind:'dish',name:d.name,portion_g:(d.portion.match(/(\d+)\s*g/)||[])[1]*1||null,per100:d.per100,nutriscore:d.ns,nova:d.nova,rating:d.rating,image:d.img,image_credit:d.imgCredit,image_source:d.imgSource,sources:d.sources}]:null,better_prompt:'Healthy version of Moroccan '+d.name+', plated beautifully'});
 
 /* ---------- visual atoms ---------- */
 function ring(value,max,label,sub,color='var(--nx-primary)'){const p=clamp(value/max*100,0,100),C=2*Math.PI*52;return `<div class="nv-ring" style="--c:${color}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" stroke-dasharray="${(C*p/100).toFixed(1)} ${C.toFixed(1)}"/></svg><div><strong>${esc(label)}</strong><small>${esc(sub)}</small></div></div>`}
@@ -620,6 +620,23 @@ function bar(label,val,max,unit,color){return `<div class="nv-bar"><span>${esc(l
 function scoreColor(s){return s>=70?'#14a37a':s>=45?'#e8a317':'#e0533d'}
 const chip=(t,e='',cls='')=>`<span class="nv-chip ${cls}">${e?`<em>${fi(t,16)}</em>`:''}${esc(t)}</span>`;
 
+/* Carte « NutriX Data » : photo, note /100, Nutri-Score, NOVA et valeurs de la base validée (sinon badge « Estimation IA ») */
+function ndCard(list,src){const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+ const NS={a:'#038141',b:'#85bb2f',c:'#fecb02',d:'#ee8100',e:'#e63e11'};
+ if(!Array.isArray(list)||!list.length)return `<p style="margin:8px 0"><span style="display:inline-block;padding:3px 10px;border-radius:99px;background:#f1e7ff;color:#6b21a8;font-size:12px;font-weight:700">✨ Source : estimation IA</span>${src?` <small style="opacity:.7">${E(src)}</small>`:''}</p>`;
+ return list.slice(0,3).map(x=>{const g=String(x.nutriscore||'').toLowerCase(),r=x.rating,v=x.per100||{},rc=r>=75?'#038141':r>=50?'#a3b10f':r>=25?'#ee8100':'#e63e11';
+  const ns=g?`<span title="Nutri-Score ${g.toUpperCase()}${x.nutriscore_estimated?' (calculé)':''}" style="display:inline-flex;gap:2px;align-items:center;padding:2px 4px;border:1px solid #ddd;border-radius:6px;background:#fff">${'abcde'.split('').map(l=>`<i style="font-style:normal;font-weight:800;font-size:${l===g?13:10}px;color:#fff;background:${NS[l]};opacity:${l===g?1:.35};border-radius:4px;padding:${l===g?'2px 6px':'1px 4px'}">${l.toUpperCase()}</i>`).join('')}</span>`:'';
+  const nova=x.nova?`<span title="NOVA ${x.nova}${x.nova_estimated?' (estimé)':''}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 7px;border-radius:6px;color:#fff;background:${['','#038141','#fecb02','#ee8100','#e63e11'][x.nova]||'#888'};font-weight:800;line-height:1"><small style="font-size:8px">NOVA</small>${x.nova}</span>`:'';
+  const rate=r!=null?`<span title="Note NutriX /100" style="padding:4px 10px;border-radius:99px;color:#fff;background:${rc};font-weight:800">${Math.round(r)}<small style="font-size:10px;opacity:.85">/100</small></span>`:'';
+  const img=x.image?`<figure style="margin:0 0 8px"><img src="${E(x.image)}" alt="${E(x.name)}" loading="lazy" style="width:100%;max-height:220px;object-fit:${x.kind==='product'?'contain':'cover'};border-radius:12px;background:#fff;display:block">${x.image_credit?`<figcaption style="font-size:10px;opacity:.6;margin-top:3px">${x.image_source?`<a href="${E(x.image_source)}" target="_blank" rel="noopener">${E(x.image_credit)}</a>`:E(x.image_credit)}</figcaption>`:''}</figure>`:'';
+  const per=[v.kcal!=null&&`${Math.round(v.kcal)} kcal`,v.p!=null&&`P ${v.p} g`,v.c!=null&&`G ${v.c} g`,v.f!=null&&`L ${v.f} g`,v.sugar!=null&&`sucres ${v.sugar} g`,v.salt!=null&&`sel ${v.salt} g`].filter(Boolean).join(' · ');
+  const srcs=(x.sources||[]).filter(s=>/^https?:\/\//.test(s.url||'')).map((s,i)=>`<a href="${E(s.url)}" target="_blank" rel="noopener">[${i+1}] ${E(String(s.title||'source').slice(0,40))}</a>`).join(' ');
+  return `<section class="nxp-card pad nd-card" style="border:2px solid #038141;border-radius:16px;padding:12px;margin:10px 0">
+   <p style="margin:0 0 8px"><span style="display:inline-block;padding:3px 10px;border-radius:99px;background:#038141;color:#fff;font-size:12px;font-weight:800">✓ Source : NutriX Data (validé par l’équipe)</span></p>
+   ${img}<b style="font-size:16px">${E(x.name)}</b>${x.brand?` <small>· ${E(x.brand)}</small>`:''}${x.darija?` <small>· ${E(x.darija)}</small>`:''}
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">${rate}${ns}${nova}</div>
+   <small style="display:block;opacity:.8">${per?per+' (pour 100 g)':''}${x.portion_g?` · portion ${Math.round(x.portion_g)} g`:''}${x.quantity?` · ${E(x.quantity)}`:''}${x.region?` · ${E(x.region)}`:''}${x.values_estimated?' · valeurs lues sur l’étiquette (IA)':''}</small>
+   ${srcs?`<small style="display:block;margin-top:4px;opacity:.75">${srcs}</small>`:''}</section>`}).join('')}
 /* ---------- result renderers ---------- */
 const R={
  plate(d){const kcal=n(d.kcal),p=n(d.p),c=n(d.c),f=n(d.f),s=clamp(d.score,0,100),items=Array.isArray(d.items)?d.items.slice(0,10):[];
@@ -648,7 +665,7 @@ const R={
   const list=(a,cls,ic)=>(Array.isArray(a)?a.slice(0,3):[]).map(t=>`<li class="${cls}">${ico(ic)}${esc(short(t,34))}</li>`).join('');
   return `<div class="nv-res-top">${ring(s,100,s,'/100',scoreColor(s))}<div class="nv-res-head"><h3>${esc(d.emoji||'')} ${esc(short(d.name,40))}</h3><div class="nv-grades">${['A','B','C','D','E'].map(x=>`<i class="${x===g?'on':''}" style="--g:${{A:'#1a9b58',B:'#7bbf2a',C:'#e8c21a',D:'#ef8a1c',E:'#e0533d'}[x]}">${x}</i>`).join('')}</div></div></div>
   <ul class="nv-points">${list(d.good,'ok','check')}${list(d.watch,'warn','warn')}</ul>
-  <div class="nv-bars">${bar('Énergie',n(per.kcal),600,' kcal','#e8a317')}${bar('Protéines',n(per.p),40,'g','var(--mac-p)')}${bar('Sucres',n(per.sugar),50,'g','#e0533d')}${bar('Sel',n(per.salt),3,'g','#4f8df7')}</div><p class="nv-foot">pour 100 g · estimation</p>`},
+  ${ndCard(d.data,d.src)}<div class="nv-bars">${bar('Énergie',n(per.kcal),600,' kcal','#e8a317')}${bar('Protéines',n(per.p),40,'g','var(--mac-p)')}${bar('Sucres',n(per.sugar),50,'g','#e0533d')}${bar('Sel',n(per.salt),3,'g','#4f8df7')}</div><p class="nv-foot">pour 100 g · ${d.data&&d.data.length?'NutriX Data (validé)':'estimation IA'}</p>`},
  restaurant(d){const picks=Array.isArray(d.picks)?d.picks.slice(0,3):[];const lv={leger:'Léger',moyen:'Moyen',riche:'Riche'};
   return `<div class="nv-picks">${picks.map((x,i)=>`<div class="nv-pick ${i===0?'best':''}"><span class="nv-rank">${i+1}</span><b class="nv-emoji">${fi(x.name,26)}</b><div><strong>${esc(short(x.name,40))}</strong><small>${esc(short(x.why,50))}</small></div><div class="nv-pick-end"><em class="lv ${esc(x.level)}">${esc(lv[x.level]||'')}</em><span style="--b:${scoreColor(n(x.score))}">${r0(x.score)}</span></div></div>`).join('')}</div>`}
 };
