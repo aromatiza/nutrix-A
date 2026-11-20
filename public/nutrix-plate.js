@@ -76,12 +76,29 @@ function labels(items){
     return `<span class="nxp-tag" style="--x:${(cx*100).toFixed(1)}%;--y:${(cy*100).toFixed(1)}%;--i:${k++}"><i class="nxp-dot"></i><b>${food(i.name,15)}${esc(String(i.name||'').slice(0,18))}</b></span>`}).join('');
 }
 function ring(label,g,pct,cls){const C=2*Math.PI*26;return `<div class="nxp-ring ${cls}"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" class="bg"/><circle cx="32" cy="32" r="26" class="fg" stroke-dasharray="${C.toFixed(1)}" style="--off:${(C*(1-pct/100)).toFixed(1)};--full:${C.toFixed(1)}"/></svg><div><strong><bdi dir="ltr">${r0(g)}<small>g</small></bdi></strong><span><bdi dir="ltr">${r0(pct)}%</bdi></span></div><em>${label}</em></div>`}
+/* Carte « NutriX Data » : photo, note /100, Nutri-Score, NOVA et valeurs de la base validée (sinon badge « Estimation IA ») */
+function ndCard(list,src){const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+ const NS={a:'#038141',b:'#85bb2f',c:'#fecb02',d:'#ee8100',e:'#e63e11'};
+ if(!Array.isArray(list)||!list.length)return `<p style="margin:8px 0"><span style="display:inline-block;padding:3px 10px;border-radius:99px;background:#f1e7ff;color:#6b21a8;font-size:12px;font-weight:700">✨ Source : estimation IA</span>${src?` <small style="opacity:.7">${E(src)}</small>`:''}</p>`;
+ return list.slice(0,3).map(x=>{const g=String(x.nutriscore||'').toLowerCase(),r=x.rating,v=x.per100||{},rc=r>=75?'#038141':r>=50?'#a3b10f':r>=25?'#ee8100':'#e63e11';
+  const ns=g?`<span title="Nutri-Score ${g.toUpperCase()}${x.nutriscore_estimated?' (calculé)':''}" style="display:inline-flex;gap:2px;align-items:center;padding:2px 4px;border:1px solid #ddd;border-radius:6px;background:#fff">${'abcde'.split('').map(l=>`<i style="font-style:normal;font-weight:800;font-size:${l===g?13:10}px;color:#fff;background:${NS[l]};opacity:${l===g?1:.35};border-radius:4px;padding:${l===g?'2px 6px':'1px 4px'}">${l.toUpperCase()}</i>`).join('')}</span>`:'';
+  const nova=x.nova?`<span title="NOVA ${x.nova}${x.nova_estimated?' (estimé)':''}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 7px;border-radius:6px;color:#fff;background:${['','#038141','#fecb02','#ee8100','#e63e11'][x.nova]||'#888'};font-weight:800;line-height:1"><small style="font-size:8px">NOVA</small>${x.nova}</span>`:'';
+  const rate=r!=null?`<span title="Note NutriX /100" style="padding:4px 10px;border-radius:99px;color:#fff;background:${rc};font-weight:800">${Math.round(r)}<small style="font-size:10px;opacity:.85">/100</small></span>`:'';
+  const img=x.image?`<figure style="margin:0 0 8px"><img src="${E(x.image)}" alt="${E(x.name)}" loading="lazy" style="width:100%;max-height:220px;object-fit:${x.kind==='product'?'contain':'cover'};border-radius:12px;background:#fff;display:block">${x.image_credit?`<figcaption style="font-size:10px;opacity:.6;margin-top:3px">${x.image_source?`<a href="${E(x.image_source)}" target="_blank" rel="noopener">${E(x.image_credit)}</a>`:E(x.image_credit)}</figcaption>`:''}</figure>`:'';
+  const per=[v.kcal!=null&&`${Math.round(v.kcal)} kcal`,v.p!=null&&`P ${v.p} g`,v.c!=null&&`G ${v.c} g`,v.f!=null&&`L ${v.f} g`,v.sugar!=null&&`sucres ${v.sugar} g`,v.salt!=null&&`sel ${v.salt} g`].filter(Boolean).join(' · ');
+  const srcs=(x.sources||[]).filter(s=>/^https?:\/\//.test(s.url||'')).map((s,i)=>`<a href="${E(s.url)}" target="_blank" rel="noopener">[${i+1}] ${E(String(s.title||'source').slice(0,40))}</a>`).join(' ');
+  return `<section class="nxp-card pad nd-card" style="border:2px solid #038141;border-radius:16px;padding:12px;margin:10px 0">
+   <p style="margin:0 0 8px"><span style="display:inline-block;padding:3px 10px;border-radius:99px;background:#038141;color:#fff;font-size:12px;font-weight:800">✓ Source : NutriX Data (validé par l’équipe)</span></p>
+   ${img}<b style="font-size:16px">${E(x.name)}</b>${x.brand?` <small>· ${E(x.brand)}</small>`:''}${x.darija?` <small>· ${E(x.darija)}</small>`:''}
+   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">${rate}${ns}${nova}</div>
+   <small style="display:block;opacity:.8">${per?per+' (pour 100 g)':''}${x.portion_g?` · portion ${Math.round(x.portion_g)} g`:''}${x.quantity?` · ${E(x.quantity)}`:''}${x.region?` · ${E(x.region)}`:''}${x.values_estimated?' · valeurs lues sur l’étiquette (IA)':''}</small>
+   ${srcs?`<small style="display:block;margin-top:4px;opacity:.75">${srcs}</small>`:''}</section>`}).join('')}
 function resultSheet(S){
   const d=S.result||{},kcal=num(d.kcal),p=num(d.p),c=num(d.c),f=num(d.f),s=Math.max(0,Math.min(100,num(d.score))),g=grade(s);
   const tot=p*4+c*4+f*9||1;const items=Array.isArray(d.items)?d.items.slice(0,12):[];
   const gsum=items.reduce((a,i)=>a+num(i.grams),0);
   const rows=items.map(i=>{const gr=num(i.grams);let kc=num(i.kcal),approx=false;if(!kc&&gr&&gsum){kc=kcal*gr/gsum;approx=true}
-    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b><bdi dir="ltr">${approx?'≈ ':''}${r0(kc)}</bdi><small> kcal</small></b>`:''}</li>`}).join('');
+    return `<li><i class="nxp-fi">${food(i.name,22)}</i><span class="nxp-fn">${esc(String(i.name||'').slice(0,40))}${i.source==='nutrixdata'?`<em title="Valeurs de la base NutriX Data validée" style="display:inline-block;margin-inline-start:6px;padding:1px 7px;border-radius:99px;background:#038141;color:#fff;font-size:10px;font-style:normal;font-weight:700;vertical-align:middle">NutriX Data</em>`:''}${gr?`<small><bdi dir="ltr">≈ ${r0(gr)} g</bdi></small>`:''}</span>${kc?`<b><bdi dir="ltr">${approx?'≈ ':''}${r0(kc)}</bdi><small> kcal</small></b>`:''}</li>`}).join('');
   const alerts=(Array.isArray(d.alerts)?d.alerts:[]).filter(Boolean).slice(0,3);
   const notes=alerts.map(a=>`<li><i class="nxp-ni warn">${I(ICO.warn,16)}</i><span class="nxp-fn">${esc(String(a).slice(0,40))}</span></li>`).join('')+(d.tip?`<li><i class="nxp-ni">${I(ICO.info,16)}</i><span class="nxp-fn">${esc(String(d.tip).slice(0,140))}</span></li>`:'');
   const GENK=d.better_prompt;
@@ -93,6 +110,7 @@ function resultSheet(S){
    </div></section>
    <section class="nxp-card pad"><h4 class="nxp-card-t">${L('Macros','الماكرو')}</h4>
     <div class="nxp-rings">${ring(L('Protéines','بروتين'),p,p*4/tot*100,'mp')}${ring(L('Glucides','نشويات'),c,c*4/tot*100,'mc')}${ring(L('Lipides','دهون'),f,f*9/tot*100,'mf')}</div></section>
+   ${ndCard(d.data,d.src)}
    ${rows?`<div><span class="nxp-cap">${L('Aliments','الماكلة')}</span><section class="nxp-card"><ul class="nxp-list">${rows}</ul></section></div>`:''}
    ${notes?`<section class="nxp-card"><ul class="nxp-list nxp-note">${notes}</ul></section>`:''}
    ${d.src?`<p class="nxp-src">${esc(d.src)}</p>`:''}
